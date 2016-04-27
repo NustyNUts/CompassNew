@@ -361,7 +361,9 @@ Rectangle {
             textColor:window1.dayNight === false ?"#7fff00" : "black"
             background: Rectangle{
                 color: dayNight === false ? "black" : "white"
-
+                border.color: "#888"
+                radius: 4
+                border.width: 1
             }
         }
     }

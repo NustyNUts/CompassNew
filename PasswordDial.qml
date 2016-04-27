@@ -91,7 +91,7 @@ Rectangle {
     }
     Label{
         id:labelPass
-        text: qsTr("Введите пароль для сброса")
+        text: qsTr("Введите пароль")
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: textField.top
         anchors.bottomMargin: buttonMargin
@@ -119,6 +119,8 @@ Rectangle {
             textColor:window1.dayNight === false ?"#7fff00" : "black"
             background: Rectangle{
                 color: dayNight === false ? "black" : "white"
+                border.color: "#888"
+                radius: 4
 
             }
         }
@@ -301,11 +303,27 @@ Rectangle {
         anchors.top: button7.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
-        text: qsTr("Принять")
+        text: qsTr("Сбросить")
         anchors.rightMargin: buttonMargin
         anchors.right: button2.left
         anchors.topMargin: buttonMargin
-        style: keyboardButtonStyle
+        style: ButtonStyle{
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Helvetica"
+                font.pointSize: height/4.5
+                color: window1.dayNight === false ? "#7fff00": "black"
+                text: control.text
+              }
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: dayNight === false ? "black" : "white"
+            }
+        }
         onClicked:{
             compass.ledOn()
             revert(keyBoardRes)

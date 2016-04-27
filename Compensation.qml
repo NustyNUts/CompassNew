@@ -7,6 +7,7 @@ Rectangle {
     FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
     width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
     height: window1.height
+    property color textColor:window1.dayNight === false ? "#7fff00": "blue"
     property real progressBarWidth: window1.width / 3.5
     property int progressBarHeight: window1.height / 14
     property int progressBarMargin: progressBarHeight / 2
@@ -32,7 +33,7 @@ Rectangle {
                         implicitHeight: 24
                     }
             progress: Rectangle {
-                       color: window1.dayNight === false ? "#7fff00":"#0B69EF"
+                       color: window1.dayNight === false ? "#0017E6":"#7fff00"
                        border.color: "steelblue"
                    }
         }
@@ -203,7 +204,7 @@ Rectangle {
             x: window1.height/1.75
             width: buttonWidthComrect
             height: buttonHeightComrect
-            text: qsTr("Начать калибровку")
+            text: qsTr("Начать")
             anchors.top: progressBar1.top
             anchors.topMargin: 0
             anchors.left: progressBar1.right
@@ -214,7 +215,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: a_LCDNovaObl.name
-                        font.pointSize: height / 7
+                        font.pointSize: height / 5
                         font.bold: true
                         color: window1.dayNight === false ? "#7fff00": "black"
                         text: control.text
@@ -244,7 +245,7 @@ Rectangle {
             property int borderWidth:1
             width: buttonWidthComrect
             height: buttonHeightComrect
-            text: qsTr("Остановить калибровку")
+            text: qsTr("Остановить")
             anchors.top: button1.bottom
             anchors.topMargin: progressBarMargin
             style: ButtonStyle {
@@ -253,7 +254,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.family: a_LCDNovaObl.name
-                        font.pointSize: height / 7
+                        font.pointSize: height / 5
                         font.bold: true
                         color: window1.dayNight === false ? "#7fff00": "black"
                         text: control.text
@@ -282,12 +283,10 @@ Rectangle {
             id: text1
             width: textWidth
             height: textHeight
-            color: "#1d00b6"
+            color: textColor
             text: qsTr("N")
-            anchors.verticalCenterOffset: 0
-            anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar1.horizontalCenter
             anchors.verticalCenter: progressBar1.verticalCenter
+            anchors.horizontalCenter: progressBar1.horizontalCenter
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
@@ -297,7 +296,7 @@ Rectangle {
             id: text2
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("NE")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
@@ -312,7 +311,7 @@ Rectangle {
             id: text3
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("E")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
@@ -327,7 +326,7 @@ Rectangle {
             id: text4
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("SE")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
@@ -342,7 +341,7 @@ Rectangle {
             id: text5
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("S")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
@@ -357,7 +356,7 @@ Rectangle {
             id: text6
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("SW")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
@@ -372,7 +371,7 @@ Rectangle {
             id: text7
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("W")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
@@ -387,7 +386,7 @@ Rectangle {
             id: text8
             width: textWidth
             height: textHeight
-            color: "#1d00b8"
+            color: textColor
             text: qsTr("NW")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0

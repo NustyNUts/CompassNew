@@ -25,6 +25,7 @@ Rectangle {
         slideKeybordForward.stop();
         slideDeviationForward.stop();
         slideCompForward.stop();
+        slideDeviTableForward.stop();
     }
 
     function close(){

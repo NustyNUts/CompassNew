@@ -267,10 +267,13 @@ void Compass::setAngle(double a)
 void Compass::getDevCoef()
 {
     fileDev->remove();
-
     fileDev->open(QFile::WriteOnly);
     QTextStream* outDelta = new QTextStream(fileDev);
-
+    m_coef_Dev.A = 0;
+    m_coef_Dev.B = 0;
+    m_coef_Dev.C = 0;
+    m_coef_Dev.D = 0;
+    m_coef_Dev.E = 0;
     for(int i = 0; i < 8; i++)
     {
         m_coef_Dev.A+=delta[i];
