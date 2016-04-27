@@ -20,6 +20,24 @@ Rectangle {
     color: "#00000000"
 
 
+    Component{
+        id: prBarStyle
+        ProgressBarStyle{
+            background: Rectangle {
+                        radius: 2
+                        color: window1.dayNight === false ? "black": "white"
+                        border.color: window1.dayNight === false ?  "white":"black"
+                        border.width: 1
+                        implicitWidth: 200
+                        implicitHeight: 24
+                    }
+            progress: Rectangle {
+                       color: window1.dayNight === false ? "#7fff00":"#0B69EF"
+                       border.color: "steelblue"
+                   }
+        }
+    }
+
     function changeColor()
     {
         compensationStatusBackgroundcolor = Qt.binding(function(){
@@ -57,6 +75,7 @@ Rectangle {
             height: progressBarHeight
             value: compass.getBins(0)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         ProgressBar {
@@ -73,6 +92,7 @@ Rectangle {
             anchors.leftMargin: 0
             value: compass.getBins(1)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         ProgressBar {
@@ -89,6 +109,7 @@ Rectangle {
             anchors.topMargin: progressBarMargin
             value: compass.getBins(2)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         ProgressBar {
@@ -105,6 +126,7 @@ Rectangle {
             anchors.topMargin: progressBarMargin
             value: compass.getBins(3)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         ProgressBar {
@@ -121,6 +143,7 @@ Rectangle {
             anchors.topMargin: progressBarMargin
             value: compass.getBins(4)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         ProgressBar {
@@ -137,6 +160,7 @@ Rectangle {
             anchors.topMargin: progressBarMargin
             value: compass.getBins(5)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         ProgressBar {
@@ -153,6 +177,8 @@ Rectangle {
             anchors.topMargin: progressBarMargin
             value: compass.getBins(6)
             maximumValue: 16.0
+            style: prBarStyle
+
         }
         ProgressBar {
             Connections {
@@ -168,6 +194,7 @@ Rectangle {
             anchors.topMargin: progressBarMargin
             value: compass.getBins(7)
             maximumValue: 16.0
+            style: prBarStyle
         }
 
         Button {
