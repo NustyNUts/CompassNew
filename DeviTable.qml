@@ -32,6 +32,27 @@ Rectangle {
 
     }
 
+    Component{
+        id:coefStyle
+
+        ButtonStyle{
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Helvetica"
+                font.pointSize: buttonFontSize
+                color: window1.dayNight === false ?  "#7fff00": "black"
+                text: control.text
+              }
+
+            background: Rectangle {
+                border.color: "#888"
+                radius: 4
+                color: dayNight === false ? "black" : "white"
+            }
+        }
+    }
     Button {
         id: butStepTable
         text: stepTable === true ? "10" : "15"
@@ -48,15 +69,16 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 font.family: "Helvetica"
                 font.pointSize: buttonFontSize
-                color: "black"
+                color: window1.dayNight === false ?  "#7fff00": "black"
                 text: control.text
             }
             background: Rectangle {
                 id:butStepTableBack
                 implicitWidth: 100
                 implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
+                border.width: control.pressed ? 5:1
                 border.color: "#888"
+                color: dayNight === false ? "black" : "white"
                 radius: 4
             }
         }
@@ -82,16 +104,16 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 font.family: "Helvetica"
                 font.pointSize: buttonFontSize
-                color: "black"
+                color: window1.dayNight === false ?  degaus === true? "black" : "#7fff00": "black"
                 text: control.text
             }
             background: Rectangle {
                 implicitWidth: 100
                 implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
+                border.width: control.pressed ? 5:1
                 border.color: "#888"
                 radius: 4
-                color: degaus === true ? "#42e73a":"white"
+                color: degaus === true ? "#42e73a":window1.dayNight === false ? "black" : "white"
 
             }
         }
@@ -109,26 +131,7 @@ Rectangle {
         anchors.top: butStepTable.bottom
         anchors.topMargin: 0
         width: elementWidht
-        style: ButtonStyle {
-            label: Text {
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: buttonFontSize
-                color: "black"
-                text: control.text
-            }
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
-                radius: 4
-                color: "white"
-
-            }
-        }
+        style: coefStyle
     }
     Button {
         id: deviB
@@ -139,26 +142,7 @@ Rectangle {
         anchors.topMargin: 0
         anchors.left: butStepTable.left
         anchors.leftMargin: 0
-        style: ButtonStyle {
-            label: Text {
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: buttonFontSize
-                color: "black"
-                text: control.text
-            }
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
-                radius: 4
-                color: "white"
-
-            }
-        }
+        style: coefStyle
     }
     Button {
         id: deviC
@@ -169,26 +153,7 @@ Rectangle {
         anchors.topMargin: 0
         anchors.left: butStepTable.left
         anchors.leftMargin: 0
-        style: ButtonStyle {
-            label: Text {
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: buttonFontSize
-                color: "black"
-                text: control.text
-            }
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
-                radius: 4
-                color: "white"
-
-            }
-        }
+        style: coefStyle
     }
     Button {
         id: deviD
@@ -199,26 +164,7 @@ Rectangle {
         anchors.topMargin: 0
         anchors.left: butStepTable.left
         anchors.leftMargin: 0
-        style: ButtonStyle {
-            label: Text {
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: buttonFontSize
-                color: "black"
-                text: control.text
-            }
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
-                radius: 4
-                color: "white"
-
-            }
-        }
+        style: coefStyle
     }
     Button {
         id: deviE
@@ -229,26 +175,7 @@ Rectangle {
         anchors.topMargin: 0
         anchors.left: butStepTable.left
         anchors.leftMargin: 0
-        style: ButtonStyle {
-            label: Text {
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: buttonFontSize
-                color: "black"
-                text: control.text
-            }
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
-                radius: 4
-                color: "white"
-
-            }
-        }
+        style: coefStyle
     }
 
         TableView{
@@ -259,32 +186,39 @@ Rectangle {
             anchors.leftMargin: 0
             anchors.top: butStepTable.bottom
             style: TableViewStyle{
-
+                backgroundColor:dayNight === false ? "black" : "white"
                 rowDelegate :Rectangle{
                     height: elementHeight
+
                 }
                 headerDelegate:Rectangle{
                     border.width: 1
+                    border.color: dayNight === false ? "white" : "black"
                     width: elementWidht
                     height:elementHeight
+                    color: dayNight === false ? "black" : "white"
                     Text{
                         anchors.fill: parent
                         text: styleData.value
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.pointSize: height/4
+                        color:window1.dayNight === false ?  "#7fff00": "black"
                     }
                 }
 
                 itemDelegate: Rectangle{
 
                     border.width: 1
+                    border.color: dayNight === false ? "white" : "black"
+                    color: dayNight === false ? "black" : "white"
                     Text{
                         anchors.fill: parent
                         text: styleData.value !== undefined  ? styleData.value : ""
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.pointSize: height/3
+                        color:window1.dayNight === false ?  "#7fff00": "black"
                     }
                 }
             }
@@ -302,7 +236,7 @@ Rectangle {
                     }
             TableViewColumn {
                         id: dataColumn
-                        title: "ПОПРАВКА"
+                        title: "σ"
                         role: "corr"
                         movable: false
                         resizable: false

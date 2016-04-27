@@ -222,7 +222,7 @@ Rectangle {
         z: 1
         anchors.fill: parent
         //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-        color: "#072269"
+        color: window1.dayNight === false ? "#0c2132" :"#8cb1b9"
         MoreInfo
            {
                id:moreInfoDisp
@@ -304,7 +304,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? buttonNum === 1?  "black" :"#7fff00": "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -313,7 +313,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 1 ? "#42e73a":"white"
+                        color: buttonNum === 1 ? "#42e73a":dayNight === false ? "black" : "white"
 
                     }
                 }
@@ -333,7 +333,7 @@ Rectangle {
                 text: qsTr("РУ")
                 anchors.left: parent.left
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
-                anchors.top: revertBut.bottom
+                anchors.top: deviTableBut.bottom
                 anchors.topMargin: butTopMargin
 
                 style: ButtonStyle {
@@ -343,7 +343,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? degaus===0 ? "#7fff00": "black" : "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -352,14 +352,14 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: degaus === 1 ? "#42e73a":"white"
-
+                        color: degaus === 1 ? "#42e73a":dayNight === false ? "black" : "white"
                     }
                 }
                 onClicked:
                 {
                     degaus = !degaus
                     deviTable.degaus = degaus
+                    deviTable.setDev()
                     compass.setDegaus(degaus)
                     compass.ledOn()
                 }
@@ -370,7 +370,7 @@ Rectangle {
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Коэффициент A")
-                anchors.top: calibBut.bottom
+                anchors.top: deviBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
@@ -381,7 +381,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? buttonNum === 6?  "black" :"#7fff00": "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -390,7 +390,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 6 ? "#42e73a":"white"
+                        color: buttonNum === 6 ? "#42e73a":dayNight === false ? "black" : "white"
 
                     }
                 }
@@ -412,11 +412,10 @@ Rectangle {
 
             Button {
                 id: deviBut
-                x: 18
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Калькулятор")
-                anchors.top: coefABut.bottom
+                anchors.top: calibBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
@@ -427,7 +426,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? buttonNum === 7?  "black" :"#7fff00": "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -436,7 +435,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 7 ? "#42e73a":"white"
+                        color: buttonNum === 7 ? "#42e73a":dayNight === false ? "black" : "white"
 
                     }
                 }
@@ -447,6 +446,7 @@ Rectangle {
                     slideCompBack.start()
                     slideDeviationForward.start()
                     buttonNum = 7
+                    deviationDisplay.deviationButtonsStateReset();
                     compass.ledOn()
                 }
             }
@@ -457,7 +457,7 @@ Rectangle {
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Настройки")
-                anchors.top: deviBut.bottom
+                anchors.top: revertBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
@@ -469,7 +469,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? "#7fff00" : "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -478,7 +478,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: "white"
+                        color: dayNight === false ? "black" : "white"
 
                     }
                 }
@@ -498,7 +498,7 @@ Rectangle {
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Сбросить датчик")
-                anchors.top: showmainButtonsBut.bottom
+                anchors.top: degausBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
@@ -510,7 +510,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? buttonNum === 9?  "black" :"#7fff00": "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -519,7 +519,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 9 ? "#42e73a":"white"
+                        color: buttonNum === 9 ? "#42e73a":dayNight === false ? "black" : "white"
 
                     }
                 }
@@ -540,7 +540,7 @@ Rectangle {
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Таблица девиации")
-                anchors.top: degausBut.bottom
+                anchors.top: coefABut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
@@ -552,7 +552,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize
-                        color: "black"
+                        color: window1.dayNight === false ? buttonNum === 10?  "black" :"#7fff00": "black"
                         text: control.text
                     }
                     background: Rectangle {
@@ -561,7 +561,7 @@ Rectangle {
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "#888"
                         radius: 4
-                        color: buttonNum === 10 ? "#42e73a":"white"
+                        color: buttonNum === 10 ? "#42e73a":dayNight === false ? "black" : "white"
 
                     }
                 }
@@ -593,8 +593,8 @@ Rectangle {
             id: courseStateBut
             width: settings.buttonWidth
             height:settings.buttonHeight
-            anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.top: dInfoBut.bottom
+            anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
@@ -605,7 +605,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
                     font.pointSize: buttonFontSize
-                    color: "black"
+                    color: window1.dayNight === false ? "#7fff00" : "black"
                     text: "MK"
                     Component.onCompleted: courseStateButText.text = Qt.binding(function(){
                         if(trueMagneticCourse === 0)
@@ -615,6 +615,14 @@ Rectangle {
                         else if(trueMagneticCourse === 2)
                             return "ИК";
                     })
+                }
+                background: Rectangle{
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.activeFocus ? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: dayNight === false ? "black" : "white"
                 }
             }
             onClicked:{
@@ -628,7 +636,7 @@ Rectangle {
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Склонение")
-            anchors.top: courseStateBut.bottom
+            anchors.top: parent.top
             anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
@@ -639,7 +647,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
                     font.pointSize: buttonFontSize
-                    color: "black"
+                    color: window1.dayNight === false ? buttonNum === 3 ?  "black":"#7fff00" : "black"
                     text: control.text
                 }
                 background: Rectangle {
@@ -648,7 +656,7 @@ Rectangle {
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: buttonNum === 3 ? "#42e73a":"white"
+                    color: buttonNum === 3 ? "#42e73a":dayNight === false ? "black" : "white"
                 }
             }
 
@@ -682,7 +690,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
                     font.pointSize: buttonFontSize
-                    color: "black"
+                    color: window1.dayNight === false ? buttonNum === 4 ?  "black":"#7fff00" : "black"
                     text: control.text
                 }
                 background: Rectangle {
@@ -691,7 +699,7 @@ Rectangle {
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: buttonNum === 4 ? "#42e73a":"white"
+                    color: buttonNum === 4 ? "#42e73a":dayNight === false ? "black" : "white"
 
                 }
             }
@@ -710,7 +718,7 @@ Rectangle {
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Девиация")
-            anchors.top: dInfoBut.bottom
+            anchors.top: dayNightButton.bottom
             anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
@@ -722,7 +730,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
                     font.pointSize: buttonFontSize
-                    color: "black"
+                    color: window1.dayNight === false ? buttonNum === 1 ?  "black":"#7fff00" : "black"
                     text: control.text
                 }
                 background: Rectangle {
@@ -731,7 +739,7 @@ Rectangle {
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: buttonNum === 1 ? "#42e73a":"white"
+                    color: buttonNum === 1 ? "#42e73a":dayNight === false ? "black" : "white"
 
                 }
             }
@@ -749,12 +757,10 @@ Rectangle {
         Button
         {
             id: dempfButton
-            x: 14
-            y: 158
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: "Демпфирование"
-            anchors.top: deviDispBut.bottom
+            anchors.top: courseStateBut.bottom
             anchors.topMargin: butTopMargin
             anchors.left: parent.left
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
@@ -765,7 +771,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
                     font.pointSize: buttonFontSize
-                    color: "black"
+                    color: window1.dayNight === false ? m_dempf===0 ? "#7fff00": "black" : "black"
                     text: control.text
                 }
                 background: Rectangle {
@@ -774,7 +780,7 @@ Rectangle {
                     border.width: control.activeFocus ? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color:m_dempf===0 ? "white" : "#42e73a"
+                    color:m_dempf===0 ? dayNight === false ? "black" : "white" : "#42e73a"
 
                 }
             }
@@ -801,8 +807,16 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: "Helvetica"
                     font.pointSize: buttonFontSize
-                    color: "black"
+                    color: window1.dayNight === false ? "#7fff00" : "black"
                     text: control.text
+                }
+                background: Rectangle{
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.activeFocus ? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: dayNight === false ? "black" : "white"
                 }
             }
             onClicked: {

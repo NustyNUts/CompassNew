@@ -77,21 +77,28 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 font.family: "Helvetica"
                 font.pointSize: buttonFontSize
-                color: "black"
+                color: window1.dayNight === false ?  "#7fff00": "black"
                 text: control.text
               }
+
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: dayNight === false ? "black" : "white"
+            }
         }
     }
 
     Button{
         id: button0
-        anchors.left: buttonSave.right
-        anchors.leftMargin: buttonMargin
-        anchors.top: button2.bottom
-        anchors.topMargin: buttonMargin
+        anchors.left: button1.left
+        anchors.top: button1.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("0")
+        anchors.leftMargin: 0
+        anchors.topMargin: 20
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -235,14 +242,15 @@ Rectangle {
     }
     Button{
         id: buttonSave
-        anchors.left: button1.left
-        anchors.leftMargin: 0
-        anchors.top: button1.bottom
-        anchors.topMargin: buttonMargin
-        width: buttonWidthKeyboard
+        anchors.left: buttonPoint.right
+        anchors.leftMargin: 20
+        anchors.top: button3.bottom
+        width: buttonWidthKeyboard*2+20
         height: buttonHeightKeyboard
         text: qsTr("Сохранить")
-        style:  ButtonStyle {
+        anchors.topMargin: 21
+        style: keyboardButtonStyle
+            /*ButtonStyle {
             label: Text {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
@@ -259,18 +267,18 @@ Rectangle {
                         GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
                     }
                 }
-        }
+        }*/
         onClicked: saved();
     }
     Button{
         id: buttonPoint
         anchors.left: button0.right
         anchors.leftMargin: buttonMargin
-        anchors.top: button3.bottom
-        anchors.topMargin: buttonMargin
+        anchors.top: button2.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr(".")
+        anchors.topMargin: 20
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -336,6 +344,7 @@ Rectangle {
             compass.ledOn()
             buttonClick(text)
         }
+
     }
     TextField {
         id: textField
@@ -347,6 +356,14 @@ Rectangle {
         placeholderText: qsTr("")
         text: keyBoardRes
         font.pixelSize: textField.height / 1.5
+        style:
+            TextFieldStyle{
+            textColor:window1.dayNight === false ?"#7fff00" : "black"
+            background: Rectangle{
+                color: dayNight === false ? "black" : "white"
+
+            }
+        }
     }
 
 

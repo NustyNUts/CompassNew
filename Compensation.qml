@@ -4,6 +4,7 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: comprect
+    FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
     width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
     height: window1.height
     property real progressBarWidth: window1.width / 3.5
@@ -171,6 +172,7 @@ Rectangle {
 
         Button {
             id: button1
+            property int borderWidth:1
             x: window1.height/1.75
             width: buttonWidthComrect
             height: buttonHeightComrect
@@ -184,13 +186,25 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: a_LCDNovaObl.name
                         font.pointSize: height / 7
                         font.bold: true
-                        color: "black"
+                        color: window1.dayNight === false ? "#7fff00": "black"
                         text: control.text
                       }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.color: "#888"
+                        border.width: button1.borderWidth
+                        radius: 4
+                        color:dayNight === false ? "black" : "white"
+                    }
             }
+            onPressedChanged: {
+                button1.borderWidth= pressed === true? 5:1
+            }
+
             onClicked:{
                 compass.ledOn()
                 compass.initComp();
@@ -200,6 +214,7 @@ Rectangle {
         Button {
             id: button2
             x: button1.x
+            property int borderWidth:1
             width: buttonWidthComrect
             height: buttonHeightComrect
             text: qsTr("Остановить калибровку")
@@ -210,16 +225,27 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: a_LCDNovaObl.name
                         font.pointSize: height / 7
                         font.bold: true
-                        color: "black"
+                        color: window1.dayNight === false ? "#7fff00": "black"
                         text: control.text
                       }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: button2.borderWidth
+                        border.color: "#888"
+                        radius: 4
+                        color:dayNight === false ? "black" : "white"
+                    }
             }
             onClicked:{
                 compass.ledOn()
                 compass.stopComp();
+            }
+            onPressedChanged: {
+                button2.borderWidth= pressed === true? 5:1
             }
         }
 
@@ -359,9 +385,11 @@ Rectangle {
             text: m_complable
             style:
                 TextFieldStyle{
+                textColor:window1.dayNight === false ?"#7fff00" : "black"
                 background: Rectangle{
                     id: compensationStatusBackground
-                    color: compensationStatusBackgroundcolor
+                    color: dayNight === false ? "black" : "white"
+
                 }
 
             }

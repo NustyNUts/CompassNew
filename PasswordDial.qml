@@ -78,9 +78,15 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 font.family: "Helvetica"
                 font.pointSize: buttonFontSize
-                color: "black"
+                color: window1.dayNight === false ? "#7fff00": "black"
                 text: control.text
               }
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: dayNight === false ? "black" : "white"
+            }
         }
     }
     Label{
@@ -91,7 +97,7 @@ Rectangle {
         anchors.bottomMargin: buttonMargin
 
         font.pixelSize: parent.width/ 20
-        color: "white"
+        color: window1.dayNight === false ? "#7fff00": "black"
         font.family: a_LCDNovaObl.name
     }
     TextField {
@@ -108,6 +114,14 @@ Rectangle {
         anchors.leftMargin: parent.width /7
 //        anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: textField.height / 1.5
+        style:
+            TextFieldStyle{
+            textColor:window1.dayNight === false ?"#7fff00" : "black"
+            background: Rectangle{
+                color: dayNight === false ? "black" : "white"
+
+            }
+        }
     }
     Button{
         id: buttonDel

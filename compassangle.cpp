@@ -48,11 +48,11 @@ void Compassangle::setM_fullangle(double a)
     //------------------------------------------
     // МК или ИК
     if(m_tmCourse > 0)
-        a = a + m_coef_A;
+        a = a - m_coef_A;
 
     // ИК
     if(m_tmCourse > 1)
-        a = m_skl + a;
+        a = a -m_skl;
 
     if(a<0)
         a+=360;
@@ -68,6 +68,7 @@ void Compassangle::setM_fullangle(double a)
         temp=QString::number(modf(a,pt)).left(3).toDouble();
         m_fractPart=(QString::number(*pt).right(1).toDouble()+temp)*10;
         m_angle=*pt;
+        delete pt;
         m_fullangle=m_angle+temp;
     }
     else

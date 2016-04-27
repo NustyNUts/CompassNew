@@ -88,13 +88,13 @@ Window {
                 target: backgrnCompass
                 properties: "anchors.horizontalCenterOffset"
                 to: -window1.width/4+window1.width/14.4
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: 0
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation {
@@ -109,13 +109,13 @@ Window {
                 target: backgrnCompass
                 properties: "anchors.horizontalCenterOffset"
                 to: 0
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: -settingsDisplay.width
-                duration: 300
+                duration: 200
             }
         }
 
@@ -131,25 +131,25 @@ Window {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
                 to: window1.width / 2 - lcdDisplay.width / 2 - settingsDisplay.buttonWidth / 10
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
                 to: -window1.height / 2 + lcdDisplay.height / 2 + settingsDisplay.buttonHeight / 2
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "border.color"
                 to: dayNight === false ? "#000000" : "#faf0e6"
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: 0
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation{
@@ -158,13 +158,13 @@ Window {
                 target:menuButton
                 properties:"width"
                 to:settingsDisplay.buttonWidth
-                duration: 300
+                duration: 200
             }
             PropertyAnimation{
                 target:menuButton
                 properties:"height"
                 to:settingsDisplay.buttonHeight
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation{
@@ -173,13 +173,13 @@ Window {
                 target:menuButton
                 properties:"width"
                 to:window1.width/7.0
-                duration: 300
+                duration: 200
             }
             PropertyAnimation{
                 target:menuButton
                 properties:"height"
                 to:window1.height/10.0
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation {
@@ -194,25 +194,25 @@ Window {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
                 to: 0
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
                 to: 0
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "border.color"
                 to: dayNight === false ? "#000000" : "#faf0e6"
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: -window1.width
-                duration: 300
+                duration: 200
             }
         }
         Image {

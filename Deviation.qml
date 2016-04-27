@@ -27,35 +27,78 @@ Rectangle {
         modeSKL = arg
     }
 
+    Component{
+        id:butDevStyle
+        ButtonStyle{
+            property color textColor: "white"
+            property color backgroundColor: "white"
+
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Helvetica"
+                font.pointSize: buttonFontSize
+                color: textColor
+                text: control.text
+              }
+
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: backgroundColor
+            }
+        }
+    }
+
     function changeDeviationButtonState(deviationCourse){
         if(deviationCourse === 1){
-            buttonC0.buttonC0Color = "#42e73a";
+            buttonC0.buttonTextC0Color =  "black" ;
+            buttonC0.buttonC0Color = deviationCourse === 1 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 2){
-            buttonC45.buttonC45Color = "#42e73a";
+            buttonC45.buttonTextC45Color =  "black" ;
+            buttonC45.buttonC45Color = deviationCourse === 2 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 3){
-            buttonC90.buttonC90Color = "#42e73a";
+            buttonC90.buttonTextC90Color = dayNight === false ? deviationCourse === 3 ?"black":"#7fff00": "black" ;
+            buttonC90.buttonC90Color = deviationCourse === 3 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 4){
-            buttonC135.buttonC135Color = "#42e73a";
+            buttonC135.buttonTextC135Color = dayNight === false ? deviationCourse === 4 ?"black":"#7fff00": "black" ;
+            buttonC135.buttonC135Color = deviationCourse === 4 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 5){
-            buttonC180.buttonC180Color = "#42e73a";
+            buttonC180.buttonTextC180Color =  "black" ;
+            buttonC180.buttonC180Color = deviationCourse === 5 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 6){
-            buttonC225.buttonC225Color = "#42e73a";
+            buttonC225.buttonTextC225Color =  "black" ;
+            buttonC225.buttonC225Color = deviationCourse === 6 ? "#42e73a":dayNight === false ? "black" : "white";
         }else if(deviationCourse === 7){
-            buttonC270.buttonC270Color = "#42e73a";
+            buttonC270.buttonTextC270Color =  "black" ;
+            buttonC270.buttonC270Color = deviationCourse === 7 ? "#42e73a":dayNight === false ? "black" : "white";
         }else if(deviationCourse === 8){
-            buttonC315.buttonC315Color = "#42e73a";
+            buttonC315.buttonTextC315Color =  "black" ;
+            buttonC315.buttonC315Color = deviationCourse === 8 ? "#42e73a":dayNight === false ? "black" : "white";
         }
     }
 
     function deviationButtonsStateReset(){
-        buttonC0.buttonC0Color = Qt.binding(function(){return deviationCourse === 1 ? "#42e73a":"white";})
-        buttonC45.buttonC45Color = Qt.binding(function(){return deviationCourse === 2 ? "#42e73a":"white";})
-        buttonC90.buttonC90Color = Qt.binding(function(){return deviationCourse === 3 ? "#42e73a":"white";})
-        buttonC135.buttonC135Color = Qt.binding(function(){return deviationCourse === 4 ? "#42e73a":"white";})
-        buttonC180.buttonC180Color = Qt.binding(function(){return deviationCourse === 5 ? "#42e73a":"white";})
-        buttonC225.buttonC225Color = Qt.binding(function(){return deviationCourse === 6 ? "#42e73a":"white";})
-        buttonC270.buttonC270Color = Qt.binding(function(){return deviationCourse === 7 ? "#42e73a":"white";})
-        buttonC315.buttonC315Color = Qt.binding(function(){return deviationCourse === 8 ? "#42e73a":"white";})
+        buttonC0.buttonC0Color = Qt.binding(function(){return deviationCourse === 1 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC45.buttonC45Color = Qt.binding(function(){return deviationCourse === 2 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC90.buttonC90Color = Qt.binding(function(){return deviationCourse === 3 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC135.buttonC135Color = Qt.binding(function(){return deviationCourse === 4 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC180.buttonC180Color = Qt.binding(function(){return deviationCourse === 5 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC225.buttonC225Color = Qt.binding(function(){return deviationCourse === 6 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC270.buttonC270Color = Qt.binding(function(){return deviationCourse === 7 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC315.buttonC315Color = Qt.binding(function(){return deviationCourse === 8 ? "#42e73a":dayNight === false ? "black" : "white";})
+
+        buttonC0.buttonTextC0Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 1 ?"#7fff00":"black": "black" ;})
+        buttonC45.buttonTextC45Color = Qt.binding(function(){return  dayNight === false ? deviationCourse != 2 ?"#7fff00": "black":"black"  ;})
+        buttonC90.buttonTextC90Color = Qt.binding(function(){return  dayNight === false ?deviationCourse != 3 ?"#7fff00": "black":"black"  ;})
+        buttonC135.buttonTextC135Color = Qt.binding(function(){return  dayNight === false ? deviationCourse != 4 ?"#7fff00": "black":"black"  ;})
+        buttonC180.buttonTextC180Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 5 ?"#7fff00": "black":"black"  ;})
+        buttonC225.buttonTextC225Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 6 ?"#7fff00": "black":"black"  ;})
+        buttonC270.buttonTextC270Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 7 ?"#7fff00": "black":"black"  ;})
+        buttonC315.buttonTextC315Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 8 ?"#7fff00": "black":"black"  ;})
+
     }
 
 
@@ -95,12 +138,16 @@ Rectangle {
                     changeDeviationButtonState(deviationCourse);
                 }
             }
-            Component.onCompleted: keyboardDisplay.setRes(compass.getDelta(1))
+            Component.onCompleted: {
+                deviationButtonsStateReset();
+                keyboardDisplay.setRes(compass.getDelta(1))
+            }
         }
 
         Button {
             id: buttonC0
             property color buttonC0Color: deviationCourse === 1 ? "#42e73a":"white"
+            property color buttonTextC0Color: "white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("0")
@@ -113,14 +160,14 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC0.buttonTextC0Color
                         text: control.text
                       }
                     background: Rectangle {
                         id: buttonC0backGround
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonC0.buttonC0Color
@@ -135,7 +182,8 @@ Rectangle {
 
         Button {
             id: buttonC45
-            property color buttonC45Color: deviationCourse === 2 ? "#42e73a":"white"
+            property color buttonC45Color: "white"
+            property color buttonTextC45Color:"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("45")
@@ -150,14 +198,14 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC45.buttonTextC45Color
                         text: control.text
                       }
                 background: Rectangle {
                     id: buttonC45backGround
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed ? 5 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonC45.buttonC45Color
@@ -173,6 +221,7 @@ Rectangle {
         Button {
             id: buttonC90
             property color buttonC90Color: deviationCourse === 3 ? "#42e73a":"white"
+            property color buttonTextC90Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("90")
@@ -187,14 +236,14 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC90.buttonTextC90Color
                         text: control.text
                       }
                 background: Rectangle {
                     id: buttonC90backGround
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed ? 5 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonC90.buttonC90Color
@@ -210,6 +259,7 @@ Rectangle {
         Button {
             id: buttonC135
             property color buttonC135Color: deviationCourse === 4 ? "#42e73a":"white"
+            property color buttonTextC135Color: "black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("135")
@@ -224,13 +274,13 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC135.buttonTextC135Color
                         text: control.text
                       }
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed ? 5 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonC135.buttonC135Color
@@ -246,6 +296,7 @@ Rectangle {
         Button {
             id: buttonC180
             property color buttonC180Color: deviationCourse === 5 ? "#42e73a":"white"
+            property color buttonTextC180Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("180")
@@ -260,13 +311,13 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC180.buttonTextC180Color
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonC180.buttonC180Color
@@ -282,6 +333,7 @@ Rectangle {
         Button {
             id: buttonC225
             property color buttonC225Color: deviationCourse === 6 ? "#42e73a":"white"
+            property color buttonTextC225Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("225")
@@ -296,13 +348,13 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC225.buttonTextC225Color
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonC225.buttonC225Color
@@ -318,6 +370,7 @@ Rectangle {
         Button {
             id: buttonC270
             property color buttonC270Color: deviationCourse === 7 ? "#42e73a":"white"
+            property color buttonTextC270Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("270")
@@ -332,13 +385,13 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC270.buttonTextC270Color
                         text: control.text
                       }
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed ? 5 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonC270.buttonC270Color
@@ -354,6 +407,7 @@ Rectangle {
         Button {
             id: buttonC315
             property color buttonC315Color: deviationCourse === 8 ? "#42e73a":"white"
+            property color buttonTextC315Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("315")
@@ -368,13 +422,13 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC315.buttonTextC315Color
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonC315.buttonC315Color
@@ -406,16 +460,16 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: degaus === false ? window1.dayNight === false ? "#7fff00":"black": "black"
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
-                        color: degaus === true ? "#42e73a":"white"
+                        color: degaus === true ? "#42e73a": window1.dayNight === false ? "black": "white"
                     }
             }
             onClicked: {
@@ -435,7 +489,7 @@ Rectangle {
             anchors.leftMargin: 5
             anchors.top: buttonC315.top
             anchors.topMargin: 0
-            text: qsTr("Расчитать")
+            text: qsTr("Расcчитать")
             signal doClicked()
             x: 656
             y: 112
@@ -450,16 +504,17 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family: "Helvetica"
                         font.pointSize: buttonFontSize/2
-                        color: "black"
+                        color: window1.dayNight === false ? "#7fff00":"black"
                         text: control.text
                       }
                     background:
                         Rectangle {
-                            gradient: Gradient {
-                                GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
-                                GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
-                            }
-                            radius: 4
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.pressed ? 5 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: window1.dayNight === false ? "black": "white"
                         }
             }
             onClicked: {
