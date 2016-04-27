@@ -236,7 +236,7 @@ Rectangle {
                     }
             TableViewColumn {
                         id: dataColumn
-                        title: "σ"
+                        title: "поправка"
                         role: "corr"
                         movable: false
                         resizable: false

@@ -28,7 +28,7 @@ Rectangle {
         x: (moreInfoRect.width - 3 * lcdWidth - 3 * textB.width - 5 * lcdHeight / 2 ) / 2
         y: (moreInfoRect.height - 6 * lcdHeight  - buttonHeight)
         font.pixelSize: textHeight / 2
-        color: "white"
+        color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
     Rectangle
@@ -38,8 +38,8 @@ Rectangle {
         width: lcdWidth
         height: lcdHeight
         border.width: 3
-        border.color: "white"
-        color: "#000000"
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
         anchors.left: lcdPitchRect.left
         anchors.leftMargin: 0
         anchors.top: textRoll.top
@@ -52,8 +52,8 @@ Rectangle {
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            styleColor: window1.dayNight ===false ? "#7fff00":"black"
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
 
@@ -67,7 +67,8 @@ Rectangle {
         anchors.left: textRoll.left
         anchors.leftMargin: 0
         font.pixelSize: textHeight / 2
-        color: "white"
+        styleColor: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
     Rectangle
@@ -78,8 +79,8 @@ Rectangle {
         width: lcdWidth
         height: lcdHeight
         border.width: 3
-        border.color: "white"
-        color: "#000000"
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
         anchors.top: textPitch.top
         anchors.topMargin: 0
         anchors.left: lcdCoefZRect.left
@@ -92,8 +93,8 @@ Rectangle {
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            styleColor: window1.dayNight ===false ? "#7fff00":"black"
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
     //-------------B C Z coef
@@ -107,7 +108,8 @@ Rectangle {
         anchors.leftMargin: 0
         text: qsTr("X")
         font.pixelSize: textHeight / 2
-        color: "white"
+        styleColor: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
     Rectangle
@@ -118,8 +120,8 @@ Rectangle {
         width: lcdWidth
         height: lcdHeight
         border.width: 3
-        border.color: "white"
-        color: "#000000"
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
         anchors.top: textB.top
         anchors.topMargin: 0
         anchors.left: textB.right
@@ -132,8 +134,8 @@ Rectangle {
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            styleColor: window1.dayNight ===false ? "#7fff00":"black"
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
     //--------C coef
@@ -146,7 +148,8 @@ Rectangle {
         anchors.top: lcdCoefBRect.top
         anchors.topMargin: 0
         font.pixelSize: textHeight / 2
-        color: "white"
+        styleColor: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
     Rectangle
@@ -156,8 +159,8 @@ Rectangle {
         width: lcdWidth
         height: lcdHeight
         border.width: 3
-        border.color: "white"
-        color: "#000000"
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
         anchors.left: textC.right
         anchors.leftMargin: lcdHeight / 2
         anchors.top: textC.top
@@ -170,8 +173,8 @@ Rectangle {
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            styleColor: window1.dayNight ===false ? "#7fff00":"black"
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
 
@@ -184,7 +187,8 @@ Rectangle {
         anchors.top: lcdCoefCRect.top
         anchors.topMargin: 0
         font.pixelSize: textHeight / 2
-        color: "white"
+        styleColor: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
     Rectangle
@@ -196,8 +200,8 @@ Rectangle {
         width: lcdWidth
         height: lcdHeight
         border.width: 3
-        border.color: "white"
-        color: "#000000"
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
         anchors.left: textZ.right
         anchors.leftMargin: lcdHeight / 2
         anchors.top: textZ.top
@@ -210,8 +214,8 @@ Rectangle {
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            styleColor: window1.dayNight ===false ? "#7fff00":"black"
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
 
