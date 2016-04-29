@@ -51,8 +51,6 @@ Rectangle {
             text: m_roll
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: window1.dayNight ===false ? "#7fff00":"black"
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
@@ -67,7 +65,7 @@ Rectangle {
         anchors.left: textRoll.left
         anchors.leftMargin: 0
         font.pixelSize: textHeight / 2
-        styleColor: window1.dayNight ===false ? "#7fff00":"black"
+
         color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
@@ -92,8 +90,6 @@ Rectangle {
             text: m_pitch
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: window1.dayNight ===false ? "#7fff00":"black"
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
@@ -108,7 +104,6 @@ Rectangle {
         anchors.leftMargin: 0
         text: qsTr("X")
         font.pixelSize: textHeight / 2
-        styleColor: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
@@ -133,8 +128,6 @@ Rectangle {
             text: coef_B
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: window1.dayNight ===false ? "#7fff00":"black"
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
@@ -148,7 +141,6 @@ Rectangle {
         anchors.top: lcdCoefBRect.top
         anchors.topMargin: 0
         font.pixelSize: textHeight / 2
-        styleColor: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
@@ -172,8 +164,6 @@ Rectangle {
             text: coef_C
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: window1.dayNight ===false ? "#7fff00":"black"
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
@@ -187,7 +177,6 @@ Rectangle {
         anchors.top: lcdCoefCRect.top
         anchors.topMargin: 0
         font.pixelSize: textHeight / 2
-        styleColor: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "#7fff00":"black"
         font.family: a_LCDNovaObl.name
     }
@@ -213,8 +202,6 @@ Rectangle {
             text: coef_Z
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: window1.dayNight ===false ? "#7fff00":"black"
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
