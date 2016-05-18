@@ -299,10 +299,10 @@ void Compass::getDevCoef()
     m_coef_DevDG.E = ((deltaDegaus[0]+deltaDegaus[4])/2 - (deltaDegaus[2]+deltaDegaus[6])/2)/2;
     QList<QString> listDevCoef;
     QList<QString> listDevCoefDG;
-    listDevCoef<<QString::number(m_coef_Dev.A,10,1)<<QString::number(m_coef_Dev.B,10,1)<<
-                 QString::number(m_coef_Dev.C,10,1)<<QString::number(m_coef_Dev.D,10,1)<<QString::number(m_coef_Dev.E,10,1);
-    listDevCoefDG<<QString::number(m_coef_DevDG.A,10,1)<<QString::number(m_coef_DevDG.B,10,1)<<
-                   QString::number(m_coef_DevDG.C,10,1)<<QString::number(m_coef_DevDG.D,10,1)<<QString::number(m_coef_DevDG.E,10,1);
+    listDevCoef<<QString::number(m_coef_Dev.A,10,2)<<QString::number(m_coef_Dev.B,10,2)<<
+                 QString::number(m_coef_Dev.C,10,2)<<QString::number(m_coef_Dev.D,10,2)<<QString::number(m_coef_Dev.E,10,2);
+    listDevCoefDG<<QString::number(m_coef_DevDG.A,10,2)<<QString::number(m_coef_DevDG.B,10,2)<<
+                   QString::number(m_coef_DevDG.C,10,2)<<QString::number(m_coef_DevDG.D,10,2)<<QString::number(m_coef_DevDG.E,10,2);
     context_m->setContextProperty("devCoef",QVariant::fromValue(listDevCoef));
     context_m->setContextProperty("devCoefDG",QVariant::fromValue(listDevCoefDG));
     calcPoints();

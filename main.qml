@@ -8,8 +8,8 @@ Window {
     width: 800
     height: 600
     title: qsTr("Compass")
-    visibility: "Windowed"
-    //visibility: "FullScreen"
+    //visibility: "Windowed"
+    visibility: "FullScreen"
 
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
@@ -372,8 +372,8 @@ Window {
                 id: lcdNumbers
                 anchors.centerIn: parent
                 //text: afterComma === 0 ? full_angle%360+".0" : full_angle%360
-                text: full_angle
-                font.pixelSize: window1.width/9.6
+                text: full_angle+"°"
+                font.pixelSize: window1.width/11
                 font.family: a_LCDNovaObl.name
                 style: Text.Outline
                 styleColor: "black"

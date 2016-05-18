@@ -498,7 +498,7 @@ Rectangle {
 
                 width: settings.buttonWidth
                 height:settings.buttonHeight
-                text: qsTr("Сбросить датчик")
+                text: qsTr("Датчик")
                 anchors.top: degausBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10

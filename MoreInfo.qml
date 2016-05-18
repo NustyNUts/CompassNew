@@ -12,7 +12,7 @@ Rectangle {
     visible: true
     FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
 
-    property real lcdWidth: window1.width/8
+    property real lcdWidth: window1.width/16
     property real lcdHeight: window1.height/12
     property real textWidth: window1.width/2
     property real textHeight: window1.height/6
@@ -48,7 +48,7 @@ Rectangle {
         {
             id: lcdRoll
             anchors.centerIn: parent
-            text: m_roll
+            text: m_roll+"°"
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             color: window1.dayNight ===false ? "#7fff00":"black"
@@ -87,7 +87,7 @@ Rectangle {
         {
             id: lcdPitch
             anchors.centerIn: parent
-            text: m_pitch
+            text: m_pitch+"°"
             font.pixelSize: lcdFontSize
             font.family: a_LCDNovaObl.name
             color: window1.dayNight ===false ? "#7fff00":"black"
@@ -131,13 +131,24 @@ Rectangle {
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
+    Label{
+        id: sigB
+        anchors.bottom:  textPitch.top
+        anchors.bottomMargin: lcdHeight*3
+        anchors.left: lcdCoefBRect.right
+        anchors.leftMargin: 0
+        text: qsTr("мкТл")
+        font.pixelSize: textHeight / 7
+        color: window1.dayNight ===false ? "#7fff00":"black"
+        font.family: "Helvetica"
+    }
     //--------C coef
 
     Label{
         id: textC
         text: qsTr("Y")
-        anchors.left: lcdCoefBRect.right
-        anchors.leftMargin: lcdHeight / 2
+        anchors.left: sigB.right
+        anchors.leftMargin: lcdHeight / 10
         anchors.top: lcdCoefBRect.top
         anchors.topMargin: 0
         font.pixelSize: textHeight / 2
@@ -167,13 +178,24 @@ Rectangle {
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
+    Label{
+        id: sigC
+        anchors.bottom:  textPitch.top
+        anchors.bottomMargin: lcdHeight*3
+        anchors.left: lcdCoefCRect.right
+        anchors.leftMargin: 0
+        text: qsTr("мкТл")
+        font.pixelSize: textHeight / 7
+        color: window1.dayNight ===false ? "#7fff00":"black"
+        font.family: "Helvetica"
+    }
 
     //----Z coef
     Label{
         id: textZ
         text: qsTr("Z")
-        anchors.left: lcdCoefCRect.right
-        anchors.leftMargin: lcdHeight / 2
+        anchors.left: sigC.right
+        anchors.leftMargin: lcdHeight / 10
         anchors.top: lcdCoefCRect.top
         anchors.topMargin: 0
         font.pixelSize: textHeight / 2
@@ -205,6 +227,18 @@ Rectangle {
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
+    Label{
+        id: sigZ
+        anchors.bottom:  textPitch.top
+        anchors.bottomMargin: lcdHeight*3
+        anchors.left: lcdCoefZRect.right
+        anchors.leftMargin: 0
+        text: qsTr("мкТл")
+        font.pixelSize: textHeight / 7
+        font.family: "Helvetica"
+        color: window1.dayNight ===false ? "#7fff00":"black"
+    }
+    //---------------
 
     Button {
         id: button1
