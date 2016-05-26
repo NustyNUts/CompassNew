@@ -9,7 +9,8 @@
 CompassPort::CompassPort(QObject *parent) : QObject(parent)
 {
     m_angle = m_pitch = m_roll = m_state = 0;
-    port = new QSerialPort(this);
+    portSensor = new QSerialPort(this);
+    portDCon = new QSerialPort(this);
     m_compInProgress = false;
     connect(this,SIGNAL(compFinished()),this,SLOT(stopCompensation()));
     file = new QFile("angles");
@@ -20,7 +21,10 @@ CompassPort::CompassPort(QObject *parent) : QObject(parent)
 
 CompassPort::~CompassPort()
 {
-    port->close();
+    portSensor->close();
+    portDCon->close();
+    delete portDCon;
+    delete portSensor;
     file->close();
     emit finished();
 }
@@ -29,40 +33,41 @@ void CompassPort::on()
 {
 
     emit timerStop();
-    if(!port->isOpen())
+    if(!portSensor->isOpen())
     {       
-        if (port->open(QIODevice::ReadWrite))
+        if (portSensor->open(QIODevice::ReadWrite))
         {
 
-            QSerialPortInfo *info = new QSerialPortInfo(*port);
+            QSerialPortInfo *info = new QSerialPortInfo(*portSensor);
 
             m_state=1;
             delete info;
         }
         else
         {
-            if(port->isOpen())
-                port->close();
+            if(portSensor->isOpen())
+                portSensor->close();
         }
     }
-    if(port->isOpen() && port->waitForReadyRead(100))
+    if(portSensor->isOpen())
+
+    if(portSensor->isOpen() && portSensor->waitForReadyRead(100))
     {
         QString data;
         QByteArray ByteArray,ByteArrayStart,ByteArrayFinish;
         bool startFinded = false;
 
         m_state = 1;
-
         while(m_state)
         {
-            //if(port->waitForReadyRead(1))
+            //if(portSensor->waitForReadyRead(1))
             {
-                qint64 byteAvail = port->bytesAvailable();
+                qint64 byteAvail = portSensor->bytesAvailable();
                 qApp->processEvents();
                 QThread::msleep(10);
                 if(byteAvail >=23)
                 {
-                    ByteArray = port->readAll();
+                    ByteArray = portSensor->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
                     if(ByteArray[3]=='p')
                     {
@@ -113,7 +118,7 @@ void CompassPort::on()
                 }
                 else if(byteAvail >=4 && byteAvail <=23)
                 {
-                    ByteArray= port->readAll();
+                    ByteArray= portSensor->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
                     if(ByteArray[3]=='p' && startFinded == false)
                     {
@@ -180,6 +185,27 @@ void CompassPort::on()
     }
     emit timerStart(10);
 }
+void CompassPort::sendCourse(double course){
+    if(!portDCon->isOpen()){
+        portDCon->setPortName("ttyUSB0");
+        portDCon->setBaudRate(9600);
+        portDCon->open(QIODevice::ReadWrite);
+        qDebug()<<portDCon->isOpen();
+    }
+    if(portDCon->isOpen())
+    {
+        QByteArray dataForWrite;
+        QString str;
+        if(course>99)
+            str = "$RP,"+QString::number(course,10,1)+",CRLF";
+        else if(course>9)
+            str = "$RP,0"+QString::number(course,10,1)+",CRLF";
+        else
+            str = "$RP,00"+QString::number(course,10,1)+",CRLF";
+        dataForWrite = str.toLocal8Bit();
+        portDCon->write(dataForWrite,dataForWrite.size());
+    }
+}
 
 void CompassPort::initComp()
 {
@@ -194,26 +220,26 @@ void CompassPort::initComp()
     dataForWrite.insert(4,0x01);
     dataForWrite.insert(5,0x01);
     dataForWrite.insert(6,0x09);
-    if(port->isOpen())
+    if(portSensor->isOpen())
     {
-        port->write(dataForWrite,7);
-        if(!port->waitForBytesWritten(1000))
+
+        portSensor->write(dataForWrite,7);
+        if(!portSensor->waitForBytesWritten(1000))
         {
         }
         while(m_compInProgress)
         {
 
             qApp->processEvents();
-            if(port->isOpen() && port->waitForReadyRead(1000))
+            if(portSensor->isOpen() && portSensor->waitForReadyRead(1000))
             {
-
                 QString data;
                 QByteArray ByteArray;
-                qint64 byteAvail = port->bytesAvailable();
+                qint64 byteAvail = portSensor->bytesAvailable();
                 qApp->processEvents();
                 if(byteAvail >=19)
                 {
-                    ByteArray = port->readAll();
+                    ByteArray = portSensor->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
                     if(ByteArray[3]=='r'&& ByteArray[0]=='\r' && ByteArray[1]=='\n' && ByteArray[2]=='~')
                     {
@@ -301,8 +327,8 @@ void CompassPort::initComp()
                 }
                 dataForWrite.insert(5,0x02);
                 dataForWrite.insert(6,0x0a);
-                port->write(dataForWrite,7);
-                if(!port->waitForBytesWritten(1000))
+                portSensor->write(dataForWrite,7);
+                if(!portSensor->waitForBytesWritten(1000))
                 {
                 }
             }
@@ -310,6 +336,7 @@ void CompassPort::initComp()
     }
     emit compFinished();
     emit timerStart(10);
+    stopCompensation();
 }
 
 
@@ -321,6 +348,7 @@ void CompassPort::stopCompensation()
 void CompassPort::revert()
 {
     emit timerStop();
+
     QByteArray dataForWrite;
     dataForWrite.insert(0,0x0d);
     dataForWrite.insert(1,0x0a);
@@ -331,25 +359,26 @@ void CompassPort::revert()
     dataForWrite.insert(6,0x0c);
     bool receivedMsg = false;
 
-    if(port->isOpen())
+    if(portSensor->isOpen())
     {
-        port->write(dataForWrite,7);
-        if(!port->waitForBytesWritten(1000))
+
+        portSensor->write(dataForWrite,7);
+        if(!portSensor->waitForBytesWritten(1000))
         {
         }
         while(!receivedMsg)
         {
 
-            if(port->isOpen() && port->waitForReadyRead(1000))
+            if(portSensor->isOpen() && portSensor->waitForReadyRead(1000))
             {
 
                 QString data;
                 QByteArray ByteArray;
-                qint64 byteAvail = port->bytesAvailable();
+                qint64 byteAvail = portSensor->bytesAvailable();
                 qApp->processEvents();
                 if(byteAvail >=19)
                 {
-                    ByteArray = port->readAll();
+                    ByteArray = portSensor->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
                     if(ByteArray[3]=='r'&& ByteArray[0]=='\r' && ByteArray[1]=='\n' && ByteArray[2]=='~')
                     {
@@ -424,8 +453,8 @@ void CompassPort::revert()
                 }
                 dataForWrite.insert(5,0x02);
                 dataForWrite.insert(6,0x0a);
-                port->write(dataForWrite,7);
-                if(!port->waitForBytesWritten(1000))
+                portSensor->write(dataForWrite,7);
+                if(!portSensor->waitForBytesWritten(1000))
                 {
                 }
             }
@@ -436,13 +465,13 @@ void CompassPort::revert()
 
 void CompassPort::updateSettings(QStringList listOfSettings)
 {
-    if(port->isOpen())
-        port->close();
-    port->setPortName(listOfSettings.at(0).toLocal8Bit());
-    port->setBaudRate(listOfSettings.at(1).toInt());
-    port->setDataBits(QSerialPort::DataBits(listOfSettings.at(2).toInt()));
-    port->setStopBits(QSerialPort::StopBits(listOfSettings.at(3).toInt()));
-    port->setParity(QSerialPort::Parity(listOfSettings.at(4).toInt()));
+    if(portSensor->isOpen())
+        portSensor->close();
+    portSensor->setPortName(listOfSettings.at(0).toLocal8Bit());
+    portSensor->setBaudRate(listOfSettings.at(1).toInt());
+    portSensor->setDataBits(QSerialPort::DataBits(listOfSettings.at(2).toInt()));
+    portSensor->setStopBits(QSerialPort::StopBits(listOfSettings.at(3).toInt()));
+    portSensor->setParity(QSerialPort::Parity(listOfSettings.at(4).toInt()));
 }
 
 

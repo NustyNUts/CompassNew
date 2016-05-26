@@ -26,6 +26,7 @@ Rectangle {
         slideDeviationForward.stop();
         slideCompForward.stop();
         slideDeviTableForward.stop();
+        slideMagFielForward.stop();
     }
 
     function close(){
@@ -86,15 +87,24 @@ Rectangle {
             duration: 300
         }
     }
-       ParallelAnimation {
-           id: slideMoreInfoForward
-           PropertyAnimation {
-               target: moreInfoDisp
-               properties: "anchors.rightMargin"
-               to: pageLeftMargin
-               duration: 300
-           }
-       }
+    ParallelAnimation {
+        id: slideMoreInfoForward
+        PropertyAnimation {
+            target: moreInfoDisp
+            properties: "anchors.rightMargin"
+            to: pageLeftMargin
+            duration: 300
+        }
+    }
+    ParallelAnimation {
+        id: slideMagFielForward
+        PropertyAnimation {
+            target: magField
+            properties: "anchors.rightMargin"
+            to: pageLeftMargin
+            duration: 300
+        }
+    }
     Rectangle
     {
         id: backgroundviewer
@@ -212,6 +222,12 @@ Rectangle {
             duration: 0
         }
         PropertyAnimation {
+            target: magField
+            properties: "anchors.rightMargin"
+            to: -magField.width
+            duration: 0
+        }
+        PropertyAnimation {
             target: backgroundviewer
             properties: "anchors.rightMargin"
             to: -backgroundviewer.width
@@ -227,6 +243,15 @@ Rectangle {
         MoreInfo
            {
                id:moreInfoDisp
+               width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+               height: settings.height
+               anchors.rightMargin: -compensationDisplay.width
+               anchors.right: parent.right
+               z:2
+           }
+        MagneticField
+           {
+               id:magField
                width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
                height: settings.height
                anchors.rightMargin: -compensationDisplay.width
@@ -289,6 +314,44 @@ Rectangle {
             width:settings.buttonWidth+settingsDisplay.buttonWidth / 5
             z:15
             Button {
+                id: magFieldBut
+                width: settings.buttonWidth
+                height:settings.buttonHeight
+                text: qsTr("Поле")
+                anchors.topMargin: butTopMargin
+                anchors.top: deviTableBut.bottom
+                anchors.leftMargin: settingsDisplay.buttonWidth / 10
+                anchors.left: parent.left
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: helvetica.name
+                        font.pointSize: buttonFontSize
+                        color: window1.dayNight === false ? buttonNum === 4 ?  "black":"#7fff00" : "black"
+                        text: control.text
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.pressed? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: buttonNum === 11 ? "#42e73a":dayNight === false ? "black" : "white"
+
+                    }
+                }
+                onClicked:
+                {
+                    allAnimStop()
+                    slideCompBack.start()
+                    slideMagFielForward.start()
+                    buttonNum = 11
+                    compass.ledOn()
+                }
+            }
+            Button {
                 id: calibBut
                 width: settings.buttonWidth
                 height:settings.buttonHeight
@@ -303,7 +366,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         font.pointSize: buttonFontSize
                         color: window1.dayNight === false ? buttonNum === 1?  "black" :"#7fff00": "black"
                         text: control.text
@@ -311,7 +374,7 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed? 2 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonNum === 1 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -327,44 +390,7 @@ Rectangle {
                     compass.ledOn()
                 }
             }
-            Button {
-                id: degausBut
-                width: settings.buttonWidth
-                height:settings.buttonHeight
-                text: qsTr("РУ")
-                anchors.left: parent.left
-                anchors.leftMargin: settingsDisplay.buttonWidth / 10
-                anchors.top: deviTableBut.bottom
-                anchors.topMargin: butTopMargin
 
-                style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
-                        font.pointSize: buttonFontSize
-                        color: window1.dayNight === false ? degaus===0 ? "#7fff00": "black" : "black"
-                        text: control.text
-                    }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: degaus === 1 ? "#42e73a":dayNight === false ? "black" : "white"
-                    }
-                }
-                onClicked:
-                {
-                    degaus = !degaus
-                    deviTable.degaus = degaus
-                    deviTable.setDev()
-                    compass.setDegaus(degaus)
-                    compass.ledOn()
-                }
-            }
             Button {
                 id: coefABut
                 x: 6
@@ -380,7 +406,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         font.pointSize: buttonFontSize
                         color: window1.dayNight === false ? buttonNum === 6?  "black" :"#7fff00": "black"
                         text: control.text
@@ -388,7 +414,7 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed? 2 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonNum === 6 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -425,7 +451,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         font.pointSize: buttonFontSize
                         color: window1.dayNight === false ? buttonNum === 7?  "black" :"#7fff00": "black"
                         text: control.text
@@ -433,7 +459,7 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed? 2 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonNum === 7 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -468,7 +494,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         font.pointSize: buttonFontSize
                         color: window1.dayNight === false ? "#7fff00" : "black"
                         text: control.text
@@ -476,8 +502,8 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
+                        border.width: control.pressed? 2 : 1
+                        border.color: "#878787"
                         radius: 4
                         color: dayNight === false ? "black" : "white"
 
@@ -495,21 +521,21 @@ Rectangle {
             }
             Button {
                 id: revertBut
+                y: 148
 
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Датчик")
-                anchors.top: degausBut.bottom
+                anchors.top: magFieldBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
-
                 anchors.left: parent.left
                 style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         font.pointSize: buttonFontSize
                         color: window1.dayNight === false ? buttonNum === 9?  "black" :"#7fff00": "black"
                         text: control.text
@@ -517,7 +543,7 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed? 2 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonNum === 9 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -540,7 +566,7 @@ Rectangle {
 
                 width: settings.buttonWidth
                 height:settings.buttonHeight
-                text: qsTr("Таблица девиации")
+                text: qsTr("Таблица")
                 anchors.top: coefABut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
@@ -551,7 +577,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         font.pointSize: buttonFontSize
                         color: window1.dayNight === false ? buttonNum === 10?  "black" :"#7fff00": "black"
                         text: control.text
@@ -559,7 +585,7 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed? 2 : 1
                         border.color: "#888"
                         radius: 4
                         color: buttonNum === 10 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -573,6 +599,7 @@ Rectangle {
                     allAnimStop()
                     slideCompBack.start()
                     slideDeviTableForward.start()
+                    deviTable.setDev()
 
                 }
                     //compass.revert()
@@ -594,7 +621,8 @@ Rectangle {
             id: courseStateBut
             width: settings.buttonWidth
             height:settings.buttonHeight
-            anchors.top: dInfoBut.bottom
+
+            anchors.top: parent.top
             anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
@@ -604,7 +632,7 @@ Rectangle {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
+                    font.family: helvetica.name
                     font.pointSize: buttonFontSize
                     color: window1.dayNight === false ? "#7fff00" : "black"
                     text: "MK"
@@ -620,7 +648,7 @@ Rectangle {
                 background: Rectangle{
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
                     color: dayNight === false ? "black" : "white"
@@ -637,7 +665,7 @@ Rectangle {
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Склонение")
-            anchors.top: parent.top
+            anchors.top: courseStateBut.bottom
             anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
@@ -646,7 +674,7 @@ Rectangle {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
+                    font.family: helvetica.name
                     font.pointSize: buttonFontSize
                     color: window1.dayNight === false ? buttonNum === 3 ?  "black":"#7fff00" : "black"
                     text: control.text
@@ -654,7 +682,7 @@ Rectangle {
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonNum === 3 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -674,14 +702,52 @@ Rectangle {
                 compass.ledOn()
             }
         }
-
         Button {
-            id: dInfoBut
+            id: degausBut
             width: settings.buttonWidth
             height:settings.buttonHeight
-            text: qsTr("Поле")
+            text: qsTr("РУ")
+            anchors.left: parent.left
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.top: sklBut.bottom
             anchors.topMargin: butTopMargin
+
+            style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: helvetica.name
+                    font.pointSize: buttonFontSize
+                    color: window1.dayNight === false ? degaus===0 ? "#7fff00": "black" : "black"
+                    text: control.text
+                }
+                background: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.pressed? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: degaus === 1 ? "#42e73a":dayNight === false ? "black" : "white"
+                }
+            }
+            onClicked:
+            {
+                degaus = !degaus
+                deviTable.degaus = degaus
+                deviTable.setDev()
+                compass.setDegaus(degaus)
+                compass.ledOn()
+            }
+        }
+
+        Button {
+            id: pitchRoll
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            text: qsTr("Крен/Дифф")
+            anchors.topMargin: butTopMargin
+            anchors.top: degausBut.bottom
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
@@ -689,7 +755,7 @@ Rectangle {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
+                    font.family: helvetica.name
                     font.pointSize: buttonFontSize
                     color: window1.dayNight === false ? buttonNum === 4 ?  "black":"#7fff00" : "black"
                     text: control.text
@@ -697,7 +763,7 @@ Rectangle {
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonNum === 4 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -729,7 +795,7 @@ Rectangle {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
+                    font.family: helvetica.name
                     font.pointSize: buttonFontSize
                     color: window1.dayNight === false ? buttonNum === 1 ?  "black":"#7fff00" : "black"
                     text: control.text
@@ -737,7 +803,7 @@ Rectangle {
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
                     color: buttonNum === 1 ? "#42e73a":dayNight === false ? "black" : "white"
@@ -761,8 +827,8 @@ Rectangle {
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: "Демпфирование"
-            anchors.top: courseStateBut.bottom
             anchors.topMargin: butTopMargin
+            anchors.top: pitchRoll.bottom
             anchors.left: parent.left
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             style: ButtonStyle {
@@ -770,7 +836,7 @@ Rectangle {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
+                    font.family: helvetica.name
                     font.pointSize: buttonFontSize
                     color: window1.dayNight === false ? m_dempf===0 ? "#7fff00": "black" : "black"
                     text: control.text
@@ -778,7 +844,7 @@ Rectangle {
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
                     color:m_dempf===0 ? dayNight === false ? "black" : "white" : "#42e73a"
@@ -806,7 +872,7 @@ Rectangle {
                     renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
+                    font.family: helvetica.name
                     font.pointSize: buttonFontSize
                     color: window1.dayNight === false ? "#7fff00" : "black"
                     text: control.text
@@ -814,7 +880,7 @@ Rectangle {
                 background: Rectangle{
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
+                    border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
                     color: dayNight === false ? "black" : "white"

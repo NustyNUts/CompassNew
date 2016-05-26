@@ -45,10 +45,6 @@ void Compassangle::setM_fullangle(double a)
     m_last=a;
 
 
-    //------------------------------------------
-    // МК или ИК
-    if(m_tmCourse > 0)
-        a = a - m_coef_A;
 
     // ИК
     if(m_tmCourse > 1)

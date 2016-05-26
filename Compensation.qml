@@ -214,7 +214,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: a_LCDNovaObl.name
+                        font.family: helvetica.name
                         font.pointSize: height / 5
                         font.bold: true
                         color: window1.dayNight === false ? "#7fff00": "black"
@@ -253,7 +253,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: a_LCDNovaObl.name
+                        font.family: helvetica.name
                         font.pointSize: height / 5
                         font.bold: true
                         color: window1.dayNight === false ? "#7fff00": "black"
@@ -290,6 +290,7 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
         }
 
         Text {
@@ -303,6 +304,7 @@ Rectangle {
             anchors.horizontalCenter: progressBar2.horizontalCenter
             anchors.verticalCenter: progressBar2.verticalCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -318,6 +320,7 @@ Rectangle {
             anchors.horizontalCenter: progressBar3.horizontalCenter
             anchors.verticalCenter: progressBar3.verticalCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -333,6 +336,7 @@ Rectangle {
             anchors.horizontalCenter: progressBar4.horizontalCenter
             anchors.verticalCenter: progressBar4.verticalCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -349,6 +353,7 @@ Rectangle {
             anchors.verticalCenter: progressBar5.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -364,6 +369,7 @@ Rectangle {
             anchors.verticalCenter: progressBar6.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -378,6 +384,7 @@ Rectangle {
             anchors.horizontalCenter: progressBar7.horizontalCenter
             anchors.verticalCenter: progressBar7.verticalCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -395,6 +402,7 @@ Rectangle {
             z: 1
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
+            font.family: helvetica.name
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -402,6 +410,7 @@ Rectangle {
         {
             id:compensationStatus
             font.pixelSize: textFontSize / 2
+            font.family: helvetica.name
             width: buttonWidthComrect
             Component.onCompleted: changeColor()
             height: buttonHeightComrect

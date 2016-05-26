@@ -37,7 +37,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: buttonFontSize
                 color: textColor
                 text: control.text
@@ -158,7 +158,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC0.buttonTextC0Color
                         text: control.text
@@ -196,7 +196,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC45.buttonTextC45Color
                         text: control.text
@@ -234,7 +234,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC90.buttonTextC90Color
                         text: control.text
@@ -272,7 +272,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC135.buttonTextC135Color
                         text: control.text
@@ -309,7 +309,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC180.buttonTextC180Color
                         text: control.text
@@ -346,7 +346,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC225.buttonTextC225Color
                         text: control.text
@@ -383,7 +383,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC270.buttonTextC270Color
                         text: control.text
@@ -420,7 +420,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: buttonC315.buttonTextC315Color
                         text: control.text
@@ -458,7 +458,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
                         color: degaus === false ? window1.dayNight === false ? "#7fff00":"black": "black"
                         text: control.text
@@ -502,7 +502,7 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: buttonFontSize/2
                         color: window1.dayNight === false ? "#7fff00":"black"
                         text: control.text

@@ -76,7 +76,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: buttonFontSize
                 color: window1.dayNight === false ? "#7fff00": "black"
                 text: control.text
@@ -98,7 +98,7 @@ Rectangle {
 
         font.pixelSize: parent.width/ 20
         color: window1.dayNight === false ? "#7fff00": "black"
-        font.family: a_LCDNovaObl.name
+         font.family:helvetica.name
     }
     TextField {
         id: textField
@@ -114,6 +114,7 @@ Rectangle {
         anchors.leftMargin: parent.width /7
 //        anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: textField.height / 1.5
+        font.family:helvetica.name
         style:
             TextFieldStyle{
             textColor:window1.dayNight === false ?"#7fff00" : "black"
@@ -312,7 +313,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: height/4.5
                 color: window1.dayNight === false ? "#7fff00": "black"
                 text: control.text

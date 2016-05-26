@@ -10,7 +10,7 @@ Rectangle {
     height: window1.height
     color: "#00000000"
     property int elementHeight: height / 8
-    property int elementWidht: width / 7
+    property int elementWidht: width / 6
     property bool stepTable: true //10-true,15-false
     property bool degaus: false //true -on, false-off
     function setDev(){
@@ -40,7 +40,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: buttonFontSize
                 color: window1.dayNight === false ?  "#7fff00": "black"
                 text: control.text
@@ -59,7 +59,7 @@ Rectangle {
         height: elementHeight
         width: elementWidht
         anchors.left: parent.left
-        anchors.leftMargin: parent.width / 6
+        anchors.leftMargin: parent.width / 10
         anchors.top: parent.top
         anchors.topMargin: parent.height/7
         style: ButtonStyle {
@@ -67,7 +67,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: buttonFontSize
                 color: window1.dayNight === false ?  "#7fff00": "black"
                 text: control.text
@@ -83,6 +83,7 @@ Rectangle {
             }
         }
         onClicked: {
+            compass.ledOn()
             stepTable = !stepTable
             setDev()
         }
@@ -102,7 +103,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: buttonFontSize
                 color: window1.dayNight === false ?  degaus === true? "black" : "#7fff00": "black"
                 text: control.text
@@ -118,6 +119,7 @@ Rectangle {
             }
         }
         onClicked: {
+            compass.ledOn()
             degaus = !degaus
             setDev()
         }
@@ -203,6 +205,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.pointSize: height/4
+                        font.family: helvetica.name
                         color:window1.dayNight === false ?  "#7fff00": "black"
                     }
                 }
@@ -218,6 +221,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         font.pointSize: height/3
+                        font.family: helvetica.name
                         color:window1.dayNight === false ?  "#7fff00": "black"
                     }
                 }

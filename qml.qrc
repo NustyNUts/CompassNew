@@ -13,5 +13,7 @@
         <file>NewKeyboard.qml</file>
         <file>PasswordDial.qml</file>
         <file>DeviTable.qml</file>
+        <file>content/HelveticaLight.ttf</file>
+        <file>MagneticField.qml</file>
     </qresource>
 </RCC>

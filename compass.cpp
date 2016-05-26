@@ -9,6 +9,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_summ_ang(0),m_infoVisibility(false),m_progress(0),skl_str("0"),a_str("0"),
     m_complable(""),delta_str("0"),deltaDegaus_str("0")
 {
+    gpioPi = new GpioPi();
     spline = new cubic_spline();
     splineDG = new cubic_spline();
     m_degaus = false;
@@ -51,7 +52,9 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     timer = new QTimer(this);
     settingsViewControlTimer = new QTimer(this);
     settingsDialog = new Settings();
-
+    //gpio signals
+    connect(gpioPi,SIGNAL(updateAccState(bool)),this,SLOT(setAccState(bool)));
+    //--------------------------------
     //timer signals
     connect(timer, SIGNAL(timeout()),compport, SLOT(on()));
     connect(compport, SIGNAL(timerStart(int)),timer, SLOT(start(int)));
@@ -69,6 +72,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(compport,SIGNAL(CChanged(double)),this,SLOT(setC(double)));
     connect(compport,SIGNAL(ZChanged(double)),this,SLOT(setZ(double)));
     connect(compport,SIGNAL(readyWriteToLog()),this,SLOT(writeTolog()));
+    connect(this,SIGNAL(sendMsg(double)),compport,SLOT(sendCourse(double)));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     //settings signals
@@ -163,6 +167,11 @@ Compass::~Compass()
     delete compangle;
 
 }
+void Compass::setAccState(bool state){
+    m_accState = state;
+    context_m->setContextProperty("acc_state",m_accState);
+}
+
 void Compass::updateSklA(){
     fileSklA->open(QFile::WriteOnly);
     QTextStream* inSklA = new QTextStream(fileSklA);
@@ -256,12 +265,14 @@ void Compass::setAngle(double a)
             a = a + splineDG->f(a);
         else
             a = a + spline->f(a);
-    }
+    }else
+        a=a-m_coef_A;
     compangle->setM_fullangle(a);
 
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
     context_m->setContextProperty("full_angle",compangle->getM_fullangleStr());
     context_m->setContextProperty("angle_value",compangle->getM_angle());
+    emit sendMsg(a);
 }
 
 void Compass::getDevCoef()
@@ -286,13 +297,12 @@ void Compass::getDevCoef()
     fileDev->close();
     delete outDelta;
     m_coef_Dev.A /= 8.0;
-    m_coef_Dev.A-=m_coef_A;
+    m_coef_Dev.A-=m_coef_A;//учитываем введенный коэффициент а
     m_coef_Dev.B = ((delta[2]-delta[6])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + ((delta[3]-delta[7]) * sqrt(2)/2)/2)/2;
     m_coef_Dev.C = ((delta[0]-delta[4])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + (delta[3]-delta[7]) * (-sqrt(2)/2)/2)/2;
     m_coef_Dev.D = ((delta[1]+delta[5])/2 - (delta[3]+delta[7])/2)/2;
     m_coef_Dev.E = ((delta[0]+delta[4])/2 - (delta[2]+delta[6])/2)/2;
     m_coef_DevDG.A = m_coef_Dev.A;
-    qDebug()<<m_coef_DevDG.A;
     m_coef_DevDG.B = ((deltaDegaus[2]-deltaDegaus[6])/2 + (deltaDegaus[1]-deltaDegaus[5])/2 * sqrt(2)/2 + ((deltaDegaus[3]-deltaDegaus[7]) * sqrt(2)/2)/2)/2;
     m_coef_DevDG.C = ((deltaDegaus[0]-deltaDegaus[4])/2 + (deltaDegaus[1]-deltaDegaus[5])/2 * sqrt(2)/2 + (deltaDegaus[3]-deltaDegaus[7]) * (-sqrt(2)/2)/2)/2;
     m_coef_DevDG.D = ((deltaDegaus[1]+deltaDegaus[5])/2 - (deltaDegaus[3]+deltaDegaus[7])/2)/2;
@@ -653,11 +663,13 @@ void Compass::changeTrueMagneticCourse()
 {
     if(compangle->getM_tmCourse() == 0)
     {
+
         compangle->setM_tmCourse(1);
         context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
     }
     else if(compangle->getM_tmCourse() == 1)
     {
+
         compangle->setM_tmCourse(2);
         context_m->setContextProperty("trueMagneticCourse",compangle->getM_tmCourse());
     }

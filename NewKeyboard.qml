@@ -75,7 +75,7 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family: helvetica.name
                 font.pointSize: buttonFontSize
                 color: window1.dayNight === false ?  "#7fff00": "black"
                 text: control.text
@@ -250,25 +250,10 @@ Rectangle {
         text: qsTr("Сохранить")
         anchors.topMargin: 21
         style: keyboardButtonStyle
-            /*ButtonStyle {
-            label: Text {
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: buttonFontSize / 2
-                color: "black"
-                text: control.text
-              }
-            background:
-                Rectangle {
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
-                        GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
-                    }
-                }
-        }*/
-        onClicked: saved();
+        onClicked: {
+            compass.ledOn()
+            saved();
+        }
     }
     Button{
         id: buttonPoint
@@ -353,9 +338,11 @@ Rectangle {
         width: buttonWidthKeyboard * 3 + buttonMargin * 2
         height: buttonHeightKeyboard
         z: 1
+        readOnly: true
         placeholderText: qsTr("")
         text: keyBoardRes
         font.pixelSize: textField.height / 1.5
+        font.family: helvetica.name
         style:
             TextFieldStyle{
             textColor:window1.dayNight === false ?"#7fff00" : "black"

@@ -15,7 +15,7 @@
 #include "settings.h"
 #include "cubic_spline.h"
 #include "compassangle.h"
-//#include "gpiopi.h"
+#include "gpiopi.h"
 
 class Compass : public QObject
 {
@@ -47,7 +47,7 @@ signals:
     void angleChanged();
     void pitchChanged();
     void rollChanged();
-
+    void sendMsg(double);
     void compensationLabelChanged();
 
     void sklChanged(double);
@@ -75,6 +75,7 @@ signals:
 
 
 public slots:
+    void setAccState(bool);
     void setAngle(double);
     void setB(double);
     void setC(double);
@@ -148,6 +149,7 @@ public slots:
 
     void setSKL(double skl){
         m_skl = skl;
+        compangle->setM_skl(skl);
         updateSklA();
 
     }
@@ -155,6 +157,7 @@ public slots:
     void setA(double a){
         m_coef_A = a;
         updateSklA();
+        compangle->setM_coef_A(a);
     }
 
     void setDegaus(bool deg);
@@ -186,7 +189,7 @@ public slots:
     }
     void startSettingsViewControlTimer(int msec);
     void ledOn(){
-        //gpioPi.ledOn();
+        gpioPi->ledOn();
     }
     bool getDegaus(){
         return m_degaus;
@@ -197,7 +200,7 @@ protected:
 
 
 private:
-
+    int m_accState;
     bool m_degaus;
     int k;
     bool m_comp_state;
@@ -274,7 +277,7 @@ private:
     QThread *portThread;
     DialogComp *dialComp;
     Settings *settingsDialog;
-    //GpioPi gpioPi;
+    GpioPi *gpioPi;
 
 
 
