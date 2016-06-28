@@ -2,13 +2,14 @@
 #include "math.h"
 
 Compass::Compass(QQmlContext *context, QObject *parent) :
-    QObject(parent), k(0),m_comp_state(1),m_dempf(2),m_tmCourse(0),m_coef_A(0),
+    QObject(parent), k(0),m_comp_state(1),m_dempf(1),m_tmCourse(0),m_coef_A(0),
     m_last(0),m_last2(0),m_angle(0),m_fractPart(0),m_fullangle(0),m_state(0),
     m_connect(0),m_background(0),m_skl(0),m_savedCourse(0),m_roll(0),m_pitch(0),
     m_afterComma(0),m_lastAngle(0),m_lastAngle1(0),m_sum(0),m_con(0),m_con1(0),
     m_summ_ang(0),m_infoVisibility(false),m_progress(0),skl_str("0"),a_str("0"),
     m_complable(""),delta_str("0"),deltaDegaus_str("0")
 {
+    m_comp_state =false;
     gpioPi = new GpioPi();
     spline = new cubic_spline();
     splineDG = new cubic_spline();
@@ -100,7 +101,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     connect(this,SIGNAL(compClosed()),compport,SLOT(stopCompensation()));
     connect(compport,SIGNAL(dialCompProgressChanged(int,int)),this,SLOT(updateCompensationInfo(int,int)));
     connect(compport,SIGNAL(dialCompStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
-    connect(compport,SIGNAL(revertStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
+    //connect(compport,SIGNAL(revertStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
     connect(compport,SIGNAL(compFinished()),this,SLOT(setBarstoDefault()));
     connect(this,SIGNAL(compClosed()),this,SLOT(setCompensationLabeltoDeafault()));
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -192,43 +193,47 @@ void Compass::writeTolog()
 
 void Compass::updateCompensationInfo(int binNum, int progress)
 {
-    m_progress = progress;
-    switch(binNum)
+    if(progress == 16)
     {
-    case 0:
-        //context_m->setContextProperty("bin0Value",m_progress);
-        m_bins.bin0=progress;
-        break;
-    case 1:
-        //context_m->setContextProperty("bin1Value",m_progress);
-        m_bins.bin1=progress;
-        break;
-    case 2:
-        //context_m->setContextProperty("bin2Value",m_progress);
-        m_bins.bin2=progress;
-        break;
-    case 3:
-        //context_m->setContextProperty("bin3Value",m_progress);
-        m_bins.bin3=progress;
-        break;
-    case 4:
-        //context_m->setContextProperty("bin4Value",m_progress);
-        m_bins.bin4=progress;
-        break;
-    case 5:
-        //context_m->setContextProperty("bin5Value",m_progress);
-        m_bins.bin5=progress;
-        break;
-    case 6:
-        //context_m->setContextProperty("bin6Value",m_progress);
-        m_bins.bin6=progress;
-        break;
-    case 7:
-        //context_m->setContextProperty("bin7Value",m_progress);
-        m_bins.bin7=progress;
-        break;
+        m_progress = progress;
+        switch(binNum)
+        {
+        case 0:
+            //context_m->setContextProperty("bin0Value",m_progress);
+            m_bins.bin0=progress;
+            break;
+        case 1:
+            //context_m->setContextProperty("bin1Value",m_progress);
+            m_bins.bin1=progress;
+            break;
+        case 2:
+            //context_m->setContextProperty("bin2Value",m_progress);
+            m_bins.bin2=progress;
+            break;
+        case 3:
+            //context_m->setContextProperty("bin3Value",m_progress);
+            m_bins.bin3=progress;
+            break;
+        case 4:
+            //context_m->setContextProperty("bin4Value",m_progress);
+            m_bins.bin4=progress;
+            break;
+        case 5:
+            //context_m->setContextProperty("bin5Value",m_progress);
+            m_bins.bin5=progress;
+            break;
+        case 6:
+            //context_m->setContextProperty("bin6Value",m_progress);
+            m_bins.bin6=progress;
+            break;
+        case 7:
+            //context_m->setContextProperty("bin7Value",m_progress);
+            m_bins.bin7=progress;
+            break;
+        default: return;
+        }
+        emit binsChanged();
     }
-    emit binsChanged();
 }
 
 void Compass::setBarstoDefault()
@@ -247,8 +252,26 @@ void Compass::setBarstoDefault()
 void Compass::setCompensationLabel(QString msg)
 {
     m_complable = msg;
-    context_m->setContextProperty("m_complable",m_complable);
+    if(msg=="НОРМА" ||msg=="ОТКАЗ"|| msg=="ВРЕМЯ"||msg=="ОШИБКА"){
+        context_m->setContextProperty("m_complable",m_complable);
+        compport->stopCompensation();
+        m_comp_state = false;
+        qDebug()<<"stop";
+    }
+    else
+        context_m->setContextProperty("m_complable","КАЛИБРОВКА");
+    qDebug()<<msg;
+
     emit compensationLabelChanged();
+    if(m_complable == "НОРМА"){
+        for (int i=0;i<8;i++){
+            addDelta(i,0.0);
+            addDeltaDegaus(i,0.0);
+        }
+        calcPoints();
+    }
+
+
 }
 void Compass::setCompensationLabeltoDeafault()
 {
@@ -259,20 +282,25 @@ void Compass::setCompensationLabeltoDeafault()
 
 void Compass::setAngle(double a)
 {
-
+    //qDebug()<<"set angle"<<a;
     if(compangle->getM_tmCourse() > 0){
         if(m_degaus)
             a = a + splineDG->f(a);
         else
             a = a + spline->f(a);
     }else
-        a=a-m_coef_A;
+        a=a + m_coef_A;
     compangle->setM_fullangle(a);
 
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
-    context_m->setContextProperty("full_angle",compangle->getM_fullangleStr());
+    if(m_comp_state == true)
+        context_m->setContextProperty("full_angle","---.-");
+    else
+        context_m->setContextProperty("full_angle",compangle->getM_fullangleStr());
     context_m->setContextProperty("angle_value",compangle->getM_angle());
-    emit sendMsg(a);
+    //emit sendMsg(a+m_skl);
+    qDebug()<<compangle->getCourse();
+    emit sendMsg(compangle->getCourse());
 }
 
 void Compass::getDevCoef()
@@ -651,6 +679,9 @@ void Compass::changeSkl()
 
 void Compass::initComp()
 {
+    m_comp_state = true;
+    context_m->setContextProperty("full_angle","---.-");
+    context_m->setContextProperty("m_complable","КАЛИБРОВКА");
     emit compensationRequest();
 }
 

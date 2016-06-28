@@ -24,17 +24,46 @@ Rectangle {
     //-------------B C Z coef
     //-----B coef
 
-    Label{
-        id: textB
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.bottom:  textC.top
-        anchors.bottomMargin: lcdHeight
-        text: qsTr("X")
-        font.pixelSize: textHeight / 2
-        color: window1.dayNight ===false ? "#7fff00":"black"
-        font.family:helvetica.name
-    }
+
+//        Text{
+//            id: textB
+//            anchors.left: parent.left
+//            anchors.leftMargin: 0
+//            anchors.bottom:  textC.top
+//            anchors.bottomMargin: lcdHeight-4
+//            width:buttonWidth/4
+//            height:buttonHeight
+//            renderType: Text.NativeRendering
+//            verticalAlignment: Text.AlignVCenter
+//            horizontalAlignment: Text.AlignHCenter
+//            text: qsTr("X")
+//            font.pixelSize: textHeight / 1.8
+//            color: window1.dayNight ===false ? "#7fff00":"black"
+//            font.family:helvetica.name
+//        }
+        Rectangle{
+            id: textB
+            width:buttonWidth/4
+            height:buttonHeight
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.bottom:  textC.top
+            anchors.bottomMargin: lcdHeight-5
+            color:"transparent"
+            Label{
+                width:buttonWidth/4
+                height:buttonHeight
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: qsTr("X")
+                font.pixelSize: textHeight / 2
+                color: window1.dayNight ===false ? "#7fff00":"black"
+                font.family:helvetica.name
+
+            }
+        }
+
     Rectangle
     {
         id: lcdCoefBRect
@@ -46,14 +75,14 @@ Rectangle {
         border.color: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "black" : "white"
         anchors.top:  textB.top
-        anchors.topMargin: 0
+        anchors.topMargin: -5
         anchors.left: textB.right
         anchors.leftMargin: lcdHeight / 2
         Text
         {
             id: lcdB
             anchors.centerIn: parent
-            text: coef_B+" мкТл"
+            text: coef_C+" мкТл"
             font.pixelSize: lcdFontSize
             font.family:helvetica.name
             color: window1.dayNight ===false ? "#7fff00":"black"
@@ -62,15 +91,26 @@ Rectangle {
 
     //--------C coef
 
-    Label{
+    Rectangle{
         id: textC
-        text: qsTr("Y")
+        width:buttonWidth/4
+        height:buttonHeight
+        color:"transparent"
         anchors.left: textB.left
         anchors.leftMargin: 0
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: textHeight / 2
-        color: window1.dayNight ===false ? "#7fff00":"black"
-        font.family:helvetica.name
+        Label{
+            width:buttonWidth/4
+            height:buttonHeight
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: qsTr("Y")
+            font.pixelSize: textHeight / 2
+            color: window1.dayNight ===false ? "#7fff00":"black"
+            font.family:helvetica.name
+
+        }
     }
     Rectangle
     {
@@ -84,13 +124,14 @@ Rectangle {
         anchors.left: textC.right
         anchors.leftMargin: lcdHeight / 2
         anchors.top: textC.top
-        anchors.topMargin: 0
+        anchors.topMargin: -5
         Text
         {
             id: lcdC
+
             anchors.centerIn: parent
-            text: coef_C+" мкТл"
-            font.pixelSize: lcdFontSize
+            text: coef_B+" мкТл"
+            font.pixelSize:lcdFontSize
             font.family:helvetica.name
             color: window1.dayNight ===false ? "#7fff00":"black"
         }
@@ -98,16 +139,27 @@ Rectangle {
 
 
     //----Z coef
-    Label{
+    Rectangle{
         id: textZ
-        text: qsTr("Z")
+        width:buttonWidth/4
+        height:buttonHeight
         anchors.left: textC.left
         anchors.leftMargin: 0
         anchors.top: textC.bottom
         anchors.topMargin: lcdHeight
-        font.pixelSize: textHeight / 2
-        color: window1.dayNight ===false ? "#7fff00":"black"
-        font.family:helvetica.name
+        color:"transparent"
+        Label{
+            width:buttonWidth/4
+            height:buttonHeight
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: qsTr("Z")
+            font.pixelSize: textHeight / 2
+            color: window1.dayNight ===false ? "#7fff00":"black"
+            font.family:helvetica.name
+
+        }
     }
     Rectangle
     {
@@ -123,7 +175,7 @@ Rectangle {
         anchors.left: textZ.right
         anchors.leftMargin: lcdHeight / 2
         anchors.top: textZ.top
-        anchors.topMargin: 0
+        anchors.topMargin: -5
         Text
         {
             id: lcdZ

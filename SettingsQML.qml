@@ -27,6 +27,7 @@ Rectangle {
         slideCompForward.stop();
         slideDeviTableForward.stop();
         slideMagFielForward.stop();
+        slideParamForward.stop();
     }
 
     function close(){
@@ -184,6 +185,15 @@ Rectangle {
         }
     }
     ParallelAnimation {
+        id: slideParamForward
+        PropertyAnimation {
+            target: paramDisplay
+            properties: "anchors.rightMargin"
+            to: pageLeftMargin
+            duration: 300
+        }
+    }
+    ParallelAnimation {
         id: slideCompBack
         PropertyAnimation {
             target: passDial
@@ -233,6 +243,12 @@ Rectangle {
             to: -backgroundviewer.width
             duration: 0
         }
+        PropertyAnimation {
+            target: paramDisplay
+            properties: "anchors.rightMargin"
+            to: -paramDisplay.width
+            duration: 0
+        }
     }
     Rectangle {
         id: settingsBackground
@@ -240,6 +256,15 @@ Rectangle {
         anchors.fill: parent
         //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
         color: window1.dayNight === false ? "#0c2132" :"#8cb1b9"
+        ModesPage
+           {
+               id:paramDisplay
+               width: settings.width-buttonWidth - calibBut.anchors.leftMargin * 2
+               height: settings.height
+               anchors.rightMargin: -compensationDisplay.width
+               anchors.right: parent.right
+               z:2
+           }
         MoreInfo
            {
                id:moreInfoDisp
@@ -305,6 +330,7 @@ Rectangle {
             anchors.topMargin: (settings.height - keyboardDisplay.height)/2
             z:2
         }
+
         Rectangle{
             id:settingsButtons
             anchors.left: parent.left
@@ -313,44 +339,7 @@ Rectangle {
             anchors.topMargin: butTopMargin
             width:settings.buttonWidth+settingsDisplay.buttonWidth / 5
             z:15
-            Button {
-                id: magFieldBut
-                width: settings.buttonWidth
-                height:settings.buttonHeight
-                text: qsTr("Поле")
-                anchors.topMargin: butTopMargin
-                anchors.top: deviTableBut.bottom
-                anchors.leftMargin: settingsDisplay.buttonWidth / 10
-                anchors.left: parent.left
-                style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: helvetica.name
-                        font.pointSize: buttonFontSize
-                        color: window1.dayNight === false ? buttonNum === 4 ?  "black":"#7fff00" : "black"
-                        text: control.text
-                    }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: control.pressed? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        color: buttonNum === 11 ? "#42e73a":dayNight === false ? "black" : "white"
 
-                    }
-                }
-                onClicked:
-                {
-                    allAnimStop()
-                    slideCompBack.start()
-                    slideMagFielForward.start()
-                    buttonNum = 11
-                    compass.ledOn()
-                }
-            }
             Button {
                 id: calibBut
                 width: settings.buttonWidth
@@ -468,7 +457,7 @@ Rectangle {
                 }
                 onClicked:
                 {
-                    //deviationDisplay.setMod(false)
+                    deviationDisplay.deviationCourse = 0
                     allAnimStop()
                     slideCompBack.start()
                     slideDeviationForward.start()
@@ -506,11 +495,11 @@ Rectangle {
                         border.color: "#878787"
                         radius: 4
                         color: dayNight === false ? "black" : "white"
-
                     }
                 }
                 onClicked:
                 {
+
                     allAnimStop()
                     slideCompBack.start()
                     butState = ~butState
@@ -521,12 +510,10 @@ Rectangle {
             }
             Button {
                 id: revertBut
-                y: 148
-
                 width: settings.buttonWidth
                 height:settings.buttonHeight
                 text: qsTr("Датчик")
-                anchors.top: magFieldBut.bottom
+                anchors.top: deviTableBut.bottom
                 anchors.topMargin: butTopMargin
                 anchors.leftMargin: settingsDisplay.buttonWidth / 10
                 anchors.left: parent.left
@@ -616,9 +603,10 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin:0
         z:15
+
         Button
         {
-            id: courseStateBut
+            id: paramBut
             width: settings.buttonWidth
             height:settings.buttonHeight
 
@@ -634,16 +622,8 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.family: helvetica.name
                     font.pointSize: buttonFontSize
-                    color: window1.dayNight === false ? "#7fff00" : "black"
-                    text: "MK"
-                    Component.onCompleted: courseStateButText.text = Qt.binding(function(){
-                        if(trueMagneticCourse === 0)
-                            return "KK";
-                        else if(trueMagneticCourse === 1)
-                            return "MK";
-                        else if(trueMagneticCourse === 2)
-                            return "ИК";
-                    })
+                    color: window1.dayNight === false ? buttonNum === 12 ?  "black":"#7fff00" : "black"
+                    text: "Параметры"
                 }
                 background: Rectangle{
                     implicitWidth: 100
@@ -651,12 +631,15 @@ Rectangle {
                     border.width: control.pressed? 2 : 1
                     border.color: "#888"
                     radius: 4
-                    color: dayNight === false ? "black" : "white"
+                    color: buttonNum === 12 ? "#42e73a":dayNight === false ? "black" : "white"
                 }
             }
             onClicked:{
+                buttonNum = 12
                 compass.ledOn()
-                compass.changeTrueMagneticCourse()
+                allAnimStop()
+                slideCompBack.start()
+                slideParamForward.start()
             }
         }
 
@@ -665,7 +648,7 @@ Rectangle {
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Склонение")
-            anchors.top: courseStateBut.bottom
+            anchors.top: paramBut.bottom
             anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
@@ -702,44 +685,44 @@ Rectangle {
                 compass.ledOn()
             }
         }
-        Button {
-            id: degausBut
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            text: qsTr("РУ")
-            anchors.left: parent.left
-            anchors.leftMargin: settingsDisplay.buttonWidth / 10
-            anchors.top: sklBut.bottom
-            anchors.topMargin: butTopMargin
+        //        Button {
+        //            id: degausBut
+        //            width: settings.buttonWidth
+        //            height:settings.buttonHeight
+        //            text: qsTr("РУ")
+        //            anchors.left: parent.left
+        //            anchors.leftMargin: settingsDisplay.buttonWidth / 10
+        //            anchors.top: sklBut.bottom
+        //            anchors.topMargin: butTopMargin
 
-            style: ButtonStyle {
-                label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: helvetica.name
-                    font.pointSize: buttonFontSize
-                    color: window1.dayNight === false ? degaus===0 ? "#7fff00": "black" : "black"
-                    text: control.text
-                }
-                background: Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 25
-                    border.width: control.pressed? 2 : 1
-                    border.color: "#888"
-                    radius: 4
-                    color: degaus === 1 ? "#42e73a":dayNight === false ? "black" : "white"
-                }
-            }
-            onClicked:
-            {
-                degaus = !degaus
-                deviTable.degaus = degaus
-                deviTable.setDev()
-                compass.setDegaus(degaus)
-                compass.ledOn()
-            }
-        }
+        //            style: ButtonStyle {
+        //                label: Text {
+        //                    renderType: Text.NativeRendering
+        //                    verticalAlignment: Text.AlignVCenter
+        //                    horizontalAlignment: Text.AlignHCenter
+        //                    font.family: helvetica.name
+        //                    font.pointSize: buttonFontSize
+        //                    color: window1.dayNight === false ? degaus===0 ? "#7fff00": "black" : "black"
+        //                    text: control.text
+        //                }
+        //                background: Rectangle {
+        //                    implicitWidth: 100
+        //                    implicitHeight: 25
+        //                    border.width: control.pressed? 2 : 1
+        //                    border.color: "#888"
+        //                    radius: 4
+        //                    color: degaus === 1 ? "#42e73a":dayNight === false ? "black" : "white"
+        //                }
+        //            }
+        //            onClicked:
+        //            {
+        //                degaus = !degaus
+        //                deviTable.degaus = degaus
+        //                deviTable.setDev()
+        //                compass.setDegaus(degaus)
+        //                compass.ledOn()
+        //            }
+        //        }
 
         Button {
             id: pitchRoll
@@ -747,7 +730,7 @@ Rectangle {
             height:settings.buttonHeight
             text: qsTr("Крен/Дифф")
             anchors.topMargin: butTopMargin
-            anchors.top: degausBut.bottom
+            anchors.top: sklBut.bottom
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
             anchors.left: parent.left
             style: ButtonStyle {
@@ -779,13 +762,50 @@ Rectangle {
                 compass.ledOn()
             }
         }
+        Button {
+            id: magFieldBut
+            width: settings.buttonWidth
+            height:settings.buttonHeight
+            text: qsTr("Поле")
+            anchors.topMargin: butTopMargin
+            anchors.top: pitchRoll.bottom
+            anchors.leftMargin: settingsDisplay.buttonWidth / 10
+            anchors.left: parent.left
+            style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: helvetica.name
+                    font.pointSize: buttonFontSize
+                    color: window1.dayNight === false ? buttonNum === 11 ?  "black":"#7fff00" : "black"
+                    text: control.text
+                }
+                background: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.pressed? 2 : 1
+                    border.color: "#888"
+                    radius: 4
+                    color: buttonNum === 11 ? "#42e73a":dayNight === false ? "black" : "white"
 
+                }
+            }
+            onClicked:
+            {
+                allAnimStop()
+                slideCompBack.start()
+                slideMagFielForward.start()
+                buttonNum = 11
+                compass.ledOn()
+            }
+        }
         Button {
             id: deviDispBut
             width: settings.buttonWidth
             height:settings.buttonHeight
             text: qsTr("Девиация")
-            anchors.top: dayNightButton.bottom
+            anchors.top: magFieldBut.bottom
             anchors.topMargin: butTopMargin
             anchors.leftMargin: settingsDisplay.buttonWidth / 10
 
@@ -821,88 +841,13 @@ Rectangle {
             }
         }
 
-        Button
-        {
-            id: dempfButton
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            text: "Демпфирование"
-            anchors.topMargin: butTopMargin
-            anchors.top: pitchRoll.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: settingsDisplay.buttonWidth / 10
-            style: ButtonStyle {
-                label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: helvetica.name
-                    font.pointSize: buttonFontSize
-                    color: window1.dayNight === false ? m_dempf===0 ? "#7fff00": "black" : "black"
-                    text: control.text
-                }
-                background: Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 25
-                    border.width: control.pressed? 2 : 1
-                    border.color: "#888"
-                    radius: 4
-                    color:m_dempf===0 ? dayNight === false ? "black" : "white" : "#42e73a"
-
-                }
-            }
-            onClicked:{
-                compass.ledOn()
-                compass.changeDempf();
-            }
-
-        }
-
-        Button {
-            id: dayNightButton
-            width: settings.buttonWidth
-            height:settings.buttonHeight
-            anchors.left: parent.left
-            text: qsTr("ДЕНЬ")
-            anchors.top: dempfButton.bottom
-            anchors.topMargin: butTopMargin
-            anchors.leftMargin: settingsDisplay.buttonWidth / 10
-            style: ButtonStyle {
-                label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: helvetica.name
-                    font.pointSize: buttonFontSize
-                    color: window1.dayNight === false ? "#7fff00" : "black"
-                    text: control.text
-                }
-                background: Rectangle{
-                    implicitWidth: 100
-                    implicitHeight: 25
-                    border.width: control.pressed? 2 : 1
-                    border.color: "#888"
-                    radius: 4
-                    color: dayNight === false ? "black" : "white"
-                }
-            }
-            onClicked: {
-                compass.ledOn()
-                dayNight = !dayNight
-                dayNight === true ? sourseCompass10 = "content/compass10day.png" : sourseCompass10 = "content/compass10night.png"
-                dayNight === true ? sourseCompass360 = "content/compass360day.png" : sourseCompass360 = "content/compass360night.png"
-                dayNight === true ? sourceBackground = "content/backgroundDay.png" : sourceBackground = "content/backgroundNight.png"
-                dayNight === true ? dayNightButton.text = "ДЕНЬ" : dayNightButton.text = "НОЧЬ"
-
-            }
-        }
 
     }
 
         Rectangle {
             id: rectangle1
             width: 1
-            color: "#ffffff"
+            color: dayNight === true?"#ffffff":"#42e73a"
             anchors.left: parent.right
             anchors.leftMargin: -settings.buttonWidth-settingsDisplay.buttonWidth / 5
             anchors.top: parent.top
@@ -915,7 +860,7 @@ Rectangle {
         Rectangle {
             id: rectangle2
             height: 1
-            color: "#ffffff"
+            color: dayNight === true?"#ffffff":"#42e73a"
             anchors.left: parent.left
             anchors.leftMargin: 0
             anchors.top: parent.top

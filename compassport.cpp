@@ -35,6 +35,7 @@ void CompassPort::on()
     emit timerStop();
     if(!portSensor->isOpen())
     {       
+
         if (portSensor->open(QIODevice::ReadWrite))
         {
 
@@ -56,7 +57,7 @@ void CompassPort::on()
         QString data;
         QByteArray ByteArray,ByteArrayStart,ByteArrayFinish;
         bool startFinded = false;
-
+         //qDebug()<<"read from port";
         m_state = 1;
         while(m_state)
         {
@@ -71,7 +72,7 @@ void CompassPort::on()
                     data = data.fromLocal8Bit(ByteArray).trimmed();
                     if(ByteArray[3]=='p')
                     {
-
+                        qDebug()<<"read from port";
                         QBitArray bitdata(184),two_bytes(16);
                         for(int i = 0,j; i < 184; ++i)
                         {
@@ -313,7 +314,7 @@ void CompassPort::initComp()
                         else if(toDecInt(one_byte)==6)
                         {
                             //dial->setLabel("New Computed Parameters No Better");
-                            emit dialCompStatusChanged("УСПЕХ");
+                            emit dialCompStatusChanged("НОРМА");
                         }
                         else if(toDecInt(one_byte)==7)
                         {
@@ -395,22 +396,22 @@ void CompassPort::revert()
                         if(toDecInt(one_byte)==0)
                         {
                             //settings->setLabel("Compass Compensation Off");
-                            emit revertStatusChanged("Датчик сброшен");
+                            //emit revertStatusChanged("Датчик сброшен");
                         }
                         else if(toDecInt(one_byte)==1)
                         {
                             //settings->setLabel("Compass Compensation Data Collection");
-                            emit revertStatusChanged("Сбор данных...");
+                            //emit revertStatusChanged("Сбор данных...");
                         }
                         else if(toDecInt(one_byte)==2)
                         {
                             //settings->setLabel("Compass Compensation Computation in Progress");
-                            emit revertStatusChanged("Вычисление...");
+                            //emit revertStatusChanged("Вычисление...");
                         }
                         else if(toDecInt(one_byte)==3)
                         {
                             //settings->setLabel("Compass Compensation Procedure Abort");
-                            emit revertStatusChanged("Процедура прервана");
+                           // emit revertStatusChanged("Процедура прервана");
                         }
                         for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
 //                        if(toDecInt(one_byte)==1)

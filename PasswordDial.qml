@@ -59,7 +59,7 @@ Rectangle {
     function revert(arg){
         if(arg == password){
             keyBoardRes ="";
-            textField.text ="СБРОШЕН";
+            textField.text ="";
             compass.revert();
         }
         else{
@@ -143,15 +143,15 @@ Rectangle {
     }
     Button{
         id: button0
-        anchors.left: buttonOK.right
+        anchors.left: button7.left
         anchors.top: button8.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("0")
+        anchors.leftMargin: 0
+        anchors.topMargin: buttonMargin
         //anchors.right: buttonCancel.left
         anchors.rightMargin: buttonMargin
-        anchors.leftMargin: buttonMargin
-        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -300,21 +300,20 @@ Rectangle {
     }
     Button{
         id: buttonOK
-        anchors.leftMargin: buttonMargin
-        anchors.top: button7.bottom
-        width: buttonWidthKeyboard
+        anchors.top: button8.bottom
+        width: buttonWidthKeyboard*2+ buttonMargin
         height: buttonHeightKeyboard
-        text: qsTr("Сбросить")
-        anchors.rightMargin: buttonMargin
-        anchors.right: button2.left
-        anchors.topMargin: buttonMargin
+        text: qsTr(" Ввод")
+        anchors.left: button0.right
+        anchors.leftMargin: 19
+        anchors.topMargin: 20
         style: ButtonStyle{
             label: Text {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 font.family:  helvetica.name
-                font.pointSize: height/4.5
+                font.pointSize: height/ 3.0
                 color: window1.dayNight === false ? "#7fff00": "black"
                 text: control.text
               }

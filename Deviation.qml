@@ -11,14 +11,14 @@ Rectangle {
     color: "#00000000"
     property int devFontSize: window1.width/53.333333333
     property bool modeSKL : true
-    property int  deviationCourse: 1
+    property int  deviationCourse: 0
     property string delta : ""
     property int buttonNumber : 0
     property bool degaus : false
     property string degausButText : "РУ выкл"
 
 
-    property int buttonWidthKeyboard: window1.width/9.0
+    property int buttonWidthKeyboard: window1.width/10
     property int buttonHeightKeyboard: window1.height/9.0
     property int buttonFontSize:buttonHeightKeyboard / 3.0
     property real buttonMargin:buttonHeightKeyboard / 5.5
@@ -81,14 +81,14 @@ Rectangle {
     }
 
     function deviationButtonsStateReset(){
-        buttonC0.buttonC0Color = Qt.binding(function(){return deviationCourse === 1 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC45.buttonC45Color = Qt.binding(function(){return deviationCourse === 2 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC90.buttonC90Color = Qt.binding(function(){return deviationCourse === 3 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC135.buttonC135Color = Qt.binding(function(){return deviationCourse === 4 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC180.buttonC180Color = Qt.binding(function(){return deviationCourse === 5 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC225.buttonC225Color = Qt.binding(function(){return deviationCourse === 6 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC270.buttonC270Color = Qt.binding(function(){return deviationCourse === 7 ? "#42e73a":dayNight === false ? "black" : "white";})
-        buttonC315.buttonC315Color = Qt.binding(function(){return deviationCourse === 8 ? "#42e73a":dayNight === false ? "black" : "white";})
+        buttonC0.buttonC0Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC45.buttonC45Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC90.buttonC90Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC135.buttonC135Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC180.buttonC180Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC225.buttonC225Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC270.buttonC270Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC315.buttonC315Color = Qt.binding(function(){return /*deviationCourse === 8 ? "#42e73a":*/dayNight === false ? "black" : "white";})
 
         buttonC0.buttonTextC0Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 1 ?"#7fff00":"black": "black" ;})
         buttonC45.buttonTextC45Color = Qt.binding(function(){return  dayNight === false ? deviationCourse != 2 ?"#7fff00": "black":"black"  ;})
@@ -140,7 +140,7 @@ Rectangle {
             }
             Component.onCompleted: {
                 deviationButtonsStateReset();
-                keyboardDisplay.setRes(compass.getDelta(1))
+                keyboardDisplay.setRes(0)
             }
         }
 
@@ -167,8 +167,8 @@ Rectangle {
                         id: buttonC0backGround
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.pressed ? 5 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 1 ? 5:1
+                        border.color: deviationCourse === 1 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC0.buttonC0Color
                     }
@@ -205,8 +205,8 @@ Rectangle {
                     id: buttonC45backGround
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.pressed ? 5 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 2 ? 5:1
+                    border.color: deviationCourse === 2 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC45.buttonC45Color
                 }
@@ -243,8 +243,8 @@ Rectangle {
                     id: buttonC90backGround
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.pressed ? 5 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 3 ? 5:1
+                    border.color: deviationCourse === 3 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC90.buttonC90Color
                 }
@@ -280,8 +280,8 @@ Rectangle {
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.pressed ? 5 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 4 ? 5:1
+                    border.color: deviationCourse === 4 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC135.buttonC135Color
                 }
@@ -317,8 +317,8 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.pressed ? 5 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 5 ? 5:1
+                        border.color: deviationCourse === 5 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC180.buttonC180Color
                     }
@@ -354,8 +354,8 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.pressed ? 5 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 6 ? 5:1
+                        border.color: deviationCourse === 6 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC225.buttonC225Color
                     }
@@ -391,8 +391,8 @@ Rectangle {
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.pressed ? 5 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 7 ? 5:1
+                    border.color: deviationCourse === 7 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC270.buttonC270Color
                 }
@@ -428,8 +428,8 @@ Rectangle {
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.pressed ? 5 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 8 ? 5:1
+                        border.color: deviationCourse === 8 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC315.buttonC315Color
                     }
@@ -460,7 +460,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: degaus === false ? window1.dayNight === false ? "#7fff00":"black": "black"
+                        color:  window1.dayNight === false ? "#7fff00":"black"
                         text: control.text
                       }
                     background: Rectangle {
@@ -469,14 +469,14 @@ Rectangle {
                         border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
-                        color: degaus === true ? "#42e73a": window1.dayNight === false ? "black": "white"
+                        color:  window1.dayNight === false ? "black": "white"
                     }
             }
             onClicked: {
                 degaus = !degaus
                 degausClicked();
                 console.log(degaus);
-                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
+                degaus === false ? keyboardDisplay.setRes(deviationCourse !== 0? compass.getDelta(deviationCourse):"0") : keyboardDisplay.setRes(deviationCourse !== 0? compass.getDeltaDegaus(deviationCourse): "0")
                 compass.ledOn()
             }
         }
@@ -491,8 +491,6 @@ Rectangle {
             anchors.topMargin: 0
             text: qsTr("Расcчитать")
             signal doClicked()
-            x: 656
-            y: 112
 
             Component.onCompleted: {
                 buttonDo.doClicked.connect(deviationButtonsStateReset)
@@ -525,10 +523,5 @@ Rectangle {
         }
 
     }
-
-
-
-
-
 }
 

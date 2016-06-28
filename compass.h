@@ -83,8 +83,8 @@ public slots:
     void changeDempf()
     {
         if(compangle->getM_dempf() == 0)
-            compangle->setM_dempf(5);
-        else if(compangle->getM_dempf() == 5)
+            compangle->setM_dempf(1);
+        else if(compangle->getM_dempf() == 1)
             compangle->setM_dempf(0);
         context_m->setContextProperty("m_dempf",compangle->getM_dempf());
     }
@@ -171,7 +171,7 @@ public slots:
     void changeSettings();
     void updateCompensationInfo(int,int);
     void setBarstoDefault();
-    void stopComp(){emit compClosed();}
+    void stopComp(){ m_comp_state = false;emit compClosed();}
     void setCompensationLabel(QString);
     void setCompensationLabeltoDeafault();
     void addSKL(QString str);

@@ -2,7 +2,7 @@
 #include <math.h>
 #include <QDebug>
 
-Compassangle::Compassangle(QObject *parent) : QObject(parent), m_fullangle(0), m_angle(0), m_fractPart(0), m_last(0), m_last2(0), m_coef_A(0), m_lastAngle(0),
+Compassangle::Compassangle(QObject *parent) : QObject(parent),K(0.3), m_fullangle(0), m_angle(0), m_fractPart(0), m_last(0), m_last2(0), m_coef_A(0), m_lastAngle(0),
     m_lastAngle1(0), m_tmCourse(0), index(0), m_con(0), m_con1(0)
 {
     m_fullangleStr = "000.0";
@@ -17,17 +17,32 @@ Compassangle::~Compassangle()
 {
     deleteLater();
 }
+double Compassangle::correctFun(double d)
+{
+    qDebug()<<d<<"in comp angle";
+    if(angleList.size()>19)
+        angleList.removeFirst();
+
+    angleList.push_back(d);
+    double z=0;
+    for (int i; i<angleList.size();i++)
+        z+=angleList[i];
+    z /=angleList.size();
+   return K*z+(1-K)*d;
+
+}
 
 void Compassangle::setM_fullangle(double a)
 {
-    if(curr_angle_count++ == m_dempf)
-    {
+//    if(curr_angle_count++ == m_dempf)
+//    {
         if(m_dempf != 0)
         {
-            a = (m_sum + a) / (m_dempf+1);
-            m_sum = 0;
+            K = 0.7;
 
         }
+        else
+            K=0.3;
     curr_angle_count = 0;
     if(index == 0)
         m_last = a;
@@ -44,19 +59,16 @@ void Compassangle::setM_fullangle(double a)
     a = Round(a,1);
     m_last=a;
 
-
-
     // ИК
     if(m_tmCourse > 1)
-        a = a -m_skl;
-
+        a = a + m_skl;
+    a = correctFun(a);
+    m_course = a;
     if(a<0)
         a+=360;
      if(a>360)
         a-=360;
     //------------------------------------------
-
-
     if (a!=0)
     {
         double temp;
@@ -69,7 +81,6 @@ void Compassangle::setM_fullangle(double a)
     }
     else
         m_fractPart = m_angle = m_fullangle = m_lastAngle = 0;
-
 
     // заставляем картушку крутиться в логичном направдении (направление меньшего оборота)
     if(m_angle-m_lastAngle > 180)
@@ -98,8 +109,6 @@ void Compassangle::setM_fullangle(double a)
 
 
     index = 1;
-
-
     // формирование строки lcd панели
     m_fullangleStr = QString::number(m_fullangle);
     if(m_fullangle - (int)m_fullangle == 0)
@@ -108,27 +117,27 @@ void Compassangle::setM_fullangle(double a)
        m_fullangleStr="0"+m_fullangleStr;
     if(m_fullangle / 100 < 1)
         m_fullangleStr="0"+m_fullangleStr;
-    }
-    else
-    {
-        if(index == 0)
-            m_last = a;
-        if(m_last - a > 180)
-            a = m_last + ((a+360) - m_last)*0.5;
-        else if(m_last - a < -180)
-            a = (m_last-360) + (a - m_last + 360)*0.5;
-        else
-            a = m_last + (a - m_last)*0.5;
-        if(a<0)
-            a+=360;
-         if(a>360)
-            a-=360;
-        a = Round(a,1);
-        m_last=a;
-        m_sum += a;
-        index = 1;
+//    }
+//    else
+//    {
+//        if(index == 0)
+//            m_last = a;
+//        if(m_last - a > 180)
+//            a = m_last + ((a+360) - m_last)*0.5;
+//        else if(m_last - a < -180)
+//            a = (m_last-360) + (a - m_last + 360)*0.5;
+//        else
+//            a = m_last + (a - m_last)*0.5;
+//        if(a<0)
+//            a+=360;
+//         if(a>360)
+//            a-=360;
+//        a = Round(a,1);
+//        m_last=a;
+//        m_sum += a;
+//        index = 1;
 
-    }
+//    }
 }
 
 double Compassangle::Round(double st,int count)

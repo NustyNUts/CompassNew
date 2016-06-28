@@ -25,7 +25,7 @@ Rectangle {
 
     Label{
         id:textRoll
-        text: qsTr("Крен")
+        text: qsTr("Дифферент")
         anchors.left: parent.left
         anchors.leftMargin: window1.width/8
 //        anchors.top: parent.top
@@ -42,18 +42,18 @@ Rectangle {
         z: 3
         width: lcdWidth
         height: lcdHeight
-        border.width: 3
+        border.width: 2
         border.color: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "black" : "white"
-        anchors.left: textPitch.right
+        anchors.left: textRoll.right
         anchors.leftMargin: 20
         anchors.top: textRoll.top
-        anchors.topMargin: 0
+        anchors.topMargin: -5
         Text
         {
             id: lcdRoll
             anchors.centerIn: parent
-            text: m_roll+"°"
+            text: m_pitch+"°"
             font.pixelSize: lcdFontSize
             font.family:helvetica.name
             color: window1.dayNight ===false ? "#7fff00":"black"
@@ -64,7 +64,7 @@ Rectangle {
     //-----pitch
     Label{
         id:textPitch
-        text: qsTr("Дифферент")
+        text: qsTr("Крен")
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: -lcdHeight*2
         anchors.left: textRoll.left
@@ -81,18 +81,18 @@ Rectangle {
         z: 3
         width: lcdWidth
         height: lcdHeight
-        border.width: 3
+        border.width: 2
         border.color: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "black" : "white"
         anchors.top: textPitch.top
-        anchors.topMargin: 0
-        anchors.left: textPitch.right
+        anchors.topMargin: -5
+        anchors.left: textRoll.right
         anchors.leftMargin: 20
         Text
         {
             id: lcdPitch
             anchors.centerIn: parent
-            text: m_pitch+"°"
+            text: m_roll+"°"
             font.pixelSize: lcdFontSize
             font.family:helvetica.name
             color: window1.dayNight ===false ? "#7fff00":"black"

@@ -14,12 +14,16 @@ public:
     {
         return m_fullangleStr;
     }
-
+    double correctFun(double);
     void setM_fullangle(double);
 
     double getM_fullangle()
     {
         return m_fullangle;
+    }
+    double getCourse()
+    {
+        return m_course;
     }
 
     int getM_tmCourse()
@@ -66,6 +70,8 @@ public:
 
 
 private:
+   double K;//kalman coef
+   QList<double> angleList;
    QString m_fullangleStr;
    double m_fullangle;
    double m_angle;
@@ -83,7 +89,7 @@ private:
    int m_con1;
    int m_dempf;
    int curr_angle_count;
-
+   double m_course;
    double Round(double st,int count);
    double AbsAngle(double, double);
 

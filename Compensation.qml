@@ -7,7 +7,7 @@ Rectangle {
     FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
     width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
     height: window1.height
-    property color textColor:window1.dayNight === false ? "#7fff00": "blue"
+    property color textColor:window1.dayNight === false ? "#7fff00": "black"
     property real progressBarWidth: window1.width / 3.5
     property int progressBarHeight: window1.height / 14
     property int progressBarMargin: progressBarHeight / 2
@@ -16,6 +16,8 @@ Rectangle {
     property var textFontSize:buttonHeightComrect / 3
     property int textWidth: window1.width / 24
     property real textHeight: window1.height / 19.6
+    property var buttonMargin:20
+    property int compState: 0
 
     property color compensationStatusBackgroundcolor: "white"
     color: "#00000000"
@@ -57,23 +59,31 @@ Rectangle {
 
 
         id: compensationBackground
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
-        //source: "content/steel4.png"
-        anchors.fill: parent
+//        anchors.rightMargin: 0
+//        anchors.bottomMargin: 0
+//        anchors.leftMargin: 0
+//        anchors.topMargin: 0
+        width: buttonWidthComrect*2 + buttonMargin
+        height: progressBarHeight*4+buttonMargin*4+buttonHeightComrect
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+//        anchors.verticalCenterOffset: height/2
+//        anchors.horizontalCenterOffset: width/2
+
 
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar1.value = compass.getBins(7)
+                    onBinsChanged: progressBarN.value = compass.getBins(7)
             }
-            id: progressBar1
-            x: (comprect.width - progressBarWidth - button1.width - 2 * progressBarMargin) / 2
-            y: (comprect.height - 8 * progressBarHeight - 8 * progressBarMargin)/2
-            width: progressBarWidth
+            id: progressBarN
+
+            width: buttonWidthComrect
             height: progressBarHeight
+            anchors.left: button1.left
+            anchors.leftMargin: 0
+            anchors.top: button1.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(0)
             maximumValue: 16.0
             style: prBarStyle
@@ -82,15 +92,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar2.value = compass.getBins(6)
+                    onBinsChanged: progressBarNE.value = compass.getBins(6)
             }
-            id: progressBar2
-            width: progressBarWidth
+            id: progressBarNE
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar1.bottom
-            anchors.topMargin: progressBarMargin
-            anchors.left: progressBar1.left
+            anchors.left: progressBarN.left
             anchors.leftMargin: 0
+            anchors.top: progressBarN.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(1)
             maximumValue: 16.0
             style: prBarStyle
@@ -99,15 +109,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar3.value = compass.getBins(5)
+                    onBinsChanged: progressBarE.value = compass.getBins(5)
             }
-            id: progressBar3
-            anchors.left: progressBar1.left
-            anchors.leftMargin: 0
-            width: progressBarWidth
+            id: progressBarE
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar2.bottom
-            anchors.topMargin: progressBarMargin
+            anchors.left: progressBarNE.left
+            anchors.leftMargin: 0
+            anchors.top: progressBarNE.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(2)
             maximumValue: 16.0
             style: prBarStyle
@@ -116,15 +126,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar4.value = compass.getBins(4)
+                    onBinsChanged: progressBarSE.value = compass.getBins(4)
             }
-            id: progressBar4
-            anchors.left: progressBar1.left
-            anchors.leftMargin: 0
-            width: progressBarWidth
+            id: progressBarSE
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar3.bottom
-            anchors.topMargin: progressBarMargin
+            anchors.left: progressBarE.left
+            anchors.leftMargin: 0
+            anchors.top: progressBarE.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(3)
             maximumValue: 16.0
             style: prBarStyle
@@ -133,15 +143,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar5.value = compass.getBins(3)
+                    onBinsChanged: progressBarS.value = compass.getBins(3)
             }
-            id: progressBar5
-            anchors.left: progressBar1.left
-            anchors.leftMargin: 0
-            width: progressBarWidth
+            id: progressBarS
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar4.bottom
-            anchors.topMargin: progressBarMargin
+            anchors.left: progressBarN.right
+            anchors.leftMargin: buttonMargin
+            anchors.top: compensationStatus.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(4)
             maximumValue: 16.0
             style: prBarStyle
@@ -150,15 +160,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar6.value = compass.getBins(2)
+                    onBinsChanged: progressBarSW.value = compass.getBins(2)
             }
-            id: progressBar6
-            anchors.left: progressBar1.left
-            anchors.leftMargin: 0
-            width: progressBarWidth
+            id: progressBarSW
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar5.bottom
-            anchors.topMargin: progressBarMargin
+            anchors.left: progressBarNE.right
+            anchors.leftMargin: buttonMargin
+            anchors.top: progressBarS.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(5)
             maximumValue: 16.0
             style: prBarStyle
@@ -167,15 +177,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar7.value = compass.getBins(1)
+                    onBinsChanged: progressBarW.value = compass.getBins(1)
             }
-            id: progressBar7
-            anchors.left: progressBar1.left
-            anchors.leftMargin: 0
-            width: progressBarWidth
+            id: progressBarW
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar6.bottom
-            anchors.topMargin: progressBarMargin
+            anchors.left: progressBarE.right
+            anchors.leftMargin: buttonMargin
+            anchors.top: progressBarSW.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(6)
             maximumValue: 16.0
             style: prBarStyle
@@ -184,15 +194,15 @@ Rectangle {
         ProgressBar {
             Connections {
                     target: compass
-                    onBinsChanged: progressBar8.value = compass.getBins(0)
+                    onBinsChanged: progressBarNW.value = compass.getBins(0)
             }
-            id: progressBar8
-            anchors.left: progressBar1.left
-            anchors.leftMargin: 0
-            width: progressBarWidth
+            id: progressBarNW
+            width: buttonWidthComrect
             height: progressBarHeight
-            anchors.top: progressBar7.bottom
-            anchors.topMargin: progressBarMargin
+            anchors.left: progressBarSE.right
+            anchors.leftMargin: buttonMargin
+            anchors.top: progressBarW.bottom
+            anchors.topMargin: buttonMargin
             value: compass.getBins(7)
             maximumValue: 16.0
             style: prBarStyle
@@ -201,14 +211,13 @@ Rectangle {
         Button {
             id: button1
             property int borderWidth:1
-            x: window1.height/1.75
             width: buttonWidthComrect
             height: buttonHeightComrect
-            text: qsTr("Начать")
-            anchors.top: progressBar1.top
+            text: compState === 0? "Начать":"Остановить"
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.top: parent.top
             anchors.topMargin: 0
-            anchors.left: progressBar1.right
-            anchors.leftMargin: 2 * progressBarMargin
             style: ButtonStyle {
                     label: Text {
                         renderType: Text.NativeRendering
@@ -235,47 +244,55 @@ Rectangle {
 
             onClicked:{
                 compass.ledOn()
-                compass.initComp();
+                if(compState === 0){
+                    compass.initComp();
+                    compState = 1;
+                }
+                else if(compState === 1){
+                    compass.stopComp();
+                    compState=0;
+                }
             }
         }
 
-        Button {
-            id: button2
-            x: button1.x
-            property int borderWidth:1
-            width: buttonWidthComrect
-            height: buttonHeightComrect
-            text: qsTr("Остановить")
-            anchors.top: button1.bottom
-            anchors.topMargin: progressBarMargin
-            style: ButtonStyle {
-                    label: Text {
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.family: helvetica.name
-                        font.pointSize: height / 5
-                        font.bold: true
-                        color: window1.dayNight === false ? "#7fff00": "black"
-                        text: control.text
-                      }
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        border.width: button2.borderWidth
-                        border.color: "#888"
-                        radius: 4
-                        color:dayNight === false ? "black" : "white"
-                    }
-            }
-            onClicked:{
-                compass.ledOn()
-                compass.stopComp();
-            }
-            onPressedChanged: {
-                button2.borderWidth= pressed === true? 5:1
-            }
-        }
+//        Button {
+//            id: button2
+//            property int borderWidth:1
+//            width: buttonWidthComrect
+//            height: buttonHeightComrect
+//            text: qsTr("Остановить")
+//            anchors.left: button1.right
+//            anchors.leftMargin: -85
+//            anchors.topMargin: 219
+//            anchors.top: parent.top
+//            style: ButtonStyle {
+//                    label: Text {
+//                        renderType: Text.NativeRendering
+//                        verticalAlignment: Text.AlignVCenter
+//                        horizontalAlignment: Text.AlignHCenter
+//                        font.family: helvetica.name
+//                        font.pointSize: height / 5
+//                        font.bold: true
+//                        color: window1.dayNight === false ? "#7fff00": "black"
+//                        text: control.text
+//                      }
+//                    background: Rectangle {
+//                        implicitWidth: 100
+//                        implicitHeight: 25
+//                        border.width: button2.borderWidth
+//                        border.color: "#888"
+//                        radius: 4
+//                        color:dayNight === false ? "black" : "white"
+//                    }
+//            }
+//            onClicked:{
+//                compass.ledOn()
+//                compass.stopComp();
+//            }
+//            onPressedChanged: {
+//                button2.borderWidth= pressed === true? 5:1
+//            }
+//        }
 
 
 
@@ -285,8 +302,8 @@ Rectangle {
             height: textHeight
             color: textColor
             text: qsTr("N")
-            anchors.verticalCenter: progressBar1.verticalCenter
-            anchors.horizontalCenter: progressBar1.horizontalCenter
+            anchors.verticalCenter: progressBarN.verticalCenter
+            anchors.horizontalCenter: progressBarN.horizontalCenter
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
@@ -301,8 +318,8 @@ Rectangle {
             text: qsTr("NE")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar2.horizontalCenter
-            anchors.verticalCenter: progressBar2.verticalCenter
+            anchors.horizontalCenter: progressBarNE.horizontalCenter
+            anchors.verticalCenter: progressBarNE.verticalCenter
             font.pixelSize: textFontSize
             font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
@@ -317,8 +334,8 @@ Rectangle {
             text: qsTr("E")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar3.horizontalCenter
-            anchors.verticalCenter: progressBar3.verticalCenter
+            anchors.horizontalCenter: progressBarE.horizontalCenter
+            anchors.verticalCenter: progressBarE.verticalCenter
             font.pixelSize: textFontSize
             font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
@@ -333,8 +350,8 @@ Rectangle {
             text: qsTr("SE")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar4.horizontalCenter
-            anchors.verticalCenter: progressBar4.verticalCenter
+            anchors.horizontalCenter: progressBarSE.horizontalCenter
+            anchors.verticalCenter: progressBarSE.verticalCenter
             font.pixelSize: textFontSize
             font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
@@ -349,8 +366,8 @@ Rectangle {
             text: qsTr("S")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar5.horizontalCenter
-            anchors.verticalCenter: progressBar5.verticalCenter
+            anchors.horizontalCenter: progressBarS.horizontalCenter
+            anchors.verticalCenter: progressBarS.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
             font.family: helvetica.name
@@ -365,8 +382,8 @@ Rectangle {
             text: qsTr("SW")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar6.horizontalCenter
-            anchors.verticalCenter: progressBar6.verticalCenter
+            anchors.horizontalCenter: progressBarSW.horizontalCenter
+            anchors.verticalCenter: progressBarSW.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
             font.family: helvetica.name
@@ -381,8 +398,8 @@ Rectangle {
             text: qsTr("W")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar7.horizontalCenter
-            anchors.verticalCenter: progressBar7.verticalCenter
+            anchors.horizontalCenter: progressBarW.horizontalCenter
+            anchors.verticalCenter: progressBarW.verticalCenter
             font.pixelSize: textFontSize
             font.family: helvetica.name
             horizontalAlignment: Text.AlignHCenter
@@ -397,8 +414,8 @@ Rectangle {
             text: qsTr("NW")
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: progressBar8.horizontalCenter
-            anchors.verticalCenter: progressBar8.verticalCenter
+            anchors.horizontalCenter: progressBarNW.horizontalCenter
+            anchors.verticalCenter: progressBarNW.verticalCenter
             z: 1
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: textFontSize
@@ -409,15 +426,19 @@ Rectangle {
         TextField
         {
             id:compensationStatus
-            font.pixelSize: textFontSize / 2
+            font.pixelSize: height/4
             font.family: helvetica.name
             width: buttonWidthComrect
             Component.onCompleted: changeColor()
             height: buttonHeightComrect
-            x: button1.x
-            anchors.top: button2.bottom
-            anchors.topMargin: progressBarMargin
             text: m_complable
+            anchors.left: button1.right
+            anchors.leftMargin: buttonMargin
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            readOnly: true
+            verticalAlignment : Text.AlignVCenter
+            horizontalAlignment :Text.AlignHCenter
             style:
                 TextFieldStyle{
                 textColor:window1.dayNight === false ?"#7fff00" : "black"

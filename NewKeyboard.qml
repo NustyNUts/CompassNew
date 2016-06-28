@@ -92,13 +92,13 @@ Rectangle {
 
     Button{
         id: button0
-        anchors.left: button1.left
-        anchors.top: button1.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("0")
-        anchors.leftMargin: 0
-        anchors.topMargin: 20
+        anchors.left: buttonPoint.right
+        anchors.leftMargin: buttonMargin
+        anchors.top: button8.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -107,13 +107,13 @@ Rectangle {
     }
     Button{
         id: button1
-        anchors.left: button4.left
-        anchors.leftMargin: 0
-        anchors.top: button4.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("1")
+        anchors.left: textField.left
+        anchors.leftMargin: 0
+        anchors.top: textField.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -122,13 +122,13 @@ Rectangle {
     }
     Button{
         id: button2
-        anchors.left: button1.right
-        anchors.leftMargin: buttonMargin
-        anchors.top: button5.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("2")
+        anchors.left: button1.right
+        anchors.leftMargin: buttonMargin
+        anchors.top: textField.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -137,13 +137,13 @@ Rectangle {
     }
     Button{
         id: button3
-        anchors.left: button2.right
-        anchors.leftMargin: buttonMargin
-        anchors.top: button6.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("3")
+        anchors.left: button2.right
+        anchors.leftMargin: buttonMargin
+        anchors.top: textField.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -152,13 +152,13 @@ Rectangle {
     }
     Button{
         id: button4
-        anchors.left: button7.left
-        anchors.leftMargin: 0
-        anchors.top: button7.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("4")
+        anchors.left: button1.left
+        anchors.leftMargin: 0
+        anchors.top: button1.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -167,13 +167,13 @@ Rectangle {
     }
     Button{
         id: button5
-        anchors.left: button4.right
-        anchors.leftMargin: buttonMargin
-        anchors.top: button8.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("5")
+        anchors.left: button4.right
+        anchors.leftMargin: buttonMargin
+        anchors.top: button2.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -182,13 +182,13 @@ Rectangle {
     }
     Button{
         id: button6
-        anchors.left: button5.right
-        anchors.leftMargin: buttonMargin
-        anchors.top: button9.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("6")
+        anchors.left: button5.right
+        anchors.leftMargin: buttonMargin
+        anchors.top: button3.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -200,9 +200,9 @@ Rectangle {
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("7")
-        anchors.left: textField.left
-        anchors.leftMargin: 0
-        anchors.top: textField.bottom
+        anchors.left: button4.left
+        anchors.leftMargin: -0
+        anchors.top: button4.bottom
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
@@ -217,8 +217,8 @@ Rectangle {
         text: qsTr("8")
         anchors.left: button7.right
         anchors.leftMargin: buttonMargin
-        anchors.top: button7.top
-        anchors.topMargin: 0
+        anchors.top: button5.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -232,8 +232,8 @@ Rectangle {
         text: qsTr("9")
         anchors.left: button8.right
         anchors.leftMargin: buttonMargin
-        anchors.top: button8.top
-        anchors.topMargin: 0
+        anchors.top: button6.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -242,13 +242,13 @@ Rectangle {
     }
     Button{
         id: buttonSave
-        anchors.left: buttonPoint.right
-        anchors.leftMargin: 20
-        anchors.top: button3.bottom
         width: buttonWidthKeyboard*2+20
         height: buttonHeightKeyboard
-        text: qsTr("Сохранить")
-        anchors.topMargin: 21
+        text: qsTr(" Ввод")
+        anchors.left: button0.right
+        anchors.leftMargin: buttonMargin
+        anchors.top: button9.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -257,13 +257,13 @@ Rectangle {
     }
     Button{
         id: buttonPoint
-        anchors.left: button0.right
-        anchors.leftMargin: buttonMargin
-        anchors.top: button2.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr(".")
-        anchors.topMargin: 20
+        anchors.left: button7.left
+        anchors.leftMargin: 0
+        anchors.top: button7.bottom
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -288,12 +288,12 @@ Rectangle {
     Button{
         id: buttonPlusMinus
         anchors.left: button9.right
-        anchors.leftMargin: buttonMargin
         anchors.top: buttonDel.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("+/-")
+        anchors.leftMargin: buttonMargin
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -303,12 +303,12 @@ Rectangle {
     Button{
         id: buttonPlus
         anchors.left: button9.right
-        anchors.leftMargin: buttonMargin
         anchors.top: buttonPlusMinus.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("+0.1")
+        anchors.leftMargin: buttonMargin
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
@@ -318,23 +318,20 @@ Rectangle {
     Button{
         id: buttonMinus
         anchors.left: button6.right
-        anchors.leftMargin: buttonMargin
         anchors.top: buttonPlus.bottom
-        anchors.topMargin: buttonMargin
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("-0.1")
+        anchors.leftMargin: buttonMargin
+        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
             compass.ledOn()
             buttonClick(text)
         }
-
     }
     TextField {
         id: textField
-        x: 0
-        y: 0
         width: buttonWidthKeyboard * 3 + buttonMargin * 2
         height: buttonHeightKeyboard
         z: 1
