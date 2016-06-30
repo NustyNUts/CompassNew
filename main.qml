@@ -239,8 +239,8 @@ Window {
                    {
                        SpringAnimation
                        {
-                           spring: 1.9
-                           damping: 0.3
+                           spring: 2.5
+                           damping: 0.7
                        }
                    }
             }

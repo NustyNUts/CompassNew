@@ -42,6 +42,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     *inSklA >> m_skl;
     *inSklA >> m_coef_A;
     fileSklA->close();
+
     skl_str = QString::number(m_skl);
     a_str = QString::number(m_coef_A);
 
@@ -86,6 +87,7 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
 
     compangle = new Compassangle(this);
+    compangle->setM_skl(m_skl);
     //compensation signals
     connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
     connect(this,SIGNAL(compensationRequest()),this,SLOT(setCompensationLabeltoDeafault()));
@@ -291,15 +293,12 @@ void Compass::setAngle(double a)
     }else
         a=a + m_coef_A;
     compangle->setM_fullangle(a);
-
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
     if(m_comp_state == true)
         context_m->setContextProperty("full_angle","---.-");
     else
         context_m->setContextProperty("full_angle",compangle->getM_fullangleStr());
     context_m->setContextProperty("angle_value",compangle->getM_angle());
-    //emit sendMsg(a+m_skl);
-    qDebug()<<compangle->getCourse();
     emit sendMsg(compangle->getCourse());
 }
 

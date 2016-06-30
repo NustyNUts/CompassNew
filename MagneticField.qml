@@ -15,7 +15,7 @@ Rectangle {
     property real lcdWidth: window1.width/5
     property real lcdHeight: window1.height/12
     property real textWidth: window1.width/2
-    property real textHeight: window1.height/6
+    property real textHeight: window1.height/7
     property int lcdFontSize:lcdHeight / 2.0
     property int buttonWidth: lcdWidth * 2
     property int buttonHeight: lcdHeight

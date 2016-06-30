@@ -9,7 +9,8 @@ Rectangle {
     color: "#00000000"
     property int butTopMargin:20
     property int butWidth: width /8
-    property int butHeight: 50
+    property int butHeight: window1.height/12
+    property int lableFontSize:butHeight/1.5
     Rectangle{
         width: parent.width/3 + butWidth
         height: butHeight*4+butTopMargin*3
@@ -22,7 +23,7 @@ Rectangle {
             width: parentRect.width / 3
             height: butHeight
             text:"Курс"
-            font.pixelSize: height
+            font.pixelSize: lableFontSize
             color: window1.dayNight ===false ? "#7fff00":"black"
             font.family:helvetica.name
         }
@@ -77,7 +78,7 @@ Rectangle {
                 anchors.leftMargin: 0
                 anchors.left: courseState.left
                 text:"РУ"
-                font.pixelSize: height
+                font.pixelSize: lableFontSize
                 color: window1.dayNight ===false ? "#7fff00":"black"
                 font.family:helvetica.name
             }
@@ -125,7 +126,7 @@ Rectangle {
                 anchors.leftMargin: 0
                 anchors.left: courseState.left
                 text:"Демпф."
-                font.pixelSize: height
+                font.pixelSize: lableFontSize
                 color: window1.dayNight ===false ? "#7fff00":"black"
                 font.family:helvetica.name
             }
@@ -171,7 +172,7 @@ Rectangle {
                 anchors.leftMargin: 0
                 anchors.left: courseState.left
                 text:"Экран"
-                font.pixelSize: height
+                font.pixelSize: lableFontSize
                 color: window1.dayNight ===false ? "#7fff00":"black"
                 font.family:helvetica.name
             }

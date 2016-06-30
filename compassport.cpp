@@ -166,9 +166,6 @@ void CompassPort::on()
                             for(int i=168,j=15;i<184&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef Z
                             m_Z = Round(toDec(two_bytes,1)*1.41,1);
                             emit ZChanged(m_Z);
-                            emit readyWriteToLog();
-                            //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"2"<<"\n";
-                            //*out << index++ <<". "<< m_angle <<"\n";
 
                             m_state=0;
                             startFinded = false;

@@ -2,7 +2,7 @@
 #include <math.h>
 #include <QDebug>
 
-Compassangle::Compassangle(QObject *parent) : QObject(parent),K(0.3), m_fullangle(0), m_angle(0), m_fractPart(0), m_last(0), m_last2(0), m_coef_A(0), m_lastAngle(0),
+Compassangle::Compassangle(QObject *parent) : QObject(parent),K(0.6), m_fullangle(0), m_angle(0), m_fractPart(0), m_last(0), m_last2(0), m_coef_A(0), m_lastAngle(0),
     m_lastAngle1(0), m_tmCourse(0), index(0), m_con(0), m_con1(0)
 {
     m_fullangleStr = "000.0";
@@ -19,8 +19,7 @@ Compassangle::~Compassangle()
 }
 double Compassangle::correctFun(double d)
 {
-    qDebug()<<d<<"in comp angle";
-    if(angleList.size()>19)
+    if(angleList.size()>60)
         angleList.removeFirst();
 
     angleList.push_back(d);
@@ -38,11 +37,11 @@ void Compassangle::setM_fullangle(double a)
 //    {
         if(m_dempf != 0)
         {
-            K = 0.7;
+            K = 0.95;
 
         }
         else
-            K=0.3;
+            K=0.6;
     curr_angle_count = 0;
     if(index == 0)
         m_last = a;
@@ -60,9 +59,10 @@ void Compassangle::setM_fullangle(double a)
     m_last=a;
 
     // ИК
+    a = correctFun(a);
     if(m_tmCourse > 1)
         a = a + m_skl;
-    a = correctFun(a);
+
     m_course = a;
     if(a<0)
         a+=360;
@@ -106,8 +106,6 @@ void Compassangle::setM_fullangle(double a)
     m_lastAngle1=m_fractPart;
     m_fractPart=m_fractPart+100*m_con1;
     //--------------------------------------------------------------------------------------
-
-
     index = 1;
     // формирование строки lcd панели
     m_fullangleStr = QString::number(m_fullangle);
@@ -117,27 +115,6 @@ void Compassangle::setM_fullangle(double a)
        m_fullangleStr="0"+m_fullangleStr;
     if(m_fullangle / 100 < 1)
         m_fullangleStr="0"+m_fullangleStr;
-//    }
-//    else
-//    {
-//        if(index == 0)
-//            m_last = a;
-//        if(m_last - a > 180)
-//            a = m_last + ((a+360) - m_last)*0.5;
-//        else if(m_last - a < -180)
-//            a = (m_last-360) + (a - m_last + 360)*0.5;
-//        else
-//            a = m_last + (a - m_last)*0.5;
-//        if(a<0)
-//            a+=360;
-//         if(a>360)
-//            a-=360;
-//        a = Round(a,1);
-//        m_last=a;
-//        m_sum += a;
-//        index = 1;
-
-//    }
 }
 
 double Compassangle::Round(double st,int count)

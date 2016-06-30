@@ -32,7 +32,7 @@ Rectangle {
 //        anchors.topMargin: window1.height/2 - lcdHeight*2
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: lcdHeight
-        font.pixelSize: textHeight / 2
+        font.pixelSize: lcdHeight/1.5
         color: window1.dayNight ===false ? "#7fff00":"black"
         font.family:helvetica.name
     }
@@ -48,7 +48,7 @@ Rectangle {
         anchors.left: textRoll.right
         anchors.leftMargin: 20
         anchors.top: textRoll.top
-        anchors.topMargin: -5
+        anchors.topMargin: -10
         Text
         {
             id: lcdRoll
@@ -69,7 +69,7 @@ Rectangle {
         anchors.verticalCenterOffset: -lcdHeight*2
         anchors.left: textRoll.left
         anchors.leftMargin: 0
-        font.pixelSize: textHeight / 2
+        font.pixelSize: lcdHeight/1.5
 
         color: window1.dayNight ===false ? "#7fff00":"black"
         font.family:helvetica.name
@@ -85,7 +85,7 @@ Rectangle {
         border.color: window1.dayNight ===false ? "#7fff00":"black"
         color: window1.dayNight ===false ? "black" : "white"
         anchors.top: textPitch.top
-        anchors.topMargin: -5
+        anchors.topMargin: -10
         anchors.left: textRoll.right
         anchors.leftMargin: 20
         Text
