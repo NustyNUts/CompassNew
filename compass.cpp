@@ -285,14 +285,13 @@ void Compass::setCompensationLabeltoDeafault()
 void Compass::setAngle(double a)
 {
     //qDebug()<<"set angle"<<a;
-    if(compangle->getM_tmCourse() > 0){
-        if(m_degaus)
-            a = a + splineDG->f(a);
-        else
-            a = a + spline->f(a);
-    }else
-        a=a + m_coef_A;
+
+
+
+
+
     compangle->setM_fullangle(a);
+
     context_m->setContextProperty("fract_part",compangle->getM_fractPart());
     if(m_comp_state == true)
         context_m->setContextProperty("full_angle","---.-");
@@ -323,13 +322,14 @@ void Compass::getDevCoef()
     }
     fileDev->close();
     delete outDelta;
-    m_coef_Dev.A /= 8.0;
-    m_coef_Dev.A-=m_coef_A;//учитываем введенный коэффициент а
+    m_coef_Dev.A = m_coef_A;
+    //m_coef_Dev.A-=m_coef_A;//учитываем введенный коэффициент а
     m_coef_Dev.B = ((delta[2]-delta[6])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + ((delta[3]-delta[7]) * sqrt(2)/2)/2)/2;
     m_coef_Dev.C = ((delta[0]-delta[4])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + (delta[3]-delta[7]) * (-sqrt(2)/2)/2)/2;
     m_coef_Dev.D = ((delta[1]+delta[5])/2 - (delta[3]+delta[7])/2)/2;
     m_coef_Dev.E = ((delta[0]+delta[4])/2 - (delta[2]+delta[6])/2)/2;
     m_coef_DevDG.A = m_coef_Dev.A;
+    qDebug()<<m_coef_Dev.A;
     m_coef_DevDG.B = ((deltaDegaus[2]-deltaDegaus[6])/2 + (deltaDegaus[1]-deltaDegaus[5])/2 * sqrt(2)/2 + ((deltaDegaus[3]-deltaDegaus[7]) * sqrt(2)/2)/2)/2;
     m_coef_DevDG.C = ((deltaDegaus[0]-deltaDegaus[4])/2 + (deltaDegaus[1]-deltaDegaus[5])/2 * sqrt(2)/2 + (deltaDegaus[3]-deltaDegaus[7]) * (-sqrt(2)/2)/2)/2;
     m_coef_DevDG.D = ((deltaDegaus[1]+deltaDegaus[5])/2 - (deltaDegaus[3]+deltaDegaus[7])/2)/2;
@@ -347,6 +347,7 @@ void Compass::getDevCoef()
 
 void Compass::setDegaus(bool deg){
     m_degaus = deg;
+    compangle->setDegaus(deg);
     context_m->setContextProperty("m_degaus",(int)m_degaus);
 }
 
@@ -390,6 +391,7 @@ void Compass::calcPoints()
     }
     m_pointsDG[24] = m_pointsDG[0];
     splineDG->build_spline(x,m_pointsDG,25);
+    compangle->setSpline(spline,splineDG);
     //clear lists
     resDev10.clear();
     resDev15.clear();
@@ -691,6 +693,7 @@ void Compass::revert()
 
 void Compass::changeTrueMagneticCourse()
 {
+    //0-KK,1-MK,2-IK
     if(compangle->getM_tmCourse() == 0)
     {
 

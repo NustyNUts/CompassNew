@@ -19,15 +19,17 @@ Compassangle::~Compassangle()
 }
 double Compassangle::correctFun(double d)
 {
-    if(angleList.size()>60)
+    if(angleList.size()>30)
         angleList.removeFirst();
-
+    if(angleList.size())
+        if(angleList.last()-d>-180 || angleList.last()-d<180)
+            angleList.clear();
     angleList.push_back(d);
     double z=0;
-    for (int i; i<angleList.size();i++)
+    for (int i=0;i<angleList.size();i++)
         z+=angleList[i];
     z /=angleList.size();
-   return K*z+(1-K)*d;
+   return  K*z+(1-K)*d;
 
 }
 
@@ -59,15 +61,27 @@ void Compassangle::setM_fullangle(double a)
     m_last=a;
 
     // ИК
-    a = correctFun(a);
-    if(m_tmCourse > 1)
-        a = a + m_skl;
+
+
 
     m_course = a;
     if(a<0)
         a+=360;
      if(a>360)
         a-=360;
+
+     a = correctFun(a);
+
+     if(m_tmCourse > 0){
+         if(m_degaus)
+             a = a + splineDG->f(a);
+         else
+             a = a + spline->f(a);
+     }
+     if(m_tmCourse == 0)
+        a +=m_coef_A;
+     if(m_tmCourse > 1)
+         a = a + m_skl;
     //------------------------------------------
     if (a!=0)
     {
@@ -107,6 +121,7 @@ void Compassangle::setM_fullangle(double a)
     m_fractPart=m_fractPart+100*m_con1;
     //--------------------------------------------------------------------------------------
     index = 1;
+
     // формирование строки lcd панели
     m_fullangleStr = QString::number(m_fullangle);
     if(m_fullangle - (int)m_fullangle == 0)

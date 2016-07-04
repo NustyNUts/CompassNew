@@ -2,6 +2,7 @@
 #define COMPASSANGLE_H
 
 #include <QObject>
+#include "cubic_spline.h"
 
 class Compassangle : public QObject
 {
@@ -66,10 +67,22 @@ public:
     {
         return m_dempf;
     }
-
-
+    void setA(double arg)
+    {
+        m_coef_A = arg;
+    }
+    void setSpline(cubic_spline* sp,cubic_spline* spDG)
+    {
+        spline = sp;
+        splineDG = spDG;
+    }
+    void setDegaus(bool deg)
+    {
+        m_degaus = deg;
+    }
 
 private:
+    bool m_degaus;
    double K;//kalman coef
    QList<double> angleList;
    QString m_fullangleStr;
@@ -87,8 +100,13 @@ private:
    int index;
    int m_con;
    int m_con1;
+   int m_con2;
    int m_dempf;
    int curr_angle_count;
+
+   cubic_spline *spline;
+   cubic_spline *splineDG;
+
    double m_course;
    double Round(double st,int count);
    double AbsAngle(double, double);
