@@ -2,8 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets core gui
 QT += serialport
-INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/include
-LIBS += -L/mnt/rasp-pi-rootfs/usr/local/lib -lwiringPi
+#INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/include
+#LIBS += -L/mnt/rasp-pi-rootfs/usr/local/lib -lwiringPi
 SOURCES += main.cpp \
     compass.cpp \
     compassport.cpp \
@@ -14,8 +14,9 @@ SOURCES += main.cpp \
     compassangle.cpp \
     gpiopi.cpp
 
-RESOURCES += qml.qrc \
-    png.qrc
+RESOURCES += \
+    png.qrc \
+    qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -37,3 +38,5 @@ FORMS += \
     coefdial.ui \
     dialogcomp.ui \
     settings.ui
+
+OTHER_FILES +=

@@ -376,7 +376,7 @@ Rectangle {
                     slideCompBack.start()
                     slideCompForward.start()
                     buttonNum = 1
-                    compass.ledOn()
+                    compass.sound()
                 }
             }
 
@@ -422,7 +422,7 @@ Rectangle {
                     allAnimStop()
                     slideKeybordForward.start()
                     buttonNum = 6
-                    compass.ledOn()
+                    compass.sound()
                 }
             }
 
@@ -463,7 +463,7 @@ Rectangle {
                     slideDeviationForward.start()
                     buttonNum = 7
                     deviationDisplay.deviationButtonsStateReset();
-                    compass.ledOn()
+                    compass.sound()
                 }
             }
 
@@ -505,7 +505,7 @@ Rectangle {
                     butState = ~butState
                     showMainBut.start()
                     buttonNum = 0
-                    compass.ledOn()
+                    compass.sound()
                 }
             }
             Button {
@@ -539,7 +539,7 @@ Rectangle {
                 }
                 onClicked:{
                     buttonNum = 9
-                    compass.ledOn()
+                    compass.sound()
                     passDial.clearText()
                     allAnimStop()
                     slideCompBack.start()
@@ -581,7 +581,7 @@ Rectangle {
                 }
                 onClicked:{
                     buttonNum = 10
-                    compass.ledOn()
+                    compass.sound()
                     passDial.clearText()
                     allAnimStop()
                     slideCompBack.start()
@@ -636,7 +636,7 @@ Rectangle {
             }
             onClicked:{
                 buttonNum = 12
-                compass.ledOn()
+                compass.sound()
                 allAnimStop()
                 slideCompBack.start()
                 slideParamForward.start()
@@ -682,7 +682,7 @@ Rectangle {
                 slideCompBack.start()
                 slideKeybordForward.start()
                 buttonNum = 3
-                compass.ledOn()
+                compass.sound()
             }
         }
         //        Button {
@@ -720,7 +720,7 @@ Rectangle {
         //                deviTable.degaus = degaus
         //                deviTable.setDev()
         //                compass.setDegaus(degaus)
-        //                compass.ledOn()
+        //                compass.sound()
         //            }
         //        }
 
@@ -759,7 +759,7 @@ Rectangle {
                 slideCompBack.start()
                 slideMoreInfoForward.start()
                 buttonNum = 4
-                compass.ledOn()
+                compass.sound()
             }
         }
         Button {
@@ -797,7 +797,7 @@ Rectangle {
                 slideCompBack.start()
                 slideMagFielForward.start()
                 buttonNum = 11
-                compass.ledOn()
+                compass.sound()
             }
         }
         Button {
@@ -837,7 +837,7 @@ Rectangle {
                 slideCompBack.start()
                 showSettingsBut.start()
                 buttonNum = 0
-                compass.ledOn()
+                compass.sound()
             }
         }
 

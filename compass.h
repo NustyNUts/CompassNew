@@ -164,12 +164,8 @@ public slots:
     void setDegaus(bool deg);
     void setRoll(double);
     void setPitch(double);
-    void changeSkl();
     void initComp();
     void changeTrueMagneticCourse();
-    void changeBackground(int);
-    void changeInfoScreenVisibility();
-    void changeSettings();
     void updateCompensationInfo(int,int);
     void setBarstoDefault();
     void stopComp()
@@ -194,8 +190,9 @@ public slots:
         return deltaDegaus[num-1];
     }
     void startSettingsViewControlTimer(int msec);
-    void ledOn(){
-        gpioPi->ledOn();
+    void sound()// подача звукового сигнала
+    {
+        gpioPi->soundOn();
     }
     bool getDegaus(){
         return m_degaus;
@@ -239,7 +236,6 @@ private:
     int m_con;
     int m_con1;
     double m_summ_ang;
-    bool m_infoVisibility;
     int m_progress;
 
     double m_B,m_C,m_Z;
@@ -274,8 +270,6 @@ private:
     Bins m_bins;
     DevCoef m_coef_Dev;
     DevCoef m_coef_DevDG;
-
-
     double Round(double,int);
     void calcPoints();
 

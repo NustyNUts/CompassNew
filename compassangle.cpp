@@ -8,76 +8,76 @@ Compassangle::Compassangle(QObject *parent) : QObject(parent),K(0.6), m_fullangl
     m_fullangleStr = "000.0";
     m_skl = 0; // here will be another arg from file
     m_dempf = 0;
-    curr_angle_count = 0;
     m_sum = 0;
-    connect(this,SIGNAL(dempfChanged()),this,SLOT(resetCurrAngleCount()));
 }
 
 Compassangle::~Compassangle()
 {
     deleteLater();
 }
-double Compassangle::correctFun(double d)
+double Compassangle::correctFun(double d)// фильтр Калмана для демпфирования
 {
-    if(angleList.size()>60)
+    if(angleList.size()>60)// какое кол-во отсчетов усреднять
         angleList.removeFirst();
     if(angleList.size())
+        // обработка разрыва в 0, если переходим через 0 набор отсчетов начинается сначала
         if(angleList.last()-d>-180 || angleList.last()-d<180)
             angleList.clear();
     angleList.push_back(d);
     double z=0;
+    //сам фильтр Калмана
     for (int i=0;i<angleList.size();i++)
         z+=angleList[i];
     z /=angleList.size();
-   return  K*z+(1-K)*d;
+   return  K*z+(1-K)*d;//получение усредненого значения
 
 }
 
 void Compassangle::setM_fullangle(double a)
 {
-//    if(curr_angle_count++ == m_dempf)
-//    {
-        if(m_dempf != 0)
+        if(m_dempf != 0)// демпфирование включено
         {
-            K = 0.95;
-
+            K = 0.95;// увеличиваем коеф. Калмана
         }
         else
-            K=0.6;
-    curr_angle_count = 0;
+            K=0.6;// коеф. Калмана без демпфирования
     if(index == 0)
         m_last = a;
+    //
     if(m_last - a > 180)
         a = m_last + ((a+360) - m_last)*0.5;
     else if(m_last - a < -180)
         a = (m_last-360) + (a - m_last + 360)*0.5;
     else
         a = m_last + (a - m_last)*0.5;
+    // ограничение, курс в пределах 0-360
     if(a<0)
         a+=360;
      if(a>360)
         a-=360;
-    a = Round(a,1);
+    a = Round(a,1);// округление до десятых
     m_last=a;
 
-
+    // интерполируем на истином и магнитном курсах, на компасном нет
     if(m_tmCourse > 0){
         if(m_degaus)
             a = a + splineDG->f(a);
         else
             a = a + spline->f(a);
     }
+    //-----------------
 
 
-       a +=m_coef_A;
+       a +=m_coef_A;// учитываем коеф.А
     if(m_tmCourse > 1)
-        a = a + m_skl;
+        a = a + m_skl;// если истиный курс то учитываем склонение
+    // ограничение, курс в пределах 0-360
     if(a<0)
         a+=360;
      if(a>360)
         a-=360;
 
-     a = correctFun(a);
+     a = correctFun(a);// применяем усреднение
 
 
     //------------------------------------------
@@ -131,7 +131,7 @@ void Compassangle::setM_fullangle(double a)
         m_fullangleStr="0"+m_fullangleStr;
 }
 
-double Compassangle::Round(double st,int count)
+double Compassangle::Round(double st,int count)//  округление до десятых
 {
     double temp;
     double *pt=new double;
@@ -163,5 +163,5 @@ double Compassangle::Round(double st,int count)
 
 double Compassangle::AbsAngle(double angle, double con)
 {
-    return angle + 360* con;
+    return angle + 360* con;// получение абсолютного угла(расширеный)
 }

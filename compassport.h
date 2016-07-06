@@ -11,7 +11,7 @@
 #include "dialogcomp.h"
 
 
-class CompassPort : public QObject
+class CompassPort : public QObject// класс для работы с ком портом, получения и передачи сообщений
 {
     Q_OBJECT
 signals:
@@ -37,7 +37,7 @@ signals:
 public slots:
     void on(); //work with port
     void initComp(); //initiation of compensation
-    void revert();//reset
+    void revert();//сброс датчика
     void stopCompensation();
     QSerialPort* getPort()
     {

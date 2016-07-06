@@ -29,52 +29,49 @@ CompassPort::~CompassPort()
     emit finished();
 }
 
-void CompassPort::on()
+void CompassPort::on()// метод для чтения из порта и его открытия, если не открыт
 {
 
     emit timerStop();
     if(!portSensor->isOpen())
     {       
 
-        if (portSensor->open(QIODevice::ReadWrite))
+        if (portSensor->open(QIODevice::ReadWrite))// открываем порт если он еще не открыт
         {
 
-            QSerialPortInfo *info = new QSerialPortInfo(*portSensor);
-
-            m_state=1;
+            QSerialPortInfo *info = new QSerialPortInfo(*portSensor);//информация о порте для отладки
+            m_state=1;// порт открыт
             delete info;
         }
         else
         {
-            if(portSensor->isOpen())
+            if(portSensor->isOpen())// если что-то пошло не так, закрываем порт
                 portSensor->close();
         }
     }
-    if(portSensor->isOpen())
 
-    if(portSensor->isOpen() && portSensor->waitForReadyRead(100))
+    if(portSensor->isOpen() && portSensor->waitForReadyRead(100))// работа с открытым портом
     {
         QString data;
         QByteArray ByteArray,ByteArrayStart,ByteArrayFinish;
         bool startFinded = false;
          //qDebug()<<"read from port";
         m_state = 1;
-        while(m_state)
+        while(m_state)// пока порт открыт
         {
             //if(portSensor->waitForReadyRead(1))
             {
-                qint64 byteAvail = portSensor->bytesAvailable();
+                qint64 byteAvail = portSensor->bytesAvailable();// просматриваем кол-во доступных байн для чтения
                 qApp->processEvents();
-                QThread::msleep(10);
-                if(byteAvail >=23)
+                QThread::msleep(10);//усыпляем потом, чтобы не занимал времени( данные раз в 10 секунд)
+                if(byteAvail >=23)// проверка кол-ва байт, для их обработки
                 {
-                    ByteArray = portSensor->readAll();
+                    ByteArray = portSensor->readAll();// чтение из буфера порта
                     data = data.fromLocal8Bit(ByteArray).trimmed();
-                    if(ByteArray[3]=='p')
+                    if(ByteArray[3]=='p')//то ли сообщение пришло(смотри даташит хоневеловского датчика)
                     {
-                        qDebug()<<"read from port";
                         QBitArray bitdata(184),two_bytes(16);
-                        for(int i = 0,j; i < 184; ++i)
+                        for(int i = 0,j; i < 184; ++i)//формирование массива бит для парсинга сообщения
                         {
                             j=i/8;
                             if(j<=18)
@@ -110,14 +107,12 @@ void CompassPort::on()
                         for(int i=168,j=15;i<184&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //coef Z
                         m_Z = Round(toDec(two_bytes,0)*1.41,1);
                         emit ZChanged(m_Z);
-
-                        //*out << m_angle <<" "<< m_roll<<" "<<m_pitch<<" "<<"1"<<"\n";
-                        //*out << index++ <<". "<<m_angle <<"\n";
                         m_state=0;
                         qApp->processEvents();
                     }
                 }
-                else if(byteAvail >=4 && byteAvail <=23)
+                // внимательно посмотреть этот код, кажется косяк с выбросами полей и курса в нем(!)
+                else if(byteAvail >=4 && byteAvail <=23)// если сообщение не полное( разбито на два)
                 {
                     ByteArray= portSensor->readAll();
                     data = data.fromLocal8Bit(ByteArray).trimmed();
@@ -183,33 +178,37 @@ void CompassPort::on()
     }
     emit timerStart(10);
 }
-void CompassPort::sendCourse(double course){
+void CompassPort::sendCourse(double course)// бередача курса для БК
+{
+    // открытие порта если он закрыт
     if(!portDCon->isOpen()){
         portDCon->setPortName("ttyUSB0");
         portDCon->setBaudRate(9600);
         portDCon->open(QIODevice::ReadWrite);
         qDebug()<<portDCon->isOpen();
     }
-    if(portDCon->isOpen())
+    if(portDCon->isOpen()) // работа с портом
     {
         QByteArray dataForWrite;
         QString str;
+        // формирование строки для передачи
         if(course>99)
             str = "$RP,"+QString::number(course,10,1)+",CRLF";
         else if(course>9)
             str = "$RP,0"+QString::number(course,10,1)+",CRLF";
         else
             str = "$RP,00"+QString::number(course,10,1)+",CRLF";
-        dataForWrite = str.toLocal8Bit();
-        portDCon->write(dataForWrite,dataForWrite.size());
+        dataForWrite = str.toLocal8Bit();// преобразование строки к массив байт
+        portDCon->write(dataForWrite,dataForWrite.size());// запись в порт для передачи
     }
 }
 
-void CompassPort::initComp()
+void CompassPort::initComp()//инициализация компенсации
 {
-    emit timerStop();
-    emit compStarted();
+    emit timerStop();// останавливаем прием курса
+    emit compStarted();// сообщаем о начале компенсации
     m_compInProgress = true;
+    // формируем сообщение для датчика о начале компенсации
     QByteArray dataForWrite;
     dataForWrite.insert(0,0x0d);
     dataForWrite.insert(1,0x0a);
@@ -218,29 +217,31 @@ void CompassPort::initComp()
     dataForWrite.insert(4,0x01);
     dataForWrite.insert(5,0x01);
     dataForWrite.insert(6,0x09);
-    if(portSensor->isOpen())
+    //--------------------
+    if(portSensor->isOpen())// проверка открыт ли порт
     {
 
-        portSensor->write(dataForWrite,7);
+        portSensor->write(dataForWrite,7);// передача сообщения датчику для начала компенсации
         if(!portSensor->waitForBytesWritten(1000))
         {
         }
-        while(m_compInProgress)
+        while(m_compInProgress)// пока калибровка не закончится
         {
 
-            qApp->processEvents();
-            if(portSensor->isOpen() && portSensor->waitForReadyRead(1000))
+            qApp->processEvents();// магическая строчка чтобы не тупили пользовательские интерфейсы
+            if(portSensor->isOpen() && portSensor->waitForReadyRead(1000))// ждем данных
             {
                 QString data;
                 QByteArray ByteArray;
                 qint64 byteAvail = portSensor->bytesAvailable();
                 qApp->processEvents();
-                if(byteAvail >=19)
+                if(byteAvail >=19)// буфер наполнился
                 {
-                    ByteArray = portSensor->readAll();
+                    ByteArray = portSensor->readAll();// читаем из порта
                     data = data.fromLocal8Bit(ByteArray).trimmed();
-                    if(ByteArray[3]=='r'&& ByteArray[0]=='\r' && ByteArray[1]=='\n' && ByteArray[2]=='~')
+                    if(ByteArray[3]=='r'&& ByteArray[0]=='\r' && ByteArray[1]=='\n' && ByteArray[2]=='~')// если сообщение нужное нам( смотри даташит)
                     {
+                        //формирование массива бит для парсинга
                         QBitArray bitdata(152),one_byte(8);
                         for(int i = 0,j; i < 152; ++i)
                         {
@@ -250,7 +251,7 @@ void CompassPort::initComp()
                             else
                                 break;
                         }
-
+                        // парс сообщения о состоянии бинов
                         for(int i=56,j=7;i<64 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(7,toDecInt(one_byte));
                         emit dialCompProgressChanged(7,toDecInt(one_byte));
@@ -275,8 +276,8 @@ void CompassPort::initComp()
                         for(int i=112,j=7;i<120 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         //dial->setBar(0,toDecInt(one_byte));
                         emit dialCompProgressChanged(0,toDecInt(one_byte));
-
-
+                        //---------------------------------------------------------
+                        // состоние компенсации
                         for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
                         if(toDecInt(one_byte)==1)
                         {
@@ -318,23 +319,25 @@ void CompassPort::initComp()
                             //dial->setLabel("Flash Write Fail");
                             emit dialCompStatusChanged("ОТКАЗ");
                         }
-
+                        //----------------------------
                         qApp->processEvents();
                     }
 
                 }
+                // посылаем сообщение для получения данных о калибровке
                 dataForWrite.insert(5,0x02);
                 dataForWrite.insert(6,0x0a);
                 portSensor->write(dataForWrite,7);
                 if(!portSensor->waitForBytesWritten(1000))
                 {
                 }
+                //-----------------------
             }
         }
     }
-    emit compFinished();
-    emit timerStart(10);
-    stopCompensation();
+    emit compFinished();// калибровка закончена
+    emit timerStart(10);// продолжаем прием сообщений о курсе
+    m_compInProgress = false;
 }
 
 
@@ -343,10 +346,10 @@ void CompassPort::stopCompensation()
     m_compInProgress = false;
 }
 
-void CompassPort::revert()
+void CompassPort::revert()// метод для сброса датчика
 {
-    emit timerStop();
-
+    emit timerStop();// останавливаем прием курса
+    // формируем сообщения для сброса
     QByteArray dataForWrite;
     dataForWrite.insert(0,0x0d);
     dataForWrite.insert(1,0x0a);
@@ -356,15 +359,16 @@ void CompassPort::revert()
     dataForWrite.insert(5,0x04);
     dataForWrite.insert(6,0x0c);
     bool receivedMsg = false;
+    //----------------------
 
     if(portSensor->isOpen())
     {
 
-        portSensor->write(dataForWrite,7);
+        portSensor->write(dataForWrite,7);// пишем в порт сообщение о сбросе
         if(!portSensor->waitForBytesWritten(1000))
         {
         }
-        while(!receivedMsg)
+        while(!receivedMsg)// ждем получения сообщения о сбросе
         {
 
             if(portSensor->isOpen() && portSensor->waitForReadyRead(1000))
@@ -411,57 +415,26 @@ void CompassPort::revert()
                            // emit revertStatusChanged("Процедура прервана");
                         }
                         for(int i=48,j=7;i<56 && j>=0;i++,j--){one_byte[j]=bitdata[i];}
-//                        if(toDecInt(one_byte)==1)
-//                        {
-//                            settings->setLabel("Success");
-//                        }
-//                        else if(toDecInt(one_byte)==0)
-//                        {
-//                            settings->setLabel("No error");
-//                        }
-//                        else if(toDecInt(one_byte)==2)
-//                        {
-//                            settings->setLabel("Compensation Already Started");
-//                        }
-//                        else if(toDecInt(one_byte)==3)
-//                        {
-//                            settings->setLabel("Compensation Not Started");
-//                        }
-//                        else if(toDecInt(one_byte)==4)
-//                        {
-//                            settings->setLabel("Compensation Timeout");
-//                        }
-//                        else if(toDecInt(one_byte)==5)
-//                        {
-//                            settings->setLabel("Compensation Computation Failure");
-//                        }
-//                        else if(toDecInt(one_byte)==6)
-//                        {
-//                            settings->setLabel("New Computed Parameters No Better");
-//                        }
-//                        else if(toDecInt(one_byte)==7)
-//                        {
-//                            settings->setLabel("Flash Write Fail");
-//                        }
-                        //m_state=0;
 
                         qApp->processEvents();
-                        receivedMsg = true;
+                        receivedMsg = true;// сообщение о сбросе получено
                     }
                 }
+                //запрашиваем состояние сброса
                 dataForWrite.insert(5,0x02);
                 dataForWrite.insert(6,0x0a);
                 portSensor->write(dataForWrite,7);
                 if(!portSensor->waitForBytesWritten(1000))
                 {
                 }
+                //----------------------
             }
         }
     }
-    emit timerStart(10);
+    emit timerStart(10);// продолжаем получение курса
 }
 
-void CompassPort::updateSettings(QStringList listOfSettings)
+void CompassPort::updateSettings(QStringList listOfSettings)// обновление настроек порта датчика
 {
     if(portSensor->isOpen())
         portSensor->close();
@@ -473,7 +446,7 @@ void CompassPort::updateSettings(QStringList listOfSettings)
 }
 
 
-double CompassPort::toDec(QBitArray bitdata,int p)
+double CompassPort::toDec(QBitArray bitdata,int p)//преобразования в дес. формат
 {
     double intpart=0;
     double fractpart=0;
@@ -504,7 +477,6 @@ int CompassPort::toDecInt(QBitArray bitdata)
 
     if(bitdata[0] == true)
     {
-        //bitdata=bitdata - QBitArray(16).setBit(15,true);
         bitdata=~bitdata;
         k=-1;
         s=1;
@@ -517,7 +489,7 @@ int CompassPort::toDecInt(QBitArray bitdata)
     return (res+s)*k;
 }
 
-double CompassPort::Round(double st,int count)
+double CompassPort::Round(double st,int count)// округление
 {
     double temp;
     double *pt=new double;

@@ -13,7 +13,7 @@ Rectangle {
     property int progressBarMargin: progressBarHeight / 2
     property int buttonWidthComrect: window1.width / 4
     property real buttonHeightComrect: window1.height / 7.5
-    property var textFontSize:buttonHeightComrect / 3
+    property int textFontSize:buttonHeightComrect / 3
     property int textWidth: window1.width / 24
     property real textHeight: window1.height / 19.6
     property var buttonMargin:20
@@ -45,7 +45,7 @@ Rectangle {
     {
         compState = Qt.binding(function(){
         if(m_complable === "НОРМА" || m_complable ==="ОТКАЗ"||m_complable === "ВРЕМЯ"||m_complable === "ОШИБКА"){
-            compass.ledOn();
+            compass.sound();
             return 0;
         }
         else return 1;
@@ -429,7 +429,6 @@ Rectangle {
             font.pixelSize: height/4
             font.family: helvetica.name
             width: buttonWidthComrect
-            //Component.onCompleted: changeColor()
             height: buttonHeightComrect
             text: m_complable
             anchors.left: button1.right

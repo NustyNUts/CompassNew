@@ -87,7 +87,7 @@ Rectangle {
             }
         }
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             stepTable = !stepTable
             setDev()
         }
@@ -123,7 +123,7 @@ Rectangle {
             }
         }
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             degaus = !degaus
             setDev()
         }

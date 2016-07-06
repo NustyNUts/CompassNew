@@ -4,17 +4,17 @@
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
-#include "wiringPi.h"
+//#include "wiringPi.h"
 
 
 
-class GpioPi : public QObject
+class GpioPi : public QObject// класс для работы с пинами расбери
 {
     Q_OBJECT
     int pinLed;
     int pinAcc;
-    QTimer *timer;
-    QTimer *timerACC;
+    QTimer *timer;// таймер для определения продолжительности звукового сигнала
+    QTimer *timerACC;// таймер для проверки работы от акк
     int accState;
 public:
     explicit GpioPi(QObject *parent = 0);
@@ -24,8 +24,8 @@ signals:
     void updateAccState(bool);
 
 public slots:
-    void ledOff();
-    void ledOn();
+    void soundOff();
+    void soundOn();
     void checkACC();
 };
 

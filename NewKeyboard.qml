@@ -13,9 +13,9 @@ Rectangle {
     property int buttonHeightKeyboard: window1.height/9.0
     //property var buttonWidthKeyboard: 100
     //property var buttonHeightKeyboard: 100
-    property var buttonFontSize:buttonHeightKeyboard / 3.0
-    property var buttonMargin:20
-    property var keyBoardRes :"0";
+    property double buttonFontSize:buttonHeightKeyboard / 3.0
+    property int buttonMargin:20
+    property string keyBoardRes :"0";
 
     function setRes(arg){
         keyBoardRes = arg;
@@ -101,7 +101,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -116,7 +116,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -131,7 +131,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -146,7 +146,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -161,7 +161,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -176,7 +176,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -191,7 +191,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -206,7 +206,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -221,7 +221,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -236,7 +236,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -251,7 +251,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             saved();
         }
     }
@@ -266,7 +266,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -281,7 +281,7 @@ Rectangle {
         text: qsTr("<-")
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -296,7 +296,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -311,7 +311,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -326,7 +326,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }

@@ -137,7 +137,7 @@ Rectangle {
         anchors.topMargin: 0
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -154,7 +154,7 @@ Rectangle {
         anchors.rightMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -169,7 +169,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -184,7 +184,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -199,7 +199,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -214,7 +214,7 @@ Rectangle {
         anchors.right: button2.left
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -231,7 +231,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -246,7 +246,7 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -262,7 +262,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -279,7 +279,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -294,7 +294,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -325,7 +325,7 @@ Rectangle {
             }
         }
         onClicked:{
-            compass.ledOn()
+            compass.sound()
             revert(keyBoardRes)
 
         }
@@ -344,7 +344,7 @@ Rectangle {
 //            keyBoardRes =""
 //            passDialClose.start()
 //            textField.text = keyBoardRes
-//            compass.ledOn()
+//            compass.sound()
 //        }
 //    }
 

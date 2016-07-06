@@ -465,7 +465,7 @@ Window {
                       }
             }
             onClicked:{
-                compass.ledOn()
+                compass.sound()
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                 settingsDisplay.settingsSlided === false ? butMain.start():butSettings.start();
                 //compass.startSettingsViewControlTimer(300000);
@@ -509,7 +509,7 @@ Window {
 //                      }
 //            }
 //            onClicked:{
-//                compass.ledOn()
+//                compass.sound()
 //                compass.changeTrueMagneticCourse()
 //            }
 //        }

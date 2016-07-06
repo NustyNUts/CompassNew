@@ -65,7 +65,7 @@ Rectangle {
                       }
                   }
                   onClicked:{
-                      compass.ledOn()
+                      compass.sound()
                       compass.changeTrueMagneticCourse()
                   }
               }
@@ -114,7 +114,7 @@ Rectangle {
                         degaus = !degaus
                         deviTable.degaus = degaus
                         compass.setDegaus(degaus)
-                        compass.ledOn()
+                        compass.sound()
                     }
                 }
             Label{
@@ -158,7 +158,7 @@ Rectangle {
                             }
                         }
                         onClicked:{
-                            compass.ledOn()
+                            compass.sound()
                             compass.changeDempf();
                         }
 
@@ -204,7 +204,7 @@ Rectangle {
                            }
                        }
                        onClicked: {
-                           compass.ledOn()
+                           compass.sound()
                            dayNight = !dayNight
                            dayNight === true ? sourseCompass10 = "content/compass10day.png" : sourseCompass10 = "content/compass10night.png"
                            dayNight === true ? sourseCompass360 = "content/compass360day.png" : sourseCompass360 = "content/compass360night.png"

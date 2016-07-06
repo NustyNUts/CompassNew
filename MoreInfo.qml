@@ -122,7 +122,7 @@ Rectangle {
 //                }
 //              }
 //        onClicked:{
-//            compass.ledOn()
+//            compass.sound()
 //            compass.startWriteLog();
 //        }
 //    }

@@ -4,7 +4,7 @@
 #include <QObject>
 #include "cubic_spline.h"
 
-class Compassangle : public QObject
+class Compassangle : public QObject//  класс для обработки и корректировки значений азимута
 {
     Q_OBJECT
 public:
@@ -83,7 +83,7 @@ public:
 
 private:
     bool m_degaus;
-   double K;//kalman coef
+   double K;//коэф. для фильтра Кламана
    QList<double> angleList;
    QString m_fullangleStr;
    double m_fullangle;
@@ -98,11 +98,12 @@ private:
    int m_tmCourse;
    double m_sum;
    int index;
+   //расширение границ азимута 0-360 для поворота картушки
    int m_con;
    int m_con1;
    int m_con2;
+   //------------------
    int m_dempf;
-   int curr_angle_count;
 
    cubic_spline *spline;
    cubic_spline *splineDG;
@@ -112,10 +113,7 @@ private:
    double AbsAngle(double, double);
 
 private slots:
-  void resetCurrAngleCount()
-  {
-      curr_angle_count = 0;
-  }
+
 
 signals:
    void dempfChanged();
