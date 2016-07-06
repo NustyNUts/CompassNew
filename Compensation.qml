@@ -43,32 +43,32 @@ Rectangle {
 
     function changeColor()
     {
-        compensationStatusBackgroundcolor = Qt.binding(function(){
-        if(m_complable === "Успех")
-            return "#42e73a";
-        else if(m_complable === "Время вышло" || m_complable === "Провал" || m_complable === "Flash Write Fail")
-            return "red";
-        else if(m_complable === "Новые параметры не лучше")
-            return "blue";
-        else return "white";
+        compState = Qt.binding(function(){
+        if(m_complable === "НОРМА" || m_complable ==="ОТКАЗ"||m_complable === "ВРЕМЯ"||m_complable === "ОШИБКА"){
+            compass.ledOn();
+            return 0;
+        }
+        else return 1;
         })
     }
 
+    Connections{
+        target:timerComp
+        onTimeout: {
+            compState = 0
+            compass.ledOn()
+            compass.setCompensationLabeltoDeafault()
+        }
+    }
 
     Image {
 
 
         id: compensationBackground
-//        anchors.rightMargin: 0
-//        anchors.bottomMargin: 0
-//        anchors.leftMargin: 0
-//        anchors.topMargin: 0
         width: buttonWidthComrect*2 + buttonMargin
         height: progressBarHeight*4+buttonMargin*4+buttonHeightComrect
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-//        anchors.verticalCenterOffset: height/2
-//        anchors.horizontalCenterOffset: width/2
 
 
         ProgressBar {
@@ -429,7 +429,7 @@ Rectangle {
             font.pixelSize: height/4
             font.family: helvetica.name
             width: buttonWidthComrect
-            Component.onCompleted: changeColor()
+            //Component.onCompleted: changeColor()
             height: buttonHeightComrect
             text: m_complable
             anchors.left: button1.right
@@ -444,7 +444,10 @@ Rectangle {
                 textColor:window1.dayNight === false ?"#7fff00" : "black"
                 background: Rectangle{
                     id: compensationStatusBackground
-                    color: dayNight === false ? "black" : "white"
+                    color: m_complable === "" ? dayNight === false ? "black" : "white"
+                                                : m_complable === "НОРМА"? "#34D31D"
+                                                    : m_complable === "КАЛИБРОВКА"? "#FBFE9A"
+                                                        :"#FB5D5B"
 
                 }
 

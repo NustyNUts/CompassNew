@@ -19,7 +19,7 @@ Compassangle::~Compassangle()
 }
 double Compassangle::correctFun(double d)
 {
-    if(angleList.size()>30)
+    if(angleList.size()>60)
         angleList.removeFirst();
     if(angleList.size())
         if(angleList.last()-d>-180 || angleList.last()-d<180)
@@ -60,11 +60,18 @@ void Compassangle::setM_fullangle(double a)
     a = Round(a,1);
     m_last=a;
 
-    // ИК
+
+    if(m_tmCourse > 0){
+        if(m_degaus)
+            a = a + splineDG->f(a);
+        else
+            a = a + spline->f(a);
+    }
 
 
-
-    m_course = a;
+       a +=m_coef_A;
+    if(m_tmCourse > 1)
+        a = a + m_skl;
     if(a<0)
         a+=360;
      if(a>360)
@@ -72,17 +79,9 @@ void Compassangle::setM_fullangle(double a)
 
      a = correctFun(a);
 
-     if(m_tmCourse > 0){
-         if(m_degaus)
-             a = a + splineDG->f(a);
-         else
-             a = a + spline->f(a);
-     }
-     if(m_tmCourse == 0)
-        a +=m_coef_A;
-     if(m_tmCourse > 1)
-         a = a + m_skl;
+
     //------------------------------------------
+     m_course = a;
     if (a!=0)
     {
         double temp;

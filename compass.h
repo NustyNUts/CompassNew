@@ -44,6 +44,7 @@ public:
     void updateSklA();
 
 signals:
+    void compClear();
     void angleChanged();
     void pitchChanged();
     void rollChanged();
@@ -171,7 +172,12 @@ public slots:
     void changeSettings();
     void updateCompensationInfo(int,int);
     void setBarstoDefault();
-    void stopComp(){ m_comp_state = false;emit compClosed();}
+    void stopComp()
+    {
+        m_comp_state = false;
+        emit compClosed();
+
+    }
     void setCompensationLabel(QString);
     void setCompensationLabeltoDeafault();
     void addSKL(QString str);
@@ -194,12 +200,19 @@ public slots:
     bool getDegaus(){
         return m_degaus;
     }
+    QString getCompColor()
+    {
+        return m_compColor;
+    }
 
 protected:
     QObject *qml;
 
 
 private:
+    QTimer* timerClearComp;
+    QString m_compColor;
+    double coefAForSAhow;
     int m_accState;
     bool m_degaus;
     int k;

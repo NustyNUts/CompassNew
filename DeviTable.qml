@@ -359,7 +359,7 @@ Rectangle {
                     }
             TableViewColumn {
                         id: dataColumn
-                        title: "поправка"
+                        title: "Дев."
                         role: "corr"
                         movable: false
                         resizable: false

@@ -9,11 +9,15 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     m_summ_ang(0),m_infoVisibility(false),m_progress(0),skl_str("0"),a_str("0"),
     m_complable(""),delta_str("0"),deltaDegaus_str("0")
 {
+    m_compColor = "white";
     m_comp_state =false;
     gpioPi = new GpioPi();
     spline = new cubic_spline();
     splineDG = new cubic_spline();
-    m_degaus = false;
+    timerClearComp = new QTimer();
+    context->setContextProperty("timerComp",timerClearComp);
+    m_degaus = 0;
+
     for(int i=0;i<8;i++)
     {
         delta[i]=0;
@@ -88,6 +92,8 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
 
     compangle = new Compassangle(this);
     compangle->setM_skl(m_skl);
+    compangle->setM_coef_A(m_coef_A);
+    compangle->setDegaus(m_degaus);
     //compensation signals
     connect(this,SIGNAL(compensationRequest()),compport,SLOT(initComp()));
     connect(this,SIGNAL(compensationRequest()),this,SLOT(setCompensationLabeltoDeafault()));
@@ -106,8 +112,9 @@ Compass::Compass(QQmlContext *context, QObject *parent) :
     //connect(compport,SIGNAL(revertStatusChanged(QString)),this,SLOT(setCompensationLabel(QString)));
     connect(compport,SIGNAL(compFinished()),this,SLOT(setBarstoDefault()));
     connect(this,SIGNAL(compClosed()),this,SLOT(setCompensationLabeltoDeafault()));
-    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+    connect(timerClearComp,SIGNAL(timeout()),timerClearComp,SLOT(stop()));
 
     portThread = new QThread;
     compport->moveToThread(portThread);
@@ -256,21 +263,27 @@ void Compass::setCompensationLabel(QString msg)
     m_complable = msg;
     if(msg=="НОРМА" ||msg=="ОТКАЗ"|| msg=="ВРЕМЯ"||msg=="ОШИБКА"){
         context_m->setContextProperty("m_complable",m_complable);
+
         compport->stopCompensation();
+        qDebug()<<"start timer";
+        timerClearComp->start(9000);
         m_comp_state = false;
+        ledOn();
         qDebug()<<"stop";
+
     }
     else
         context_m->setContextProperty("m_complable","КАЛИБРОВКА");
-    qDebug()<<msg;
+
 
     emit compensationLabelChanged();
     if(m_complable == "НОРМА"){
         for (int i=0;i<8;i++){
-            addDelta(i,0.0);
-            addDeltaDegaus(i,0.0);
+            addDelta(i+1,0.0);
+            addDeltaDegaus(i+1,0.0);
+            qDebug()<<getDelta(i+1)<<getDeltaDegaus(i+1);
         }
-        calcPoints();
+        getDevCoef();
     }
 
 
@@ -322,7 +335,10 @@ void Compass::getDevCoef()
     }
     fileDev->close();
     delete outDelta;
-    m_coef_Dev.A = m_coef_A;
+
+    coefAForSAhow = m_coef_Dev.A/8 -m_coef_A;
+    qDebug()<<coefAForSAhow;
+    m_coef_Dev.A = 0;
     //m_coef_Dev.A-=m_coef_A;//учитываем введенный коэффициент а
     m_coef_Dev.B = ((delta[2]-delta[6])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + ((delta[3]-delta[7]) * sqrt(2)/2)/2)/2;
     m_coef_Dev.C = ((delta[0]-delta[4])/2 + (delta[1]-delta[5])/2 * sqrt(2)/2 + (delta[3]-delta[7]) * (-sqrt(2)/2)/2)/2;
@@ -336,9 +352,9 @@ void Compass::getDevCoef()
     m_coef_DevDG.E = ((deltaDegaus[0]+deltaDegaus[4])/2 - (deltaDegaus[2]+deltaDegaus[6])/2)/2;
     QList<QString> listDevCoef;
     QList<QString> listDevCoefDG;
-    listDevCoef<<QString::number(m_coef_Dev.A,10,2)<<QString::number(m_coef_Dev.B,10,2)<<
+    listDevCoef<<QString::number(coefAForSAhow,10,2)<<QString::number(m_coef_Dev.B,10,2)<<
                  QString::number(m_coef_Dev.C,10,2)<<QString::number(m_coef_Dev.D,10,2)<<QString::number(m_coef_Dev.E,10,2);
-    listDevCoefDG<<QString::number(m_coef_DevDG.A,10,2)<<QString::number(m_coef_DevDG.B,10,2)<<
+    listDevCoefDG<<QString::number(coefAForSAhow,10,2)<<QString::number(m_coef_DevDG.B,10,2)<<
                    QString::number(m_coef_DevDG.C,10,2)<<QString::number(m_coef_DevDG.D,10,2)<<QString::number(m_coef_DevDG.E,10,2);
     context_m->setContextProperty("devCoef",QVariant::fromValue(listDevCoef));
     context_m->setContextProperty("devCoefDG",QVariant::fromValue(listDevCoefDG));
@@ -400,17 +416,17 @@ void Compass::calcPoints()
     //--------
     //add points to list
     for(int i=0;i<24;i++)
-        resDev15<<QString::number(spline->f(i*15),10,1);
+        resDev15<<QString::number(spline->f(i*15)+coefAForSAhow,10,1);
     context_m->setContextProperty("deviation15",QVariant::fromValue(resDev15));
     for(int i=0;i<36;i++)
-        resDev10<<QString::number(spline->f(i*10),10,1);
+        resDev10<<QString::number(spline->f(i*10)+coefAForSAhow,10,1);
     context_m->setContextProperty("deviation10",QVariant::fromValue(resDev10));
     //points with degaus
     for(int i=0;i<24;i++)
-        resDevDG15<<QString::number(splineDG->f(i*15.0),10,1);
+        resDevDG15<<QString::number(splineDG->f(i*15.0)+coefAForSAhow,10,1);
     context_m->setContextProperty("deviationDG15",QVariant::fromValue(resDevDG15));
     for(int i=0;i<36;i++)
-        resDevDG10<<QString::number(splineDG->f(i*10.0),10,1);
+        resDevDG10<<QString::number(splineDG->f(i*10.0)+coefAForSAhow,10,1);
 
     context_m->setContextProperty("deviationDG10",QVariant::fromValue(resDevDG10));
 
