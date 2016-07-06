@@ -2,8 +2,9 @@
 #define COMPASSANGLE_H
 
 #include <QObject>
+#include "cubic_spline.h"
 
-class Compassangle : public QObject
+class Compassangle : public QObject//  класс для обработки и корректировки значений азимута
 {
     Q_OBJECT
 public:
@@ -14,12 +15,16 @@ public:
     {
         return m_fullangleStr;
     }
-
+    double correctFun(double);
     void setM_fullangle(double);
 
     double getM_fullangle()
     {
         return m_fullangle;
+    }
+    double getCourse()
+    {
+        return m_course;
     }
 
     int getM_tmCourse()
@@ -62,10 +67,24 @@ public:
     {
         return m_dempf;
     }
-
-
+    void setA(double arg)
+    {
+        m_coef_A = arg;
+    }
+    void setSpline(cubic_spline* sp,cubic_spline* spDG)
+    {
+        spline = sp;
+        splineDG = spDG;
+    }
+    void setDegaus(bool deg)
+    {
+        m_degaus = deg;
+    }
 
 private:
+    bool m_degaus;
+   double K;//коэф. для фильтра Кламана
+   QList<double> angleList;
    QString m_fullangleStr;
    double m_fullangle;
    double m_angle;
@@ -79,19 +98,22 @@ private:
    int m_tmCourse;
    double m_sum;
    int index;
+   //расширение границ азимута 0-360 для поворота картушки
    int m_con;
    int m_con1;
+   int m_con2;
+   //------------------
    int m_dempf;
-   int curr_angle_count;
 
+   cubic_spline *spline;
+   cubic_spline *splineDG;
+
+   double m_course;
    double Round(double st,int count);
    double AbsAngle(double, double);
 
 private slots:
-  void resetCurrAngleCount()
-  {
-      curr_angle_count = 0;
-  }
+
 
 signals:
    void dempfChanged();

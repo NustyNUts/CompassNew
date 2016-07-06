@@ -59,7 +59,7 @@ Rectangle {
     function revert(arg){
         if(arg == password){
             keyBoardRes ="";
-            textField.text ="СБРОШЕН";
+            textField.text ="";
             compass.revert();
         }
         else{
@@ -76,23 +76,29 @@ Rectangle {
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family:  helvetica.name
                 font.pointSize: buttonFontSize
-                color: "black"
+                color: window1.dayNight === false ? "#7fff00": "black"
                 text: control.text
               }
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: dayNight === false ? "black" : "white"
+            }
         }
     }
     Label{
         id:labelPass
-        text: qsTr("Введите пароль для сброса")
+        text: qsTr("Введите пароль")
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: textField.top
         anchors.bottomMargin: buttonMargin
 
         font.pixelSize: parent.width/ 20
-        color: "white"
-        font.family: a_LCDNovaObl.name
+        color: window1.dayNight === false ? "#7fff00": "black"
+         font.family:helvetica.name
     }
     TextField {
         id: textField
@@ -108,6 +114,17 @@ Rectangle {
         anchors.leftMargin: parent.width /7
 //        anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: textField.height / 1.5
+        font.family:helvetica.name
+        style:
+            TextFieldStyle{
+            textColor:window1.dayNight === false ?"#7fff00" : "black"
+            background: Rectangle{
+                color: dayNight === false ? "black" : "white"
+                border.color: "#888"
+                radius: 4
+
+            }
+        }
     }
     Button{
         id: buttonDel
@@ -120,24 +137,24 @@ Rectangle {
         anchors.topMargin: 0
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
     Button{
         id: button0
-        anchors.left: buttonOK.right
+        anchors.left: button7.left
         anchors.top: button8.bottom
         width: buttonWidthKeyboard
         height: buttonHeightKeyboard
         text: qsTr("0")
+        anchors.leftMargin: 0
+        anchors.topMargin: buttonMargin
         //anchors.right: buttonCancel.left
         anchors.rightMargin: buttonMargin
-        anchors.leftMargin: buttonMargin
-        anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -152,7 +169,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -167,7 +184,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -182,7 +199,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -197,7 +214,7 @@ Rectangle {
         anchors.right: button2.left
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -214,7 +231,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -229,7 +246,7 @@ Rectangle {
         anchors.leftMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -245,7 +262,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -262,7 +279,7 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
@@ -277,23 +294,38 @@ Rectangle {
         anchors.topMargin: buttonMargin
         style: keyboardButtonStyle
         onClicked: {
-            compass.ledOn()
+            compass.sound()
             buttonClick(text)
         }
     }
     Button{
         id: buttonOK
-        anchors.leftMargin: buttonMargin
-        anchors.top: button7.bottom
-        width: buttonWidthKeyboard
+        anchors.top: button8.bottom
+        width: buttonWidthKeyboard*2+ buttonMargin
         height: buttonHeightKeyboard
-        text: qsTr("Принять")
-        anchors.rightMargin: buttonMargin
-        anchors.right: button2.left
-        anchors.topMargin: buttonMargin
-        style: keyboardButtonStyle
+        text: qsTr(" Ввод")
+        anchors.left: button0.right
+        anchors.leftMargin: 19
+        anchors.topMargin: 20
+        style: ButtonStyle{
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family:  helvetica.name
+                font.pointSize: height/ 3.0
+                color: window1.dayNight === false ? "#7fff00": "black"
+                text: control.text
+              }
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: dayNight === false ? "black" : "white"
+            }
+        }
         onClicked:{
-            compass.ledOn()
+            compass.sound()
             revert(keyBoardRes)
 
         }
@@ -312,7 +344,7 @@ Rectangle {
 //            keyBoardRes =""
 //            passDialClose.start()
 //            textField.text = keyBoardRes
-//            compass.ledOn()
+//            compass.sound()
 //        }
 //    }
 

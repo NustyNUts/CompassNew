@@ -4,10 +4,10 @@ import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: moreInfoRect
-    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
-    height: window1.height
-    //width: 1440
-    //height: 980
+//    width: settings.width-buttonWidth - button1.anchors.leftMargin * 2
+//    height: window1.height
+    width: 1440
+    height: 980
     color: "#00000000"
     visible: true
     FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
@@ -22,14 +22,19 @@ Rectangle {
 
     //--------roll and pitch
     //-----roll
+
     Label{
         id:textRoll
-        text: qsTr("Крен")
-        x: (moreInfoRect.width - 3 * lcdWidth - 3 * textB.width - 5 * lcdHeight / 2 ) / 2
-        y: (moreInfoRect.height - 6 * lcdHeight  - buttonHeight)
-        font.pixelSize: textHeight / 2
-        color: "white"
-        font.family: a_LCDNovaObl.name
+        text: qsTr("Дифферент")
+        anchors.left: parent.left
+        anchors.leftMargin: window1.width/8
+//        anchors.top: parent.top
+//        anchors.topMargin: window1.height/2 - lcdHeight*2
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: lcdHeight
+        font.pixelSize: lcdHeight/1.5
+        color: window1.dayNight ===false ? "#7fff00":"black"
+        font.family:helvetica.name
     }
     Rectangle
     {
@@ -37,23 +42,21 @@ Rectangle {
         z: 3
         width: lcdWidth
         height: lcdHeight
-        border.width: 3
-        border.color: "white"
-        color: "#000000"
-        anchors.left: lcdPitchRect.left
-        anchors.leftMargin: 0
+        border.width: 2
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
+        anchors.left: textRoll.right
+        anchors.leftMargin: 20
         anchors.top: textRoll.top
-        anchors.topMargin: 0
+        anchors.topMargin: -10
         Text
         {
             id: lcdRoll
             anchors.centerIn: parent
-            text: m_roll
+            text: m_pitch+"°"
             font.pixelSize: lcdFontSize
-            font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            font.family:helvetica.name
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
 
@@ -61,14 +64,15 @@ Rectangle {
     //-----pitch
     Label{
         id:textPitch
-        text: qsTr("Дифферент")
-        anchors.top: textRoll.bottom
-        anchors.topMargin: lcdHeight
+        text: qsTr("Крен")
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -lcdHeight*2
         anchors.left: textRoll.left
         anchors.leftMargin: 0
-        font.pixelSize: textHeight / 2
-        color: "white"
-        font.family: a_LCDNovaObl.name
+        font.pixelSize: lcdHeight/1.5
+
+        color: window1.dayNight ===false ? "#7fff00":"black"
+        font.family:helvetica.name
     }
     Rectangle
     {
@@ -77,168 +81,49 @@ Rectangle {
         z: 3
         width: lcdWidth
         height: lcdHeight
-        border.width: 3
-        border.color: "white"
-        color: "#000000"
+        border.width: 2
+        border.color: window1.dayNight ===false ? "#7fff00":"black"
+        color: window1.dayNight ===false ? "black" : "white"
         anchors.top: textPitch.top
-        anchors.topMargin: 0
-        anchors.left: lcdCoefZRect.left
-        anchors.leftMargin: 0
+        anchors.topMargin: -10
+        anchors.left: textRoll.right
+        anchors.leftMargin: 20
         Text
         {
             id: lcdPitch
             anchors.centerIn: parent
-            text: m_pitch
+            text: m_roll+"°"
             font.pixelSize: lcdFontSize
-            font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: "white"
-            color: "white"
-        }
-    }
-    //-------------B C Z coef
-    //-----B coef
-
-    Label{
-        id: textB
-        anchors.bottom:  textPitch.top
-        anchors.bottomMargin: lcdHeight*3
-        anchors.left: textPitch.left
-        anchors.leftMargin: 0
-        text: qsTr("X")
-        font.pixelSize: textHeight / 2
-        color: "white"
-        font.family: a_LCDNovaObl.name
-    }
-    Rectangle
-    {
-        id: lcdCoefBRect
-        y: window1.width/2.25
-        z: 3
-        width: lcdWidth
-        height: lcdHeight
-        border.width: 3
-        border.color: "white"
-        color: "#000000"
-        anchors.top: textB.top
-        anchors.topMargin: 0
-        anchors.left: textB.right
-        anchors.leftMargin: lcdHeight / 2
-        Text
-        {
-            id: lcdB
-            anchors.centerIn: parent
-            text: coef_B
-            font.pixelSize: lcdFontSize
-            font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: "white"
-            color: "white"
-        }
-    }
-    //--------C coef
-
-    Label{
-        id: textC
-        text: qsTr("Y")
-        anchors.left: lcdCoefBRect.right
-        anchors.leftMargin: lcdHeight / 2
-        anchors.top: lcdCoefBRect.top
-        anchors.topMargin: 0
-        font.pixelSize: textHeight / 2
-        color: "white"
-        font.family: a_LCDNovaObl.name
-    }
-    Rectangle
-    {
-        id: lcdCoefCRect
-        z: 3
-        width: lcdWidth
-        height: lcdHeight
-        border.width: 3
-        border.color: "white"
-        color: "#000000"
-        anchors.left: textC.right
-        anchors.leftMargin: lcdHeight / 2
-        anchors.top: textC.top
-        anchors.topMargin: 0
-        Text
-        {
-            id: lcdC
-            anchors.centerIn: parent
-            text: coef_C
-            font.pixelSize: lcdFontSize
-            font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: "white"
-            color: "white"
+            font.family:helvetica.name
+            color: window1.dayNight ===false ? "#7fff00":"black"
         }
     }
 
-    //----Z coef
-    Label{
-        id: textZ
-        text: qsTr("Z")
-        anchors.left: lcdCoefCRect.right
-        anchors.leftMargin: lcdHeight / 2
-        anchors.top: lcdCoefCRect.top
-        anchors.topMargin: 0
-        font.pixelSize: textHeight / 2
-        color: "white"
-        font.family: a_LCDNovaObl.name
-    }
-    Rectangle
-    {
 
-        id: lcdCoefZRect
-        y: window1.width/2.25
-        z: 3
-        width: lcdWidth
-        height: lcdHeight
-        border.width: 3
-        border.color: "white"
-        color: "#000000"
-        anchors.left: textZ.right
-        anchors.leftMargin: lcdHeight / 2
-        anchors.top: textZ.top
-        anchors.topMargin: 0
-        Text
-        {
-            id: lcdZ
-            anchors.centerIn: parent
-            text: coef_Z
-            font.pixelSize: lcdFontSize
-            font.family: a_LCDNovaObl.name
-            style: Text.Outline
-            styleColor: "white"
-            color: "white"
-        }
-    }
-
-    Button {
-        id: button1
-        width: buttonWidth
-        height: buttonHeight
-        text: logMsg
-        visible: false
-        anchors.top: lcdCoefBRect.bottom
-        anchors.topMargin: lcdHeight
-        anchors.left: textB.left
-        anchors.leftMargin: 0
-        style: ButtonStyle {
-            label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: "Helvetica"
-                    font.pointSize: height / 2.5
-                    color: "black"
-                    text: control.text
-                }
-              }
-        onClicked:{
-            compass.ledOn()
-            compass.startWriteLog();
-        }
-    }
+//    Button {
+//        id: button1
+//        width: buttonWidth
+//        height: buttonHeight
+//        text: logMsg
+//        visible: false
+//        anchors.top: lcdCoefBRect.bottom
+//        anchors.topMargin: lcdHeight
+//        anchors.left: textB.left
+//        anchors.leftMargin: 0
+//        style: ButtonStyle {
+//            label: Text {
+//                    renderType: Text.NativeRendering
+//                    verticalAlignment: Text.AlignVCenter
+//                    horizontalAlignment: Text.AlignHCenter
+//                    font.family: helvetica.name
+//                    font.pointSize: height / 2.5
+//                    color: "black"
+//                    text: control.text
+//                }
+//              }
+//        onClicked:{
+//            compass.sound()
+//            compass.startWriteLog();
+//        }
+//    }
 }

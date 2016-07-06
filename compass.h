@@ -15,7 +15,7 @@
 #include "settings.h"
 #include "cubic_spline.h"
 #include "compassangle.h"
-//#include "gpiopi.h"
+#include "gpiopi.h"
 
 class Compass : public QObject
 {
@@ -44,10 +44,11 @@ public:
     void updateSklA();
 
 signals:
+    void compClear();
     void angleChanged();
     void pitchChanged();
     void rollChanged();
-
+    void sendMsg(double);
     void compensationLabelChanged();
 
     void sklChanged(double);
@@ -75,6 +76,7 @@ signals:
 
 
 public slots:
+    void setAccState(bool);
     void setAngle(double);
     void setB(double);
     void setC(double);
@@ -82,8 +84,8 @@ public slots:
     void changeDempf()
     {
         if(compangle->getM_dempf() == 0)
-            compangle->setM_dempf(5);
-        else if(compangle->getM_dempf() == 5)
+            compangle->setM_dempf(1);
+        else if(compangle->getM_dempf() == 1)
             compangle->setM_dempf(0);
         context_m->setContextProperty("m_dempf",compangle->getM_dempf());
     }
@@ -148,6 +150,7 @@ public slots:
 
     void setSKL(double skl){
         m_skl = skl;
+        compangle->setM_skl(skl);
         updateSklA();
 
     }
@@ -155,20 +158,22 @@ public slots:
     void setA(double a){
         m_coef_A = a;
         updateSklA();
+        compangle->setM_coef_A(a);
     }
 
     void setDegaus(bool deg);
     void setRoll(double);
     void setPitch(double);
-    void changeSkl();
     void initComp();
     void changeTrueMagneticCourse();
-    void changeBackground(int);
-    void changeInfoScreenVisibility();
-    void changeSettings();
     void updateCompensationInfo(int,int);
     void setBarstoDefault();
-    void stopComp(){emit compClosed();}
+    void stopComp()
+    {
+        m_comp_state = false;
+        emit compClosed();
+
+    }
     void setCompensationLabel(QString);
     void setCompensationLabeltoDeafault();
     void addSKL(QString str);
@@ -185,11 +190,16 @@ public slots:
         return deltaDegaus[num-1];
     }
     void startSettingsViewControlTimer(int msec);
-    void ledOn(){
-        //gpioPi.ledOn();
+    void sound()// подача звукового сигнала
+    {
+        gpioPi->soundOn();
     }
     bool getDegaus(){
         return m_degaus;
+    }
+    QString getCompColor()
+    {
+        return m_compColor;
     }
 
 protected:
@@ -197,7 +207,10 @@ protected:
 
 
 private:
-
+    QTimer* timerClearComp;
+    QString m_compColor;
+    double coefAForSAhow;
+    int m_accState;
     bool m_degaus;
     int k;
     bool m_comp_state;
@@ -223,7 +236,6 @@ private:
     int m_con;
     int m_con1;
     double m_summ_ang;
-    bool m_infoVisibility;
     int m_progress;
 
     double m_B,m_C,m_Z;
@@ -258,8 +270,6 @@ private:
     Bins m_bins;
     DevCoef m_coef_Dev;
     DevCoef m_coef_DevDG;
-
-
     double Round(double,int);
     void calcPoints();
 
@@ -274,7 +284,7 @@ private:
     QThread *portThread;
     DialogComp *dialComp;
     Settings *settingsDialog;
-    //GpioPi gpioPi;
+    GpioPi *gpioPi;
 
 
 

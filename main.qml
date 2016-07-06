@@ -11,6 +11,7 @@ Window {
     visibility: "Windowed"
     //visibility: "FullScreen"
 
+    FontLoader { id: helvetica; source: "content/HelveticaLight.ttf" }
     property string gradientcolor0: "#FF7C7C7C"
     property string gradientcolor1: "#FF4E4E4E"
     property string sourseCompass360: "content/compass360day.png"
@@ -24,6 +25,10 @@ Window {
     Rectangle
     {
         id: rectangle1
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
         anchors.fill: parent
         //width: 1440
         //height: 980
@@ -41,7 +46,6 @@ Window {
             }
         }
 
-
         SettingsQML
         {
             id:settingsDisplay
@@ -50,7 +54,7 @@ Window {
             height: window1.height
             anchors.right: parent.right
             anchors.rightMargin: -window1.width
-            z:2
+            z:3
         }
         Image {
             id: backgrnCompass
@@ -88,13 +92,13 @@ Window {
                 target: backgrnCompass
                 properties: "anchors.horizontalCenterOffset"
                 to: -window1.width/4+window1.width/14.4
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: 0
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation {
@@ -109,13 +113,13 @@ Window {
                 target: backgrnCompass
                 properties: "anchors.horizontalCenterOffset"
                 to: 0
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: -settingsDisplay.width
-                duration: 300
+                duration: 200
             }
         }
 
@@ -131,25 +135,25 @@ Window {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
                 to: window1.width / 2 - lcdDisplay.width / 2 - settingsDisplay.buttonWidth / 10
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
                 to: -window1.height / 2 + lcdDisplay.height / 2 + settingsDisplay.buttonHeight / 2
-                duration: 300
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
-                properties: "border.color"
-                to: dayNight === false ? "#000000" : "#faf0e6"
-                duration: 300
+                properties: "border.width"
+                to: 1
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: 0
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation{
@@ -158,13 +162,13 @@ Window {
                 target:menuButton
                 properties:"width"
                 to:settingsDisplay.buttonWidth
-                duration: 300
+                duration: 200
             }
             PropertyAnimation{
                 target:menuButton
                 properties:"height"
                 to:settingsDisplay.buttonHeight
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation{
@@ -173,13 +177,13 @@ Window {
                 target:menuButton
                 properties:"width"
                 to:window1.width/7.0
-                duration: 300
+                duration: 200
             }
             PropertyAnimation{
                 target:menuButton
                 properties:"height"
                 to:window1.height/10.0
-                duration: 300
+                duration: 200
             }
         }
         ParallelAnimation {
@@ -193,38 +197,38 @@ Window {
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.horizontalCenterOffset"
-                to: 0
-                duration: 300
+                to: 10
+                duration: 200
             }
             PropertyAnimation {
                 target: lcdDisplay
                 properties: "anchors.verticalCenterOffset"
                 to: 0
-                duration: 300
+                duration: 200
             }
+
             PropertyAnimation {
                 target: lcdDisplay
-                properties: "border.color"
-                to: dayNight === false ? "#000000" : "#faf0e6"
-                duration: 300
+                properties: "border.width"
+                to: 0
+                duration: 200
             }
             PropertyAnimation {
                 target: settingsDisplay
                 properties: "anchors.rightMargin"
                 to: -window1.width
-                duration: 300
+                duration: 200
             }
         }
         Image {
             id: compass10
-            x: 366
-            y: 55
+            x: 100
             width: compass360.width
             height: compass10.width
             anchors.centerIn: backgrnCompass
             z: 1
-            anchors.verticalCenterOffset: 1
-            anchors.horizontalCenterOffset: -2
+            anchors.verticalCenterOffset: 0
+            anchors.horizontalCenterOffset: 0
             source: sourseCompass10
             transform: Rotation{
                 angle: -fract_part*3.6
@@ -235,8 +239,8 @@ Window {
                    {
                        SpringAnimation
                        {
-                           spring: 1.9
-                           damping: 0.3
+                           spring: 2.5
+                           damping: 0.7
                        }
                    }
             }
@@ -264,24 +268,72 @@ Window {
                        }
                    }
             }
+
+        }
+        Rectangle {
+            id: background
+            color: dayNight === true? "#8db1b9":"#0c2132"
+            anchors.rightMargin: 0
+            anchors.bottomMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+            anchors.fill: parent
+            z: 0
+
+        }
+        Rectangle{
+            opacity: acc_state === 0? 1:0
+            width: window1.width/13
+            height: window1.height /14
+            z: 2
+            anchors.top: parent.verticalCenter
+            anchors.topMargin: -lcdDisplay.height
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenterOffset: 0
+            radius: 5
+            border.color: "red"
+            border.width: 2
+
+            color:"transparent"
             Text{
-                id: tmkStateText
-                width: window1.width/20
-                height: window1.height /9
+                id: accState
+
+                anchors.fill: parent
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
+                font.family: helvetica.name
+                font.pointSize: height / 3
+                color: "red"
+                text: "AKK"
+            }
+        }
+
+        Rectangle{
+            id: tmkStateText
+            z: 2
+            color: "#00000000"
+            width: window1.width/20
+            height: 40
+            radius: 5
+            anchors.top: parent.verticalCenter
+            anchors.topMargin: lcdDisplay.height /2
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenterOffset: 0
+            border.width: 2
+            border.color: dayNight === false ? "#7fff00" : "black"
+            Text{
+                id:tmkState
+                anchors.fill: parent
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: helvetica.name
                 font.pointSize: height / 3
                 color: dayNight === false ? "#7fff00" : "black"
                 text: "MK"
-                anchors.top: parent.verticalCenter
-                anchors.topMargin: lcdDisplay.height /3
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                anchors.horizontalCenterOffset: 0
                 Component.onCompleted: {
-                    tmkStateText.text = Qt.binding(function(){
+                    tmkState.text = Qt.binding(function(){
 
                     if(trueMagneticCourse === 0)
                         return "KK";
@@ -289,92 +341,90 @@ Window {
                         return "MK";
                     else if(trueMagneticCourse === 2)
                         return "ИК";
-                })
-            }
-            }
-
-            Text{
-                id: course_state_text
-                width: tmkStateText.width
-                height: tmkStateText.height
-                anchors.top: parent.verticalCenter
-                anchors.topMargin: lcdDisplay.height /3
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: height / 3
-                color: dayNight === false ? "#7fff00" : "black"
-                text: "Д"
-                anchors.right: tmkStateText.left
-                anchors.rightMargin: 0
-                opacity: m_dempf === 0 ? 0:1
-            }
-            Text{
-                id: ruStateText
-                width: tmkStateText.width
-                height: tmkStateText.height
-                anchors.top: parent.verticalCenter
-                anchors.topMargin: lcdDisplay.height /3
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.family: "Helvetica"
-                font.pointSize: height / 3
-                color: dayNight === false ? "#7fff00" : "black"
-                text: " РУ"
-                anchors.left: tmkStateText.right
-                anchors.rightMargin: 0
-                opacity: m_degaus === 0 ? 0:1
+                    })
+                }
             }
         }
 
-        //        Image {
-        //            id: border
-        //            anchors.bottom: parent.bottom
-        //            anchors.bottomMargin: -110
-        //            clip: false
-        //            visible: false
-        //            anchors.centerIn: parent
-        //            z: 1
-        //            source: "content/ramka.png"
-        //        }
 
-        Rectangle {
-            id: background
-            color:  dayNight === true ? "#8cb1b9" : "#0c2132"
-            anchors.rightMargin: 0
-            anchors.bottomMargin: 0
-            anchors.leftMargin: 0
+        Rectangle{
+            width: 40
+            height: 40
+            radius: 5
+            z: 2
+            color: "#00000000"
+            anchors.top:tmkStateText.top
             anchors.topMargin: 0
-            anchors.fill: parent
-            z: 0
-            //source: (m_background === 0 ? "content/steel4.png" :( m_background === 1 ? "content/steel3.png":(m_background === 2 ? "content/steel2.png":(m_background === 3 ? "content/wood.png":(m_background === 4 ? "content/steel.png":"content/steel4.png")))))
-            //source: dayNight === true ? "content/day.jpg" : "content/night.jpg"
+            anchors.right: tmkStateText.left
+            anchors.rightMargin: 10
+            border.width: 2
+            border.color: dayNight === false ? "#7fff00" : "black"
+            opacity: m_dempf === 0 ? 0:1
+            Text{
+                id: course_state_text
+                z: 2
+                anchors.fill: parent
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: helvetica.name
+                font.pointSize: height / 3
+                color: dayNight === false ? "#7fff00" : "black"
+                text: "Д"
+                anchors.topMargin: 0
+                opacity: m_dempf === 0 ? 0:1
+            }
+        }
+        Rectangle{
+            id: ruStateText
+            z: 2
+            radius: 5
+            color: "#00000000"
+            border.width: 2
+            border.color: dayNight === false ? "#7fff00" : "black"
+            width: tmkStateText.width
+            height: 40
+            anchors.top: tmkStateText.top
+            anchors.topMargin: 0
+            anchors.left: tmkStateText.right
+            anchors.leftMargin: 10
+            opacity: m_degaus === 0 ? 0:1
+            Text{
+                anchors.fill: parent
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: helvetica.name
+                font.pointSize: height / 3
+                color: dayNight === false ? "#7fff00" : "black"
+                text: "РУ"
+            }
 
         }
         Rectangle
         {
             id: lcdDisplay
-            z: 3
+            z: 4
             width: window1.width/4
             height: window1.height/6
-            border.width: 3
-            border.color: dayNight === false ? "#000000" : "#faf0e6"
+
+            radius: 4
+            border.color: "#878787"
+            border.width: 0
             color: dayNight === false ? "#000000" : "#faf0e6"
             anchors.horizontalCenter: backgrnCompass.horizontalCenter
             anchors.verticalCenter: backgrnCompass.verticalCenter
-            anchors.horizontalCenterOffset: 0
+            anchors.horizontalCenterOffset: 10
             anchors.verticalCenterOffset: 0
             FontLoader { id: a_LCDNovaObl; source: "content/a_LCDNovaObl.ttf" }
             Text
             {
                 id: lcdNumbers
                 anchors.centerIn: parent
-                //text: afterComma === 0 ? full_angle%360+".0" : full_angle%360
-                text: full_angle
-                font.pixelSize: window1.width/9.6
-                font.family: a_LCDNovaObl.name
+                text: full_angle+"°"
+                //text: comp === false ?full_angle+"°":"-----"
+                font.pixelSize: window1.width/14
+                font.family: helvetica.name
                 style: Text.Outline
                 styleColor: "black"
                 color: dayNight === false ? "#7fff00" : "black"
@@ -391,11 +441,16 @@ Window {
             anchors.rightMargin: settingsDisplay.buttonWidth / 10
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
-            z:2
+            z:4
             style: ButtonStyle {
                 background: Rectangle{
-                    radius: 1
+                    implicitWidth: 100
+                    implicitHeight: 25
+                    border.width: control.pressed? 2 : 1
+                    border.color: "#888"
+                    radius: 4
                     color: dayNight === false ? "black" : "white"
+
                 }
 
                 label: Text {
@@ -403,14 +458,14 @@ Window {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family: helvetica.name
                         color: dayNight === false ? "#7fff00" : "black"
-                        font.pointSize: menuButton.height / 4
+                        font.pointSize: settingsDisplay.buttonFontSize
                         text: control.text
                       }
             }
             onClicked:{
-                compass.ledOn()
+                compass.sound()
                 settingsDisplay.settingsSlided === false ? slideLCDForward.start():slideLCDBack.start();
                 settingsDisplay.settingsSlided === false ? butMain.start():butSettings.start();
                 //compass.startSettingsViewControlTimer(300000);
@@ -439,7 +494,7 @@ Window {
 //                        renderType: Text.NativeRendering
 //                        verticalAlignment: Text.AlignVCenter
 //                        horizontalAlignment: Text.AlignHCenter
-//                        font.family: "Helvetica"
+//                        font.family: helvetica.name
 //                        font.pointSize: tmkState.height / 3
 //                        color: "black"
 //                        text: "MK"
@@ -454,7 +509,7 @@ Window {
 //                      }
 //            }
 //            onClicked:{
-//                compass.ledOn()
+//                compass.sound()
 //                compass.changeTrueMagneticCourse()
 //            }
 //        }

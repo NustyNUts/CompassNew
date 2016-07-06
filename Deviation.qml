@@ -11,14 +11,14 @@ Rectangle {
     color: "#00000000"
     property int devFontSize: window1.width/53.333333333
     property bool modeSKL : true
-    property int  deviationCourse: 1
+    property int  deviationCourse: 0
     property string delta : ""
     property int buttonNumber : 0
     property bool degaus : false
     property string degausButText : "РУ выкл"
 
 
-    property int buttonWidthKeyboard: window1.width/9.0
+    property int buttonWidthKeyboard: window1.width/10
     property int buttonHeightKeyboard: window1.height/9.0
     property int buttonFontSize:buttonHeightKeyboard / 3.0
     property real buttonMargin:buttonHeightKeyboard / 5.5
@@ -27,35 +27,78 @@ Rectangle {
         modeSKL = arg
     }
 
+    Component{
+        id:butDevStyle
+        ButtonStyle{
+            property color textColor: "white"
+            property color backgroundColor: "white"
+
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family:  helvetica.name
+                font.pointSize: buttonFontSize
+                color: textColor
+                text: control.text
+              }
+
+            background: Rectangle {
+                border.width: control.pressed ? 5:1
+                border.color: "#888"
+                radius: 4
+                color: backgroundColor
+            }
+        }
+    }
+
     function changeDeviationButtonState(deviationCourse){
         if(deviationCourse === 1){
-            buttonC0.buttonC0Color = "#42e73a";
+            buttonC0.buttonTextC0Color =  "black" ;
+            buttonC0.buttonC0Color = deviationCourse === 1 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 2){
-            buttonC45.buttonC45Color = "#42e73a";
+            buttonC45.buttonTextC45Color =  "black" ;
+            buttonC45.buttonC45Color = deviationCourse === 2 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 3){
-            buttonC90.buttonC90Color = "#42e73a";
+            buttonC90.buttonTextC90Color = dayNight === false ? deviationCourse === 3 ?"black":"#7fff00": "black" ;
+            buttonC90.buttonC90Color = deviationCourse === 3 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 4){
-            buttonC135.buttonC135Color = "#42e73a";
+            buttonC135.buttonTextC135Color = dayNight === false ? deviationCourse === 4 ?"black":"#7fff00": "black" ;
+            buttonC135.buttonC135Color = deviationCourse === 4 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 5){
-            buttonC180.buttonC180Color = "#42e73a";
+            buttonC180.buttonTextC180Color =  "black" ;
+            buttonC180.buttonC180Color = deviationCourse === 5 ? "#42e73a":dayNight === false ? "black" : "white";
         } else if(deviationCourse === 6){
-            buttonC225.buttonC225Color = "#42e73a";
+            buttonC225.buttonTextC225Color =  "black" ;
+            buttonC225.buttonC225Color = deviationCourse === 6 ? "#42e73a":dayNight === false ? "black" : "white";
         }else if(deviationCourse === 7){
-            buttonC270.buttonC270Color = "#42e73a";
+            buttonC270.buttonTextC270Color =  "black" ;
+            buttonC270.buttonC270Color = deviationCourse === 7 ? "#42e73a":dayNight === false ? "black" : "white";
         }else if(deviationCourse === 8){
-            buttonC315.buttonC315Color = "#42e73a";
+            buttonC315.buttonTextC315Color =  "black" ;
+            buttonC315.buttonC315Color = deviationCourse === 8 ? "#42e73a":dayNight === false ? "black" : "white";
         }
     }
 
     function deviationButtonsStateReset(){
-        buttonC0.buttonC0Color = Qt.binding(function(){return deviationCourse === 1 ? "#42e73a":"white";})
-        buttonC45.buttonC45Color = Qt.binding(function(){return deviationCourse === 2 ? "#42e73a":"white";})
-        buttonC90.buttonC90Color = Qt.binding(function(){return deviationCourse === 3 ? "#42e73a":"white";})
-        buttonC135.buttonC135Color = Qt.binding(function(){return deviationCourse === 4 ? "#42e73a":"white";})
-        buttonC180.buttonC180Color = Qt.binding(function(){return deviationCourse === 5 ? "#42e73a":"white";})
-        buttonC225.buttonC225Color = Qt.binding(function(){return deviationCourse === 6 ? "#42e73a":"white";})
-        buttonC270.buttonC270Color = Qt.binding(function(){return deviationCourse === 7 ? "#42e73a":"white";})
-        buttonC315.buttonC315Color = Qt.binding(function(){return deviationCourse === 8 ? "#42e73a":"white";})
+        buttonC0.buttonC0Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC45.buttonC45Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC90.buttonC90Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC135.buttonC135Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC180.buttonC180Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC225.buttonC225Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC270.buttonC270Color = Qt.binding(function(){return dayNight === false ? "black" : "white";})
+        buttonC315.buttonC315Color = Qt.binding(function(){return /*deviationCourse === 8 ? "#42e73a":*/dayNight === false ? "black" : "white";})
+
+        buttonC0.buttonTextC0Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 1 ?"#7fff00":"black": "black" ;})
+        buttonC45.buttonTextC45Color = Qt.binding(function(){return  dayNight === false ? deviationCourse != 2 ?"#7fff00": "black":"black"  ;})
+        buttonC90.buttonTextC90Color = Qt.binding(function(){return  dayNight === false ?deviationCourse != 3 ?"#7fff00": "black":"black"  ;})
+        buttonC135.buttonTextC135Color = Qt.binding(function(){return  dayNight === false ? deviationCourse != 4 ?"#7fff00": "black":"black"  ;})
+        buttonC180.buttonTextC180Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 5 ?"#7fff00": "black":"black"  ;})
+        buttonC225.buttonTextC225Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 6 ?"#7fff00": "black":"black"  ;})
+        buttonC270.buttonTextC270Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 7 ?"#7fff00": "black":"black"  ;})
+        buttonC315.buttonTextC315Color = Qt.binding(function(){return dayNight === false ? deviationCourse != 8 ?"#7fff00": "black":"black"  ;})
+
     }
 
 
@@ -95,12 +138,16 @@ Rectangle {
                     changeDeviationButtonState(deviationCourse);
                 }
             }
-            Component.onCompleted: keyboardDisplay.setRes(compass.getDelta(1))
+            Component.onCompleted: {
+                deviationButtonsStateReset();
+                keyboardDisplay.setRes(0)
+            }
         }
 
         Button {
             id: buttonC0
             property color buttonC0Color: deviationCourse === 1 ? "#42e73a":"white"
+            property color buttonTextC0Color: "white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("0")
@@ -111,17 +158,17 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC0.buttonTextC0Color
                         text: control.text
                       }
                     background: Rectangle {
                         id: buttonC0backGround
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 1 ? 5:1
+                        border.color: deviationCourse === 1 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC0.buttonC0Color
                     }
@@ -129,13 +176,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 1
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC45
-            property color buttonC45Color: deviationCourse === 2 ? "#42e73a":"white"
+            property color buttonC45Color: "white"
+            property color buttonTextC45Color:"white"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("45")
@@ -148,17 +196,17 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC45.buttonTextC45Color
                         text: control.text
                       }
                 background: Rectangle {
                     id: buttonC45backGround
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 2 ? 5:1
+                    border.color: deviationCourse === 2 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC45.buttonC45Color
                 }
@@ -166,13 +214,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 2
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC90
             property color buttonC90Color: deviationCourse === 3 ? "#42e73a":"white"
+            property color buttonTextC90Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("90")
@@ -185,17 +234,17 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC90.buttonTextC90Color
                         text: control.text
                       }
                 background: Rectangle {
                     id: buttonC90backGround
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 3 ? 5:1
+                    border.color: deviationCourse === 3 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC90.buttonC90Color
                 }
@@ -203,13 +252,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 3
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC135
             property color buttonC135Color: deviationCourse === 4 ? "#42e73a":"white"
+            property color buttonTextC135Color: "black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("135")
@@ -222,16 +272,16 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC135.buttonTextC135Color
                         text: control.text
                       }
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 4 ? 5:1
+                    border.color: deviationCourse === 4 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC135.buttonC135Color
                 }
@@ -239,13 +289,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 4
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC180
             property color buttonC180Color: deviationCourse === 5 ? "#42e73a":"white"
+            property color buttonTextC180Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("180")
@@ -258,16 +309,16 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC180.buttonTextC180Color
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 5 ? 5:1
+                        border.color: deviationCourse === 5 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC180.buttonC180Color
                     }
@@ -275,13 +326,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 5
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC225
             property color buttonC225Color: deviationCourse === 6 ? "#42e73a":"white"
+            property color buttonTextC225Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("225")
@@ -294,16 +346,16 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC225.buttonTextC225Color
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 6 ? 5:1
+                        border.color: deviationCourse === 6 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC225.buttonC225Color
                     }
@@ -311,13 +363,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 6
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC270
             property color buttonC270Color: deviationCourse === 7 ? "#42e73a":"white"
+            property color buttonTextC270Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("270")
@@ -330,16 +383,16 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC270.buttonTextC270Color
                         text: control.text
                       }
                 background: Rectangle {
                     implicitWidth: 100
                     implicitHeight: 25
-                    border.width: control.activeFocus ? 2 : 1
-                    border.color: "#888"
+                    border.width: deviationCourse === 7 ? 5:1
+                    border.color: deviationCourse === 7 ?"#277B14":"#888"
                     radius: 4
                     color: buttonC270.buttonC270Color
                 }
@@ -347,13 +400,14 @@ Rectangle {
             onClicked: {
                 deviationCourse = 7
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
 
         Button {
             id: buttonC315
             property color buttonC315Color: deviationCourse === 8 ? "#42e73a":"white"
+            property color buttonTextC315Color:"black"
             width: buttonWidthKeyboard
             height: buttonHeightKeyboard
             text: qsTr("315")
@@ -366,16 +420,16 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color: buttonC315.buttonTextC315Color
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
+                        border.width: deviationCourse === 8 ? 5:1
+                        border.color: deviationCourse === 8 ?"#277B14":"#888"
                         radius: 4
                         color: buttonC315.buttonC315Color
                     }
@@ -383,7 +437,7 @@ Rectangle {
             onClicked: {
                 deviationCourse = 8
                 degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                compass.sound()
             }
         }
         Button {
@@ -404,26 +458,26 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: devFontSize
-                        color: "black"
+                        color:  window1.dayNight === false ? "#7fff00":"black"
                         text: control.text
                       }
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        border.width: control.activeFocus ? 2 : 1
+                        border.width: control.pressed ? 5 : 1
                         border.color: "#888"
                         radius: 4
-                        color: degaus === true ? "#42e73a":"white"
+                        color:  window1.dayNight === false ? "black": "white"
                     }
             }
             onClicked: {
                 degaus = !degaus
                 degausClicked();
                 console.log(degaus);
-                degaus === false ? keyboardDisplay.setRes(compass.getDelta(deviationCourse)) : keyboardDisplay.setRes(compass.getDeltaDegaus(deviationCourse))
-                compass.ledOn()
+                degaus === false ? keyboardDisplay.setRes(deviationCourse !== 0? compass.getDelta(deviationCourse):"0") : keyboardDisplay.setRes(deviationCourse !== 0? compass.getDeltaDegaus(deviationCourse): "0")
+                compass.sound()
             }
         }
 
@@ -435,10 +489,8 @@ Rectangle {
             anchors.leftMargin: 5
             anchors.top: buttonC315.top
             anchors.topMargin: 0
-            text: qsTr("Расчитать")
+            text: qsTr("Расcчитать")
             signal doClicked()
-            x: 656
-            y: 112
 
             Component.onCompleted: {
                 buttonDo.doClicked.connect(deviationButtonsStateReset)
@@ -448,32 +500,28 @@ Rectangle {
                         renderType: Text.NativeRendering
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "Helvetica"
+                        font.family:  helvetica.name
                         font.pointSize: buttonFontSize/2
-                        color: "black"
+                        color: window1.dayNight === false ? "#7fff00":"black"
                         text: control.text
                       }
                     background:
                         Rectangle {
-                            gradient: Gradient {
-                                GradientStop { position: 0 ; color: control.pressed ? "#42e73a" : "white" }
-                                GradientStop { position: 1 ; color: control.pressed ? "#42e73a" : "white" }
-                            }
-                            radius: 4
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.pressed ? 5 : 1
+                        border.color: "#888"
+                        radius: 4
+                        color: window1.dayNight === false ? "black": "white"
                         }
             }
             onClicked: {
                 compass.getDevCoef()
                 buttonDo.doClicked()
-                compass.ledOn()
+                compass.sound()
             }
         }
 
     }
-
-
-
-
-
 }
 
