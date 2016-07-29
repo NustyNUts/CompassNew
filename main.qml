@@ -8,8 +8,8 @@ Window {
     width: 800
     height: 600
     title: qsTr("Compass")
-    visibility: "Windowed"
-    //visibility: "FullScreen"
+    //visibility: "Windowed"
+    visibility: "FullScreen"
 
     FontLoader { id: helvetica; source: "content/HelveticaLight.ttf" }
     property string gradientcolor0: "#FF7C7C7C"

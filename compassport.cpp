@@ -146,7 +146,7 @@ void CompassPort::on()// метод для чтения из порта и ег�
                             m_pitch = Round(toDec(two_bytes,1)*1.41,1);
                             emit pitchChanged(m_pitch);
                             for(int i=72,j=15;i<88&&j>=0;i++,j--){two_bytes[j]=bitdata[i];} //Azimuth
-
+                            qDebug()<<two_bytes<<toDec(two_bytes,0)<<bitdata;
                             m_angle = Round(toDec(two_bytes,0)*1.41,1);
                             emit angleChanged(m_angle);
 
@@ -182,7 +182,7 @@ void CompassPort::sendCourse(double course)// бередача курса для
 {
     // открытие порта если он закрыт
     if(!portDCon->isOpen()){
-        portDCon->setPortName("ttyUSB0");
+        portDCon->setPortName("ttyUSB1");
         portDCon->setBaudRate(9600);
         portDCon->open(QIODevice::ReadWrite);
         qDebug()<<portDCon->isOpen();
@@ -448,6 +448,7 @@ void CompassPort::updateSettings(QStringList listOfSettings)// обновлен�
 
 double CompassPort::toDec(QBitArray bitdata,int p)//преобразования в дес. формат
 {
+    qDebug()<<bitdata;
     double intpart=0;
     double fractpart=0;
     QBitArray bit1(8),bit2(8);
