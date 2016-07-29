@@ -55,9 +55,8 @@ Rectangle {
         textField.text = keyBoardRes;
     }
 
-
     function revert(arg){
-        if(arg == password){
+        if(arg === password){
             keyBoardRes ="";
             textField.text ="";
             compass.revert();
